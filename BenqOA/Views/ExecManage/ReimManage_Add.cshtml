@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "报销申请";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style type="text/css">
+    .grid {
+        height: 200px;
+        overflow: hidden;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        我的出差单
+    </div>
+    <div class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                @*<td class="querylabel" style="width: 10%"><span>出差单编号</span></td>
+                <td style="width: 15%">
+                    <input type="text" class="form-control" data-bind="value:TripCode" /></td>*@
+                <td class="querylabel" style="width: 12%"><span>主题</span></td>
+                <td style="width: 15%">
+                    <input type="text" class="form-control" data-bind="value:TripContent" /></td>
+                <td class="querylabel" style="width: 12%"><span>出差日期</span></td>
+                <td style="width: 20%">
+                    <input id="BeginApplyDate" data-bind="value:BeginApplyDate" style="width: 100%" /></td>
+                <td>至</td>
+                <td style="width: 20%">
+                    <input id="EndApplyDate" data-bind="value:EndApplyDate" style="width: 100%" /></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+<div class="form-group fullCenter">
+    <button type="button" class="btn btn-primary" onclick="ApplyReim()"><i class="icon-share-alt"></i>申请报销</button>
+    <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+</div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //
+
+        //自定义列
+        var columns = [
+
+        {
+            //headerTemplate: '<input type="checkbox" class="selectAll" ></input>',
+            width: 30,
+            template: '<input type="checkbox" value="#=uid#"></input>'
+        },
+
+        { field: 'TripCode', title: '出差单编号', width: '50px' },  //出差单编号
+        { field: 'TripContent', title: '主题内容', width: '50px' }, //出差单内容
+        {
+            field: 'ApplyDate', title: '申请时间', width: '50px', template: function (value) {  //申请时间
+                return kendo.toString(kendo.parseDate(value.ApplyDate), "yyyy-MM-dd")
+            }
+        },
+        {
+            field: 'BeginDate', title: '出差开始日期', width: '50px', template: function (value) {  //出差开始日期
+                return kendo.toString(kendo.parseDate(value.BeginDate), "yyyy-MM-dd")
+            }
+        },
+        {
+            field: 'EndDate', title: '出差结束日期', width: '50px', template: function (value) { //出差结束日期
+                return kendo.toString(kendo.parseDate(value.EndDate), "yyyy-MM-dd")
+            }
+        },
+        { field: 'Destination', title: '目的地', width: '50px' },  //目的地
+        ]
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            //'TripCode': ko.observable(''), //申请单编号
+            'TripContent': ko.observable(''), //主题内容
+            'BeginApplyDate': ko.observable('@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")'), //申请开始日期
+            'EndApplyDate': ko.observable('@DateTime.Now.ToString("yyyy-MM-dd")') //申请结束日期
+        }
+
+        //绑定grid控件
+        Grid_BindCheckBox('grid1', '/ExecManage/ReimManage_QueryTrip' + '?UserCode=' + '@ViewBag.UserCode', columns, queryModel);
+
+        //绑定日期控件
+        DatePicker_Bind('BeginApplyDate');
+        DatePicker_Bind('EndApplyDate');
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+    }
+
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //申请报销
+    function ApplyReim() {
+
+        //1.打包对象
+        var selectentities = [];
+        var grid = $('#grid1').data('kendoGrid');
+        var list = grid.table.find('tr').find('td:first input'); //获取共有多少行数据
+
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].checked) {
+                //获取出差单号
+                $.each($(grid.dataSource.data()),function (index, obj) {  //遍历选中行的数据
+                    if (obj.uid == list[i].value) {
+                        selectentities.push(obj.TripCode);
+                    }
+                });
+            }
+        }
+        
+        if (selectentities.length == 0) {
+            ShowAlert("请至少选择一个出差单");
+        }
+        else if (selectentities.length > 1) {
+            ShowAlert("只能选择一个出差单");
+        }
+        else {
+
+            View_ShowWindow_CallBack(500, 600, "报销单信息", '/ExecManage/ReimManage_AddByTripCode' + '?TripCode=' + selectentities + '&UserCode=' + '@ViewBag.UserCode ', function () {
+                Query();
+            });
+        }
+
+
+    }
+
+    //返回
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+
+    })
+</script>
+
+

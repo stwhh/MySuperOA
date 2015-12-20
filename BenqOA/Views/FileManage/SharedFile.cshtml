@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "SharedFile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/plupload")
+@Scripts.Render("~/Scripts/plupload")
+
+
+@{
+    ViewBag.Title = "发布公告";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        查询条件
+    </div>
+    <div class="panel-body panel-block">
+        <form id="form1">
+            <table class="searcharea">
+                <tr>
+                    <td class="querylabel" style="width: 8%"><span>文件类型</span></td>
+                    <td style="width: 12%">
+                        <input id="FileType" name="FileType" data-bind="value:FileType" /></td>
+                    <td class="querylabel" style="width: 8%"><span>文件名</span></td>
+                    <td style="width: 12%">
+                        <input type="text" name="FileName" class="form-control" data-bind="value:FileName" /></td>
+                    <td class="querylabel" style="width: 8%"><span>创建人</span></td>
+                    <td style="width: 12%">
+                        <input type="text" name="CreateUserCode" class="form-control" data-bind="value:CreateUserCode" /></td>
+                    <td class="querylabel" style="width: 8%"><span>发布时间</span></td>
+                    <td style="width: 12%">
+                        <input id="BeginApplyDate" name="BeginApplyDate" data-bind="value:BeginApplyDate" style="width: 100%" /></td>
+                    <td style="text-align: center">至</td>
+                    <td style="width: 12%">
+                        <input id="EndApplyDate" name="EndApplyDate" data-bind="value:EndApplyDate" style="width: 100%" /></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td class="padding-top15">
+                        <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button>
+                        <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-plus"></i>新增</button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+
+
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //自定义列
+        var columns = [
+        //    {
+        //    headerTemplate: '<input type="checkbox" class="selectAll" />',
+        //    width: '30px',
+        //    template: '<input type="checkbox" class="select" value="#=uid#" />'
+        //},
+        {
+            headerTemplate: '删除',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Del(\'#=FileCode#\')"><i class="icon-remove"></i></div>'
+        },
+        { field: 'FileCode', title: '文件编号', width: '50px' },  //文件编号
+        { field: 'FileName', title: '文件名', width: '80px' },  //文件名
+        { field: 'FileSize', title: '文件大小', width: '30px' },  //文件大小
+        { field: 'FileType', title: '文件类型', width: '50px' },  //文件类型
+        { field: 'CreateUserCode', title: '创建人', width: '50px' },  //创建人
+        {
+            field: 'CreateTime', title: '创建时间', width: '50px', template: function (value) {
+                return kendo.toString(kendo.parseDate(value.CreateTime), "yyyy-MM-dd HH:mm:ss")
+            }/*, attributes: { style: "text-align: center; font-size: 16px" }*/
+        }, //创建时间
+        {
+            headerTemplate: '下载',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="window.open(\'DownloadFile?FileCode=#=FileCode#&FileName=#=FileName#\',\'_self\')"><i class="icon-download-alt"></i></div>'
+        },
+        ]
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'FileType': ko.observable(''), //文件类型
+            'FileName': ko.observable(''), //文件名
+            'CreateUserCode': ko.observable(''), //创建人
+            'BeginApplyDate': ko.observable('@DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd")'), //申请开始日期
+            'EndApplyDate': ko.observable('@DateTime.Now.ToString("yyyy-MM-dd")') //申请结束日期
+        }
+
+        //绑定文件类型
+        DropDownList_Bind_Areas('所有', 'FileType', '/Common/GetFileType');
+
+        //绑定grid控件(通过序列化方式传值)
+        Grid_BindCheckBox('grid1', '/FileManage/FileManage_Query', columns, queryModel); //@@Url.Action("PublishAnno_Query")
+
+        //绑定日期控件
+        DatePicker_Bind('BeginApplyDate');
+        DatePicker_Bind('EndApplyDate');
+
+        ////应用绑定
+        ko.applyBindings(queryModel);
+
+    }
+
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //删除
+    function Del(FileCode) {
+        ShowConfirm("确定要删除吗", function () {
+            $.ajax({
+                url: '/FileManage/FileManage_Del' + '?FileCode=' + FileCode,
+                type: 'post',
+                //data: { 'selectitems': selectitems },
+                success: function (obj) {
+                    if (obj.ErrorCode == "0") {
+                        ShowAlert("删除成功", function () {
+                            Query();
+                        })
+                    }
+                    else {
+                        ShowAlert("删除失败")
+                    }
+                }
+            })
+        })
+
+    }
+
+    //下载
+    function Download(FileCode) {
+
+    }
+
+    //新增
+    function Add() {
+        View_ShowWindow_CallBack(450, 550, '添加文件', '/FileManage/UploadFiles' + '?UserCode=' + '@ViewBag.UserCode', function () {
+            Query();
+        });
+    }
+
+
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>
+
+
+
+
+

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DsForReimInfo" targetNamespace="http://tempuri.org/DsForReimInfo.xsd" xmlns:mstns="http://tempuri.org/DsForReimInfo.xsd" xmlns="http://tempuri.org/DsForReimInfo.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DsForReimInfo" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DsForReimInfo" msprop:Generator_UserDSName="DsForReimInfo">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ReimCode" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnReimCode" msprop:Generator_ColumnPropNameInRow="ReimCode" msprop:Generator_ColumnPropNameInTable="ReimCodeColumn" msprop:Generator_UserColumnName="ReimCode" type="xs:string" minOccurs="0" />
+              <xs:element name="ReimContent" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnReimContent" msprop:Generator_ColumnPropNameInRow="ReimContent" msprop:Generator_ColumnPropNameInTable="ReimContentColumn" msprop:Generator_UserColumnName="ReimContent" type="xs:string" minOccurs="0" />
+              <xs:element name="AirTicket" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnAirTicket" msprop:Generator_ColumnPropNameInRow="AirTicket" msprop:Generator_ColumnPropNameInTable="AirTicketColumn" msprop:Generator_UserColumnName="AirTicket" type="xs:string" minOccurs="0" />
+              <xs:element name="Train" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnTrain" msprop:Generator_ColumnPropNameInRow="Train" msprop:Generator_ColumnPropNameInTable="TrainColumn" msprop:Generator_UserColumnName="Train" type="xs:string" minOccurs="0" />
+              <xs:element name="Bus" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnBus" msprop:Generator_ColumnPropNameInRow="Bus" msprop:Generator_ColumnPropNameInTable="BusColumn" msprop:Generator_UserColumnName="Bus" type="xs:string" minOccurs="0" />
+              <xs:element name="Traffic" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnTraffic" msprop:Generator_ColumnPropNameInRow="Traffic" msprop:Generator_ColumnPropNameInTable="TrafficColumn" msprop:Generator_UserColumnName="Traffic" type="xs:string" minOccurs="0" />
+              <xs:element name="Accommodation" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnAccommodation" msprop:Generator_ColumnPropNameInRow="Accommodation" msprop:Generator_ColumnPropNameInTable="AccommodationColumn" msprop:Generator_UserColumnName="Accommodation" type="xs:string" minOccurs="0" />
+              <xs:element name="Bonus" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnBonus" msprop:Generator_ColumnPropNameInRow="Bonus" msprop:Generator_ColumnPropNameInTable="BonusColumn" msprop:Generator_UserColumnName="Bonus" type="xs:string" minOccurs="0" />
+              <xs:element name="Other" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnOther" msprop:Generator_ColumnPropNameInRow="Other" msprop:Generator_ColumnPropNameInTable="OtherColumn" msprop:Generator_UserColumnName="Other" type="xs:string" minOccurs="0" />
+              <xs:element name="ReimMoney" msdata:Caption="[ReimMoney]" msprop:Generator_ColumnVarNameInTable="columnReimMoney" msprop:Generator_ColumnPropNameInRow="ReimMoney" msprop:Generator_ColumnPropNameInTable="ReimMoneyColumn" msprop:Generator_UserColumnName="ReimMoney" type="xs:string" minOccurs="0" />
+              <xs:element name="TripCode" msdata:Caption="[ReimMoney]" msprop:Generator_ColumnVarNameInTable="columnTripCode" msprop:Generator_ColumnPropNameInRow="TripCode" msprop:Generator_ColumnPropNameInTable="TripCodeColumn" msprop:Generator_UserColumnName="TripCode" type="xs:string" minOccurs="0" />
+              <xs:element name="CreateUserCode" msprop:Generator_ColumnVarNameInTable="columnCreateUserCode" msprop:Generator_ColumnPropNameInRow="CreateUserCode" msprop:Generator_ColumnPropNameInTable="CreateUserCodeColumn" msprop:Generator_UserColumnName="CreateUserCode" type="xs:string" minOccurs="0" />
+              <xs:element name="BeginDate" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnBeginDate" msprop:Generator_ColumnPropNameInRow="BeginDate" msprop:Generator_ColumnPropNameInTable="BeginDateColumn" msprop:Generator_UserColumnName="BeginDate" type="xs:string" minOccurs="0" />
+              <xs:element name="EndDate" msdata:Caption="DataColumn1" msprop:Generator_ColumnVarNameInTable="columnEndDate" msprop:Generator_ColumnPropNameInRow="EndDate" msprop:Generator_ColumnPropNameInTable="EndDateColumn" msprop:Generator_UserColumnName="EndDate" type="xs:string" minOccurs="0" />
+              <xs:element name="Destination" msprop:Generator_ColumnVarNameInTable="columnDestination" msprop:Generator_ColumnPropNameInRow="Destination" msprop:Generator_ColumnPropNameInTable="DestinationColumn" msprop:Generator_UserColumnName="Destination" type="xs:string" minOccurs="0" />
+              <xs:element name="TripContent" msprop:Generator_ColumnVarNameInTable="columnTripContent" msprop:Generator_ColumnPropNameInRow="TripContent" msprop:Generator_ColumnPropNameInTable="TripContentColumn" msprop:Generator_UserColumnName="TripContent" type="xs:string" minOccurs="0" />
+              <xs:element name="tripDays" msprop:Generator_ColumnVarNameInTable="columntripDays" msprop:Generator_ColumnPropNameInRow="tripDays" msprop:Generator_ColumnPropNameInTable="tripDaysColumn" msprop:Generator_UserColumnName="tripDays" type="xs:string" minOccurs="0" />
+              <xs:element name="UserCode" msprop:Generator_ColumnVarNameInTable="columnUserCode" msprop:Generator_ColumnPropNameInRow="UserCode" msprop:Generator_ColumnPropNameInTable="UserCodeColumn" msprop:Generator_UserColumnName="UserCode" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

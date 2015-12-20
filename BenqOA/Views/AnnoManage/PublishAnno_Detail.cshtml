@@ -1,0 +1,99 @@
+﻿@model Model.Models.Announce
+@{
+    ViewBag.Title = "公告详情";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<form id="form1">
+    <table class="searcharea">
+        <tr>
+            <td class="querylabel" style="width: 15%"><span>公告标题</span></td>
+            <td style="width: 30%">
+                <input id="AnnounceTitle" name="AnnounceTitle" type="text" class="form-control" data-bind="value:AnnounceTitle" placeholder="必填" /></td>
+            <td class="querylabel" style="width: 15%"><span>公告类型</span></td>
+            <td style="width: 20%">
+                <input id="AnnounceTypeId" name="AnnounceTypeId" data-bind="value:AnnounceTypeId" /></td>
+            <td></td>
+            <td>
+        </tr>
+    </table>
+    <div class="space"></div>
+    @* <div>
+        <textarea id="editor2">@Html.Raw(@ViewBag.AnnounceContent)</textarea>
+    </div>*@
+    <div>
+        <textarea id="editor1" name="AnnounceContent" data-bind="value:AnnounceContent" style="height: 340px;">@Html.Raw(@ViewBag.AnnounceContent)</textarea>
+    </div>
+</form>
+
+<div class="fullCenter" style="margin-top: 30px;">
+    <button type="button" class="btn btn-primary" onclick="Edit()"><i class="icon-save"></i>保存</button>
+    <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+    @* <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-ok"></i>发布</button>*@
+</div>
+
+
+<script type="text/javascript">
+    var viewModel;
+    function Init() {
+        if ('@ViewBag.pageaction' == 'view') {
+            $('input').attr("readonly", true);
+            $('textarea').attr("readonly", true);
+            $('button').hide();
+        }
+
+        viewModel = {
+            'AnnounceTitle': ko.observable('@Model.AnnounceTitle'),
+            'AnnounceTypeId': ko.observable('@Model.AnnounceTypeId'),
+            'AnnounceContent': ko.observable('@Model.AnnounceContent') //此法对于该控件无效
+
+        }
+
+        //绑定文本编辑器控件
+        Editor("editor1");
+
+        //绑定公告类型
+        DropDownList_BindParameter('AnnounceTypeId', '/Common/GetAnnoType', '', 'Text', 'Value');
+        //根据公告value获取text
+        $('#AnnounceTypeId').data('kendoDropDownList').value('@Model.AnnounceTypeId');
+
+        //应用绑定
+        ko.applyBindings(viewModel);
+    }
+
+    //保存-修改
+    function Edit() {
+        $.ajax({
+            url: '/AnnoManage/PublishAnno_Edit_Save' + '?AnnounceCode=' + '@ViewBag.AnnounceCode',
+            type: 'post',
+            //dataType: 'json',
+            //contentType: 'application/json',
+            data: $('#form1').serialize(),//ko.toJSON(viewModel),
+            success: function (obj) {
+                if (obj.ErrorCode == "0") {
+                    ShowAlert("修改成功")
+                }
+                else {
+                    ShowAlert("修改失败")
+                }
+            }
+        })
+    }
+
+
+    //返回
+    function Back() {
+        View_CloseWindow();
+    }
+
+    //发布
+    function Add() {
+
+    }
+
+
+    $(function () {
+        Init();
+    })
+
+</script>

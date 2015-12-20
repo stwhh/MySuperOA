@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "权限管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        查询条件
+    </div>
+    <div class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 10%"><span>权限编号</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:PermCode" /></td>
+                <td class="querylabel" style="width: 10%"><span>权限名称</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:PermName" /></td>
+                
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button>
+                    <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-plus"></i>新增</button>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //自定义列
+        var columns = [{
+            headerTemplate: '删除',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Del(\'#=PermCode#\')"><i class="icon-remove"></i></div>'
+        },
+        {
+            headerTemplate: '编辑',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Edit(\'#=PermCode#\')"><i class="icon-edit"></i></div>'
+        },
+        { field: 'PermCode', title: '权限编号', width: '50px' },  //权限编号
+        { field: 'PermName', title: '权限名称', width: '50px' },  //权限名称
+        { field: 'PermUrl', title: '权限路径', width: '50px' },  //权限路径
+        { field: 'PermSeq', title: '权限顺序', width: '50px' },  //权限顺序
+        { field: 'PermType', title: '权限类型', width: '50px' },  //权限类型
+        { field: 'ParaentCode', title: '父权限代码', width: '50px' }  //父权限代码
+        ]
+
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'PermCode': ko.observable(''),
+            'PermName': ko.observable('')
+        }
+
+        //绑定grid控件
+        Grid_BindCheckBox('grid1', '/SysManage/PermManage_Query', columns, queryModel);
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+    }
+
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //新增权限
+    function Add(pageaction) {
+        View_ShowWindow_CallBack(280, 580, '新增权限', '/SysManage/PermManage_Add', function () {
+            Query();
+        });
+    }
+    
+    //删除
+    function Del(PermCode) {
+        ShowConfirm("确定删除吗?",function(){
+            $.ajax({
+                url: 'PermManage_Del',
+                type: 'post',
+                //contentType: 'appliation/json',
+                //dataType: 'json',
+                data: { "PermCode": PermCode },
+                success: function (obj) {
+                    if(obj.ErrorCode=="0"){
+                        ShowAlert("删除成功", function () {
+                            Query();
+                        })
+                    }
+                    else {
+                        ShowAlert("删除失败")              
+                }}
+            })}
+        )}
+    
+
+    //编辑权限信息
+    function Edit(PermCode) {
+        var url = '@Url.Action("PermManage_Edit")' + "?PermCode=" + PermCode ;
+        View_ShowWindow_CallBack(280, 580, "权限信息编辑", url, function () {
+            Query();
+        });
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>
+

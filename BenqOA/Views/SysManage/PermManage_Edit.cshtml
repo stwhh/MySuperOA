@@ -1,0 +1,105 @@
+﻿@model Model.Models.Permisson
+@{
+    ViewBag.Title = "编辑权限";
+    Layout = "~/Views/Shared/_Layout2.cshtml";  /*_Layout2是弹出窗口模板页*/
+}
+@Scripts.Render("~/Scripts/jqueryvalidate")
+
+<script src="~/Content/ace/js/fuelux.wizard.js"></script>
+<script src="~/Content/ace/js/ace-elements.js"></script>
+
+<div class="panel panel-default" style="">
+    @*    <div class="panel-heading">新增权限</div>*@
+    <div class="panel-body">
+        <div class="row fullCenter">
+            <div class="col-xs-12">
+                <form id="form1" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="PermCode">权限编号</label>
+                        <div class="col-xs-4">
+                            <input id="PermCode" name="PermCode" type="text" class="form-control" data-bind="value:PermCode" placeholder="必填" /> 
+                        </div>
+                        <label class="col-xs-2 labelright" for="PermName">权限名称</label>
+                        <div class="col-xs-4">
+                            <input id="PermName" name="PermName" type="text" class="form-control" data-bind="value:PermName" placeholder="必填" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="PermUrl">权限路径</label>
+                        <div class="col-xs-4">
+                            <input id="PermUrl" name="PermUrl" type="text" class="form-control" data-bind="value:PermUrl"  placeholder="必填" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="PermSeq">权限顺序</label>
+                        <div class="col-xs-4">
+                            <input id="PermSeq" name="PermSeq" type="text" class="form-control" data-bind="value:PermSeq" placeholder="必填" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="PermType">权限类型</label>
+                        <div class="col-xs-4">
+                            <input id="PermType" type="text" name="PermType" class="form-control" data-bind="value:PermType" placeholder="必填" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="ParaentCode">父权限代码</label>
+                        <div class="col-xs-4">
+                            <input id="ParaentCode" name="ParaentCode" type="text" class="form-control" data-bind="value:ParaentCode" placeholder="必填" />
+                        </div>
+                    </div>
+                    <div class="form-group fullCenter">
+                       <button type="button" class="btn btn-primary" onclick="Save()"><i class="icon-save"></i>保存</button>
+                       <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var viewModel;
+    function Init() {
+        $('#PermCode').attr("readonly", true);
+        viewModel = {
+            'PermCode': ko.observable('@Model.PermCode'),
+            'PermName': ko.observable('@Model.PermName'),
+            'PermUrl': ko.observable('@Model.PermUrl'),
+            'PermSeq': ko.observable('@Model.PermSeq'),
+            'PermType': ko.observable('@Model.PermType'),
+            'ParaentCode': ko.observable('@Model.ParaentCode')
+        }
+
+        //绑定页面属性(必须放在最后一步)
+        ko.applyBindings(viewModel);
+
+    }
+      
+    function Save() {
+        $.ajax({
+            type: 'post',
+            url: '/SysManage/PermManage_Edit_Save',
+            //contentType: 'application/json',
+            //dataType: 'json',
+            //如果以这种形式传值data:{'s':$('#form1').serialize()}，后台接收参数要用request.parms['']一个个接收
+            data: $('#form1').serialize(),// ko.toJSON(viewModel),  //serialize()序列表表格内容为字符串,用于ajax接收。
+            success:function(obj){
+                if (obj.ErrorCode == '0') {
+                    ShowAlert("保存成功")
+                }
+                else {
+                    ShowAlert("保存失败")
+                }
+            }
+        })
+    }
+
+    //返回（关闭）窗口
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {
+        Init();
+       
+    })
+</script>
+
+

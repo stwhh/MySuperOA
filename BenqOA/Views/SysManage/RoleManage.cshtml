@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "角色管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        查询条件
+    </div>
+    <div class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 10%"><span>角色编号</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:RoleCode" /></td>
+                <td class="querylabel" style="width: 10%"><span>角色名称</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:RoleName" /></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button>
+                    <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-plus"></i>新增</button></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //自定义列
+        var columns = [{
+            headerTemplate: '删除',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Del(\'#=RoleCode#\')"><i class="icon-remove"></i></div>'
+        },
+        {
+            headerTemplate: '编辑',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Edit(\'#=RoleCode#\')"><i class="icon-edit"></i></div>'
+        },
+        {
+            headerTemplate: '用户',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="ShowUser(\'#=RoleCode#\')"><i class="icon-user"></i></div>'
+        },
+        {
+            headerTemplate: '赋权',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="ShowPerm(\'#=RoleCode#\')"><i class="icon-hand-right"></i></div>'
+        },
+        { field: 'RoleCode', title: '角色编号', width: '50px' },  //角色编号
+        { field: 'RoleName', title: '角色名称', width: '50px' },  //角色描述
+        { field: 'RoleContent', title: '角色描述', width: '50px' }  //角色描述
+        ]
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'RoleCode': ko.observable(''),
+            'RoleName': ko.observable(''),
+            'RoleContent': ko.observable('')
+        }
+
+        //绑定grid控件
+        Grid_BindCheckBox('grid1', '/SysManage/RoleManage_Query', columns, queryModel);
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+    }
+
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //新增
+    function Add() {
+        View_ShowWindow_CallBack(250, 500, '新增角色', '/SysManage/RoleManage_AddRole', function () {
+            Query();
+        })
+    }
+
+    //删除
+    function Del(RoleCode) {
+        ShowConfirm("确定删除吗?", function () {
+            $.ajax({
+                url: 'RoleManage_DelRole',
+                type: 'post',
+                //contentType: 'appliation/json',
+                //dataType: 'json',
+                data: { "RoleCode": RoleCode },
+                success: function (obj) {
+                    if (obj.ErrorCode == "0") {
+                        ShowAlert("删除成功", function () {
+                            Query();
+                        })
+                    }
+                    else {
+                        ShowAlert("删除失败")
+                    }
+                }
+            })
+        }
+        )
+    }
+
+    //编辑
+    function Edit(RoleCode) {
+        View_ShowWindow_CallBack(240, 500, '编辑角色', '/SysManage/RoleManage_EditRole' + '?RoleCode=' + RoleCode , function () {
+            Query();
+        })
+    }
+
+    //查看角色组中的用户
+    function ShowUser(RoleCode) {
+        View_ShowWindow_CallBack(420, 550, '角色组用户', '/SysManage/RoleManage_User' + '?RoleCode=' + RoleCode, function () {
+            Query();
+        })
+    }
+
+    //赋权
+    function ShowPerm(RoleCode) {
+        View_ShowWindow_CallBack(450, 550, '权限分配', '/SysManage/RoleManage_AddPerm' + '?RoleCode=' + RoleCode, function () {
+            Query();
+        })
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>

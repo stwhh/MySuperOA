@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "角色组用户管理";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<style type="text/css">
+    .grid {
+        height:220px;
+        overflow:hidden;
+    }
+</style>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        查询条件
+    </div>
+    <div class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 20%"><span>用编号户</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:UserCode" /></td>
+                <td class="querylabel" style="width: 20%"><span>真实姓名</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:RealName" /></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+<div class="fullCenter">
+    <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-ok"></i>确定</button>
+    <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+</div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //自定义列
+        var columns = [{
+            headerTemplate: '<input type="checkbox" class="selectAll"/>',
+            width: '30px',
+            template: '<input type="checkbox" class="select" value="#=uid#" />'
+        },
+
+        { field: 'UserCode', title: '用户编号', width: '100px' },  //用户编号
+        { field: 'RealName', title: '真实姓名', width: '100px' }   //用户名称
+        ]
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'RoleCode': ko.observable('@ViewBag.RoleCode'),
+            'UserCode': ko.observable(''),
+            'RealName': ko.observable('')
+        }
+
+        //绑定grid控件
+        Grid_BindCheckBoxNoPage('grid1', '/SysManage/Role_QueryAllUser', columns, queryModel);
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+    }
+
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //新增-确定
+    function Add() {
+        var selectentities = [];
+        var grid = $('#grid1').data('kendoGrid');
+        var list = grid.table.find('tr').find('td:first input');
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].checked) {
+                var entity = $.grep($(grid.dataSource.data()), function (item) {  //$.grep 过滤数组中元素
+                    return item.uid == list[i].value; //返回被选中的数据
+                })[0]; //
+                //selectentities.push(entity);
+                selectentities.push(entity.UserCode);
+            }
+        }
+        //如果是空，返回未选择
+        if (selectentities.length == 0) {
+            ShowAlert(alert_selectone, function () {
+                Query();
+                return;
+            });
+        };
+
+        var selects = selectentities.join(','); //数组转成字符串
+
+        if (selectentities.length > 0) {
+            $.ajax({
+                url: '/SysManage/Role_AddUser_Save' + '?RoleCode=@ViewBag.RoleCode',
+                type: 'post',
+                data: { "selects": selects },
+                success: function (result) {
+                    if (result.ErrorCode == '0') {
+                        ShowAlert('保存成功', function () {
+                            Query();
+                        })
+                    }
+                }
+            })
+        }
+    }
+
+    //返回
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>
+

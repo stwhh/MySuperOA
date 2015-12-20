@@ -1,0 +1,166 @@
+﻿@using Model.Models
+@{
+    ViewBag.Title = "项目讨论";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<style type="text/css">
+  
+</style>
+
+<div class="">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="lighter smaller">
+                <i class="icon-comment blue"></i>
+                讨论
+            </h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <div class="dialogs">
+                    @{
+                        List<Project_Discuss> lists = ViewBag.model;
+                        foreach (var list in lists)
+                        {
+                        <div class="itemdiv dialogdiv">
+                            <div class="user">
+                                <img alt="Alexa's Avatar" src="@list.CreateUserImage" />
+                            </div>
+
+                            <div class="body">
+                                <div class="time">
+                                    <i class="icon-time"></i>
+                                    <span class="green">@list.CreateTime.ToString("yyyy-MM-dd hh:mm:ss")</span>
+                                </div>
+
+                                <div class="name">
+                                    <a href="#">@list.CreateUserCode</a>
+                                </div>
+                                <div class="text">@list.ProjComConent</div>
+
+                                @* <div class="tools">
+                                    <a href="#" class="btn btn-minier btn-info">
+                                        <i class="icon-only icon-share-alt"></i>
+                                    </a>
+                                </div>*@
+                            </div>
+                        </div>
+                        }
+                    }
+                </div>
+
+                @*  comet*@
+                @*                <div id="contents"></div>*@
+                <form id="form1">
+                    <div class="form-actions">
+                        <div class="input-group">
+                            <input id="comment" name="comment" placeholder="输入您的信息 ..." type="text" class="form-control" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" onclick="sendComment()">
+                                    <i class="icon-share-alt"></i>
+                                    发送
+                                </button>
+                                <button class="btn btn-primary" type="button" onclick="refresh()">
+                                    <i class="icon-refresh"></i>
+                                    刷新
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /widget-main -->
+        </div>
+        <!-- /widget-body -->
+    </div>
+    <!-- /widget-box -->
+</div>
+
+<script type="text/javascript">
+    //发送评论
+    function sendComment() {
+        if ($('#comment').val() == "") {
+            ShowAlert("发送内容不能为空")
+        }
+        else {
+            $.ajax({
+                url: '/ProjManage/ProjDiscuss_sendComment?ProjCode=' + '@ViewBag.projCode' + '&UserCode=' + '@ViewBag.userCode',
+                type: 'post',
+                data: $('#form1').serialize(),
+                success: function (result) {
+                    if (result.ErrorCode == '0') {
+                        location.reload();
+                    }
+                    else {
+                        ShowAlert('发送失败', null);
+                    }
+                }
+            }
+           )
+        }
+    }
+
+    //刷新
+    function refresh() {
+        var contents = $('#comment').val();
+        location.reload();
+        $('#comment').val(contents);
+    }
+
+    //定时访问数据库消息总数变化
+    setInterval(function () { //i记录执行查询的次数
+        $.ajax({
+            url: '/ProjManage/ProjDiscuss_ifRefresh',
+            type: 'post',
+            success: function (data) {
+                if (data.flag == "true") {
+                    alert("true");
+                    location.reload(); //如果contro传回的值为true，说明有新消息，刷新页面。
+                }
+            }
+        })
+    }, 9000);
+
+    //comet长轮询1
+    ////comet发送消息
+    //function send() {
+    //    $.post("LongPolling", { content: $('#comment').val() });
+
+    //    //清空内容
+    //    $('#comment').val("");
+    //}
+
+    ////comet等待
+    //function wait() {
+    //    $.post("LongPolling", { content: "-1" },
+    //        function (data) {
+    //            var result = $('#dialogs');
+    //            //result.append(data); //将获取到的数据追加到对话框中
+    //            result.html(result.html() + "<br/>" + data);
+
+    //            //服务器返回消息,再次立连接
+    //            wait();
+    //        }, "html" //type 返回内容格式
+    //        );
+    //}
+
+    ////comet长轮询2
+    //function long_polling() {
+    //    $('#contents').append("Waiting...<br/>");
+    //    $.getJSON('LongPolling', { contents: $('#comment').val() }, function (data) {
+    //        if (data.d) {
+    //            $('#contents').append(data.d + "<br/>");
+    //        }
+    //        long_polling();
+    //    });
+    //}
+
+    //初始化
+    $(function () {
+        //setInterval(location.reload(),6000); 
+        //wait();
+        //long_polling();
+
+    })
+</script>

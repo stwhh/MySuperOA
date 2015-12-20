@@ -1,0 +1,77 @@
+﻿body {
+    font-size: 14px; /*kendo日期等控件高度是根据这个来的，1.65em*/
+    /*padding-top: 45px;*/ /*固定顶部跟 navbar-fixed-top类配合使用 */
+    background-color: white;
+}
+
+.form-control {
+    height: 30px;
+}
+
+.btn { /*对 .btn的大小进行重写*/
+    padding: 0px 5px;
+}
+
+.querylabel {
+    text-align: right;
+    padding-right: 12px;
+}
+
+.sidebar-shortcuts-large > .btn { /*导航栏上侧快捷工具栏大小进行重写*/
+    width: 39px;
+}
+
+.panel-block, .panel-block:before, .panel-block:after {
+    display: inline; /*让panel-heading 内容固定,不改变高度*/
+}
+
+.fullCenter {
+    width: 100%;
+    text-align: center;
+    margin: 5px auto;
+}
+
+.iconcolor {
+    text-align: center;
+    cursor: pointer;
+    color: #0094ff;
+    font-size: 16px;
+}
+
+.k-state-selected .iconcolor { /*grid选中行图标背景*/
+    color: #fff;
+}
+
+.k-grid td {
+    white-space: nowrap;
+}
+
+.panel {
+    margin-bottom: 12px;
+}
+
+.grid {
+    height: 300px;
+    overflow: hidden;
+}
+
+.searcharea {
+    width: 95%;
+    border-collapse: collapse;
+}
+
+.labelright {
+    text-align:right;
+}
+
+.padding-left20 {
+    padding-left:20px;
+}
+
+.padding-top15 {
+    padding-top:15px;
+}
+
+.changePwd {
+    margin:20px 10% 20px;
+}

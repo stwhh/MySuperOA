@@ -1,0 +1,158 @@
+﻿@using Model.Models
+@*@model Model.Models.Announce*@
+
+@{
+    ViewBag.Title = "首页";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/Index.css" rel="stylesheet" />
+
+<div class="main">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="anno panel panel-default">
+                <div class="panel-heading">最新公告</div>
+                <div class="panel-body panel-block">
+                    <div class="form-group">
+                        @* <ul>
+                        @{
+                            var lists = ViewBag.data as List<Announce>;
+                            foreach (var list in lists)
+                            {
+                                if (list.AnnounceTitle != null)
+                                {
+                                    <li>
+                                        <a>@Html.Raw(@list.AnnounceTitle)</a>
+                                    </li>
+                                }
+
+                            }
+                        }
+                    </ul>*@
+
+                        @{
+                            var lists = ViewBag.data as List<Announce>;
+                            <table class="tbl_anno">
+                                <tr>
+                                    <td style="width: 15%">标题</td>
+                                    <td style="width: 10%">发件人</td>
+                                    <td style="width: 10%">发布时间</td>
+                                </tr>
+                                @foreach (var list in lists)
+                                {
+                                    <tr>
+                                        <td id="hidtext">@list.AnnounceCode</td>
+                                        <td><a href="/Home/GetAnnoInfo?Annocode=@list.AnnounceCode" target="_blank">&bull;@list.AnnounceTitle</a></td>
+                                        <td>@list.CreateUserCode</td>
+                                        <td>@list.CreateTime</td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#comIntroduce" data-toggle="tab">公司介绍</a></li>
+                <li><a href="#comPhoto" data-toggle="tab">公司风采</a></li>
+                <li><a href="#sysIntrduce" data-toggle="tab">系统介绍</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="comIntroduce">
+                    <p>
+                        &nbsp;&nbsp;明基逐鹿是中国领先的IT技术、顾问服务、业务流程外包解决方案提供商，旨在将明基集团20多年全球管理运营经验与在数百家
+                知名企业累计的管理真知，透过greenOffice、eHR、SCM、MES规划实施及IT Service分享给国内快速成长的企业客户。 明基逐鹿
+                以资讯化经验为基石，以普及中国企业资讯化应用为使命，致力于推动中国企业管理的变革，与客户分享成功，共用快乐。
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;明基逐鹿的英文名为BenQ Guru。明基逐鹿出身于全球IT百强集团（*美国《商业周刊》），充满了明基享受快乐科技（Enjoyment Matters）
+                的紫色血液， 又在管理软体及资讯技术服务领域以专业与智慧推动中国企业走向世界、帮助跨国企业在中国本土的成功。
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;"Guru"在印度语中意为“宗师，大师”，体现了明基逐鹿锐意进取成为业界大师级的IT及管理专家。明基逐鹿深信， 科技的意义在于给客户
+                带来成功，共用快乐，共同营造“真、善、美”的美学社会。
+                    </p>
+                </div>
+                <div class="tab-pane" id="comPhoto">
+                    <div id="carousel-example-generic" class="carousel slide">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="~/Content/images/lunbo1.jpg" alt="1">
+                                <div class="carousel-caption">
+                                    @*测试*@
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="~/Content/images/lunbo2.jpg" alt="2">
+                                <div class="carousel-caption">
+                                    @*测试*@
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="~/Content/images/lunbo3.jpg" alt="3">
+                                <div class="carousel-caption">
+                                    @*测试*@
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="tab-pane" id="sysIntrduce">
+                    本系统是由stwhh编写，<br />
+                    联系邮箱：656179572@qq.com<br />
+                    联系电话：151********<br />
+                    版权所有！
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="bottom">
+        <div class="bottom_content">
+            <h4><strong>版权孙涛(stwhh@qq.com)所有</strong></h4>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var viewmodel;
+    function Init() {
+        DatePicker_Bind('datetimepicker'); //绑定日期控件
+
+        viewmodel = {
+            //chosePeople: ko.observable(people[2]) //监控chosePeople变量，并把people第一个值赋给它作为默认值
+            'userName': ko.observable(''),
+            'userPwd': ko.observable('')
+        }
+        ko.applyBindings(viewmodel);
+    }
+
+
+    $(function () {
+        Init();
+    })
+</script>
+

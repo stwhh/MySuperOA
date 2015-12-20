@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "编辑项目";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="panel panel-default">
+    <form id="form1" class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 20%"><span>项目编号</span></td>
+                <td style="width: 70%">
+                    <input id="ProjCode" name="ProjCode" type="text" class="form-control" data-bind="value:ProjCode" placeholder="必填" /></td>
+            </tr>
+             <tr>
+                <td class="querylabel" style="width: 20%"><span>项目名称</span></td>
+                <td style="width: 70%">
+                    <input id="ProjName" name="ProjName" type="text" class="form-control" data-bind="value:ProjName" placeholder="必填" /></td>
+            </tr>
+        </table>
+        <div class="space"></div>
+
+    </form>
+</div>
+
+<div class="fullCenter" style="margin-top: 30px;">
+    <button type="button" class="btn btn-primary" onclick="Save('add')"><i class="icon-save"></i>保存</button>
+    <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+</div>
+
+
+<script type="text/javascript">
+    var viewModel;
+    function Init() {
+        $('#ProjCode').attr("readonly", true);
+
+        viewModel = {
+            'ProjCode': ko.observable('@ViewBag.ProjCode'),
+            'ProjName': ko.observable('@ViewBag.ProjName')
+        }
+
+        //应用绑定
+        ko.applyBindings(viewModel);
+    }
+
+    //保存-新增
+    function Save() {
+        $.ajax({
+            url: '/ProjManage/ProjDiscuss_Edit_Save' + '?ProjCode=' + '@ViewBag.ProjCode',
+            type: 'post',
+            //dataType: 'json',
+            //contentType: 'application/json',
+            data: $('#form1').serialize(),//ko.toJSON(viewModel),
+            success: function (obj) {
+                if (obj.ErrorCode == "0") {
+                    ShowAlert("修改成功")
+                }
+                else {
+                    ShowAlert("修改失败")
+                }
+            }
+        })
+    }
+
+    //返回
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(function () {
+        Init();
+    })
+
+</script>

@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "出差管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        我的出差
+    </div>
+    <div class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 10%"><span>申请单编号</span></td>
+                <td style="width: 15%">
+                    <input type="text" class="form-control" data-bind="value:TripCode" /></td>
+                <td class="querylabel" style="width: 10%"><span>主题</span></td>
+                <td style="width: 15%">
+                    <input type="text" class="form-control" data-bind="value:TripContent" /></td>
+                <td class="querylabel" style="width: 10%"><span>申请日期</span></td>
+                <td style="width: 12%">
+                    <input id="BeginApplyDate" data-bind="value:BeginApplyDate" style="width: 100%" /></td>
+                <td>至</td>
+                <td style="width: 12%">
+                    <input id="EndApplyDate" data-bind="value:EndApplyDate" style="width: 100%" /></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button>
+                    <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-plus"></i>新增</button></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //自定义列
+        var columns = [
+        //{
+        //    headerTemplate: '删除',
+        //    width: '30px',
+        //    template: '<div class="iconcolor" onclick="Del(\'#=UserCode#\')"><i class="icon-remove"></i></div>'
+        //},
+        {
+            headerTemplate: '查看',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="ShowDetail(\'#=TripCode#\')"><i class="icon-search"></i></div>'
+        },
+        //{
+        //    headerTemplate: '编辑',
+        //    width: '30px',
+        //    template: '<div class="iconcolor" onclick="ShowDetail(\'#=UserCode#\',\'edit\')"><i class="icon-edit"></i></div>'
+        //},
+        { field: 'TripCode', title: '出差单编号', width: '50px' },  //出差单编号
+        { field: 'TripContent', title: '主题内容', width: '50px' }, //出差单内容
+        {
+            field: 'ApplyDate', title: '申请时间', width: '50px', template: function (value) {  //申请时间
+                return kendo.toString(kendo.parseDate(value.ApplyDate), "yyyy-MM-dd")
+            }
+        },
+        {
+            field: 'BeginDate', title: '出差开始日期', width: '50px', template: function (value) {  //出差开始日期
+                return kendo.toString(kendo.parseDate(value.BeginDate), "yyyy-MM-dd")
+            }
+        },
+        {
+            field: 'EndDate', title: '出差结束日期', width: '50px', template: function (value) { //出差结束日期
+                return kendo.toString(kendo.parseDate(value.EndDate), "yyyy-MM-dd")
+            }
+        },  
+        { field: 'Destination', title: '目的地', width: '50px' },  //目的地
+
+        { field: 'Status', title: '状态', width: '50px' },  //状态
+        ]
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'TripCode': ko.observable(''), //申请单编号
+            'TripContent': ko.observable(''), //主题内容
+            'BeginApplyDate': ko.observable('@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")'), //申请开始日期
+            'EndApplyDate': ko.observable('@DateTime.Now.ToString("yyyy-MM-dd")') //申请结束日期
+        }
+
+        //绑定grid控件
+        Grid_BindCheckBox('grid1', '/ExecManage/TripManage_Query', columns, queryModel);
+
+        //绑定日期控件
+        DatePicker_Bind('BeginApplyDate');
+        DatePicker_Bind('EndApplyDate');
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+    }
+
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //增加
+    function Add() {
+        View_ShowWindow_CallBack(370, 600, '新增出差单', '/ExecManage/TripManage_Add' + '?userCode=' + '@ViewBag.userCode', function () {
+            Query();
+        });
+    }
+
+
+    //查看详细信息
+    function ShowDetail(TripCode) {
+        var url = '@Url.Action("TripManage_Detail")' + "?TripCode=" + TripCode ;
+        View_ShowWindow_CallBack(300, 580, "出差信息单", url, function () {
+            Query();
+        });
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>
+

@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "新增请假单";
+    Layout = "~/Views/Shared/_Layout2.cshtml";  /*_Layout2是弹出窗口模板页*/
+}
+@Scripts.Render("~/Scripts/jqueryvalidate")
+
+<script src="~/Content/ace/js/fuelux.wizard.js"></script>
+<script src="~/Content/ace/js/ace-elements.js"></script>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row fullCenter">
+            <div class="col-xs-12">
+                <form id="form1" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-xs-2" for="AskForLeaveCode">请假单编号</label>
+                        <div class="col-xs-4">
+                            <input id="AskForLeaveCode" name="AskForLeaveCode" type="text" class="form-control" data-bind="value:AskForLeaveCode" />
+                        </div>
+                        <label class="col-xs-2" for="TypeId">请假类型</label>
+                        <div class="col-xs-4">
+                            <input id="TypeId" name="TypeId" data-bind="value:TypeId" style="width: 100%"  />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-xs-2" for="BeginDate">起始日期</label>
+                        <div class="col-xs-4">
+                            <input id="BeginDate" name="BeginDate" data-bind="value:BeginDate" placeholder="必填" style="width: 100%" />
+                        </div>
+                        <label class="col-xs-2" for="EndDate">结束日期</label>
+                        <div class="col-xs-4">
+                            <input id="EndDate" name="EndDate" data-bind="value:EndDate" placeholder="必填" style="width: 100%" />
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="col-xs-2" for="Reason">请假原因</label>
+                        <div class="col-xs-10">
+                            <textarea id="Reason" name="Reason" class="form-control" data-bind="value:Reason" placeholder="必填" ></textarea>
+                        </div>
+                    </div>
+                    <div class="space"></div>
+                    <div class="form-group fullCenter">
+                        <button type="button" class="btn btn-primary" onclick="Save()"><i class="icon-save"></i>保存</button>
+                        <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var viewModel;
+    function Init() {
+        viewModel = {
+            'AskForLeaveCode': ko.observable('@ViewBag.GeneRadomNum'),
+            'Reason': ko.observable(''),
+            'BeginDate': ko.observable(''),
+            'EndDate': ko.observable(''),
+            'TypeId': ko.observable('')
+
+        }
+
+        //单号不可编辑，自动生成
+        $('#TripCode').attr("readonly", true);
+
+        //绑定日期控件
+        DatePicker_Bind("BeginDate");
+        DatePicker_Bind("EndDate");
+
+        //绑定请假类型下拉框
+        DropDownList_BindParameter("TypeId", "/Common/GetLeaveType", "","Text", "Value")
+
+        //绑定页面属性(必须放在最后一步)
+        ko.applyBindings(viewModel);
+
+
+    }
+
+    function Save() {
+        $.ajax({
+            type: 'post',
+            url: '/ExecManage/LeaveManage_Add_Save' + '?userCode=' + '@ViewBag.userCode',
+            //contentType: 'application/json',
+            //dataType: 'json',
+            //如果以这种形式传值data:{'s':$('#form1').serialize()}，后台接收参数要用request.parms['']一个个接收
+            data: $('#form1').serialize(),// ko.toJSON(viewModel),  //serialize()序列表表格内容为字符串,用于ajax接收。
+            success: function (obj) {
+                if (obj.ErrorCode == '0') {
+                    ShowAlert("保存成功")
+                }
+                else {
+                    ShowAlert("保存失败")
+                }
+            }
+        })
+    }
+
+    //返回（关闭）窗口
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {
+        Init();
+
+    })
+</script>
+

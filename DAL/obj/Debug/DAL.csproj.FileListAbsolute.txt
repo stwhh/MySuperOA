@@ -1,0 +1,32 @@
+E:\★☆毕业设计\项目\BenqOA\DAL\bin\Debug\DAL.dll
+E:\★☆毕业设计\项目\BenqOA\DAL\bin\Debug\DAL.pdb
+E:\★☆毕业设计\项目\BenqOA\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\★☆毕业设计\项目\BenqOA\DAL\obj\Debug\DAL.dll
+E:\★☆毕业设计\项目\BenqOA\DAL\obj\Debug\DAL.pdb
+E:\专业学习\★☆毕业设计\项目\BenqOA\DAL\bin\Debug\DAL.dll
+E:\专业学习\★☆毕业设计\项目\BenqOA\DAL\bin\Debug\DAL.pdb
+E:\专业学习\★☆毕业设计\项目\BenqOA\DAL\bin\Debug\EntityFramework.dll
+E:\专业学习\★☆毕业设计\项目\BenqOA\DAL\bin\Debug\Model.dll
+E:\专业学习\★☆毕业设计\项目\BenqOA\DAL\bin\Debug\Model.pdb
+E:\专业学习\★☆毕业设计\项目\BenqOA\DAL\bin\Debug\EntityFramework.xml
+E:\专业学习\★☆毕业设计\项目\BenqOA\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\专业学习\★☆毕业设计\项目\BenqOA\DAL\obj\Debug\DAL.dll
+E:\专业学习\★☆毕业设计\项目\BenqOA\DAL\obj\Debug\DAL.pdb
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\DAL\bin\Debug\DAL.dll
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\DAL\bin\Debug\DAL.pdb
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\DAL\bin\Debug\EntityFramework.dll
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\DAL\bin\Debug\Model.dll
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\DAL\bin\Debug\Model.pdb
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\DAL\bin\Debug\EntityFramework.xml
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\DAL\obj\Debug\DAL.dll
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\DAL\obj\Debug\DAL.pdb
+E:\MySuperOA\MySuperOA\DAL\bin\Debug\DAL.dll
+E:\MySuperOA\MySuperOA\DAL\bin\Debug\DAL.pdb
+E:\MySuperOA\MySuperOA\DAL\bin\Debug\EntityFramework.dll
+E:\MySuperOA\MySuperOA\DAL\bin\Debug\Model.dll
+E:\MySuperOA\MySuperOA\DAL\bin\Debug\Model.pdb
+E:\MySuperOA\MySuperOA\DAL\bin\Debug\EntityFramework.xml
+E:\MySuperOA\MySuperOA\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+E:\MySuperOA\MySuperOA\DAL\obj\Debug\DAL.dll
+E:\MySuperOA\MySuperOA\DAL\obj\Debug\DAL.pdb

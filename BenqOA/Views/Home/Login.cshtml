@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "登录";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">@*360急速模式*@
+    <meta name="Keywords" content="关键字">
+    <meta name="description" content="网站内容描述">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap")
+    @Scripts.Render("~/Scripts/jquery")
+    @Scripts.Render("~/Scripts/knockout")
+    @Scripts.Render("~/Scripts/kendo")
+    @Scripts.Render("~/Scripts/jqueryvalidate")
+    <link href="~/Content/Login.css" rel="stylesheet" />
+    <link href="~/Content/Validate.css" rel="stylesheet" />
+    @*@Styles.Render("~/Content/kendo")*@
+</head>
+<body>
+    <div>
+        <div id="top"></div>
+        <div id="content">
+            <div id="content_login">
+                <form id="form1" class="form-inline">
+                    <h2 id="login_title">用户登录</h2>
+                    <div id="login-input">
+                        <div class="form-group1">
+                            <label class="login-text">用户名</label>
+                            <input type="text" id="UserCode" name="UserCode" class="form-control" data-bind="value:UserCode" placeholder="用户名" />
+                        </div>
+                        <div class="form-group1">
+                            <label  class="login-text">密码</label>
+                            <input type="password" name="userPwd" class="form-control" data-bind="value:userPwd" placeholder="密码" />
+                        </div>
+                        <div class="form-group1">
+                            <label  class="login-text">验证码</label>
+                            <input type="text" name="CheckCode" class="form-control" data-bind="value:CheckCode" style="width:30%" placeholder="验证码" />
+                             <img src="@Url.Action("ValidationCode")" id="ImgValiCode" onclick="RefreshCode();" style="cursor:pointer; height:30px;">
+                            <a style="color: #fff; line-height:34px; " href="javascript:()" onclick="RefreshCode();">换一个</a>
+                        </div>
+                        <div id="btnlongin">
+                            <button type="button" class="btn btn-primary" onclick="btnLogin()">登录</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="bottom">
+            <span>Copyright © 2014-<script>document.write(new Date().getFullYear())</script> SunTao. All rights reserved.</span>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+    var viewmodel;
+    $(function () {
+        viewmodel = {
+            "UserCode": ko.observable(''),
+            "userPwd": ko.observable(''),
+            "CheckCode":ko.observable(),
+        }
+
+        ko.applyBindings(viewmodel);
+
+        //1.验证数据 
+        $('#form1').validate({
+            rules: {
+                UserCode: {  //对应的name,不是ID
+                    required: true
+                },
+                userPwd: {  //对应的name,不是ID
+                    required: true,
+                    //remote: "/Home/CheckUserPwd?UserCode=" + $('#UserCode').value //验证用户密码是否正确 //该验证放在UserPwd上，所以后台会自动获取UserPwd的值
+                }
+
+            },
+            messages: {
+                UserCode: {
+                    required: "用户名不能为空"
+                },
+                userPwd: {
+                    required: "密码不能为空",
+                    //remote: "用户名或密码不正确"
+                }
+            }
+        })
+    });
+
+    //2.验证当前form下所有输入值是否合法
+    function IsValidated(group) {
+        var isValid = true;
+        group.find(':input').each(function (i, item) {
+            if (!$(item).valid()) {
+                isValid = false;
+                return isValid;
+            }
+        });
+        return isValid;
+    };
+
+    //3.登录
+    function btnLogin() {
+        if (IsValidated($('#form1'))) {
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("btnLogin", "Home")',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: ko.toJSON(viewmodel),
+                success: function (obj) {
+                    if (obj.ErrorCode == "00")
+                    {
+                        alert("验证码不能为空");
+                    }
+                    else if (obj.ErrorCode == "11")
+                    {
+                        alert("验证码错误");
+                        RefreshCode();
+                    }
+                    else if (obj.ErrorCode == "0") {
+                        //alert('登录成功')
+                        window.location.href = '@Url.Action("Index", "Home")'
+                    }
+                    else {
+                        alert('用户名或密码错误')
+                    }
+                }
+            })
+        }
+    }
+
+    //刷新验证码
+    function RefreshCode() {
+        //随机数生产，当点击传递参数刷新图片直接进行页面重新激活,否则页面无法刷新
+        var rand = Math.ceil(Math.random() * 100); //ceil() 方法执行的是向上取舍，floor()向下取舍,round()四舍五入
+        $("#ImgValiCode").attr("src", "@Url.Action("ValidationCode")?rand="+rand) ;
+    }
+  
+    @*    ////3.登录前执行验证 保存
+    function btnLogin() {
+        if (IsValidated($('#form1'))) {
+            window.location.href = '@Url.Action("Index", "Home")'
+        }
+    }*@
+</script>

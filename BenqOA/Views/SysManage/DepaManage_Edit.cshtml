@@ -1,0 +1,115 @@
+﻿@model Model.Models.Department
+@{
+    ViewBag.Title = "编辑部门";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@Scripts.Render("~/Scripts/jqueryvalidate")
+<link href="~/Content/Validate.css" rel="stylesheet" />
+
+<div class="panel panel-default">
+
+    <form id="form1" class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 15%"><span>部门编号</span></td>
+                <td style="width: 25%">
+                    <input name="DepartmentCode" type="text" class="form-control" data-bind="value:DepartmentCode" placeholder="必填" /></td>
+                <td class="querylabel" style="width: 15%"><span>部门名称</span></td>
+                <td style="width: 25%">
+                    <input name="DepartmentName" type="text" class="form-control" data-bind="value:DepartmentName" placeholder="必填" /></td>
+
+            </tr>
+            <tr>
+                <td class="querylabel" style="width: 15%"><span>部门经理</span></td>
+                <td style="width: 25%">
+                    <input id="DepartmentManageCode" name="DepartmentManageCode" data-bind="value:DepartmentManageCode" placeholder="必填" style="width: 100%" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div class="space"></div>
+<div class="fullCenter">
+    <button type="button" class="btn btn-primary" onclick="Save()"><i class="icon-save"></i>保存</button>
+    <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+</div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        $('table tr td:eq(1) input').attr("readonly",true);
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'DepartmentCode': ko.observable('@Model.DepartmentCode'),
+            'DepartmentName': ko.observable('@Model.DepartmentName'),
+            'DepartmentManageCode': ko.observable('@Model.DepartmentManageCode')
+        }
+
+        //绑定部门经理下拉框
+        DropDownList_BindParameter('DepartmentManageCode', '@Url.Action("GetPMUserCode", "Common")', '', 'Text', 'Value');
+        //根据value获取text
+        $('#DepartmentManageCode').data('kendoDropDownList').value('@Model.DepartmentManageCode')
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+        //把正则表达式加到jquery validate验证里
+        $.validator.addMethod('regexp', function (value, element, param) {
+            var reg = new RegExp(param);
+            return this.optional(element) || reg.test(value);
+        }, "");
+
+        //1.验证数据 
+        $('#form1').validate({
+            rules: {
+                DepartmentName: {  //对应的name,不是ID
+                    required: true
+                }
+            }
+        })
+    }
+
+    //2.验证当前form下所有输入值是否合法
+    function IsValidated(group) {
+        var isValid = true;
+        group.find(':input').each(function (i, item) {
+            if (!$(item).valid()) {
+                isValid = false;
+                return isValid;
+            }
+        });
+        return isValid;
+    };
+
+    //保存
+    function Save() {
+        if (IsValidated($('#form1'))) {
+            $.ajax({
+                type: 'post',
+                url: '/SysManage/DepaManage_Edit_Save',
+                data: $('#form1').serialize(),//ko.toJSON(queryModel), jso格式数据要解析或使用模板引擎 jquery.tmpl.js
+                success: function (result) {
+                    if (result.ErrorCode == '0') {
+                        ShowAlert('保存成功', null);
+                    }
+                }
+            })
+        }
+    }
+
+    //返回
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>
+
+
+
+

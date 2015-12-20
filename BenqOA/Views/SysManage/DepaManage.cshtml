@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "部门管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        查询条件
+    </div>
+    <div class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 10%"><span>部门编号</span></td>
+                <td style="width: 15%">
+                    <input type="text" class="form-control" data-bind="value:DepartmentCode" /></td>
+                <td class="querylabel" style="width: 10%"><span>部门名称</span></td>
+                <td style="width: 15%">
+                    <input type="text" class="form-control" data-bind="value:DepartmentName" /></td>
+                <td class="querylabel" style="width: 10%"><span>部门经理</span></td>
+                <td style="width: 15%">
+                    <input type="text" class="form-control" data-bind="value:DepartmentManageCode" /></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button>
+                    <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-plus"></i>新增</button></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //自定义列
+        var columns = [{
+            headerTemplate: '删除',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Del(\'#=DepartmentCode#\')"><i class="icon-remove"></i></div>'
+        },
+        {
+            headerTemplate: '编辑',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Edit(\'#=DepartmentCode#\')"><i class="icon-edit"></i></div>'
+        },
+       
+        { field: 'DepartmentCode', title: '部门编号', width: '50px' },  //部门编号
+        { field: 'DepartmentName', title: '部门名称', width: '50px' },  //部门名称
+        { field: 'DepartmentManageCode', title: '部门经理', width: '50px' }  //部门名称
+        ]
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'DepartmentCode': ko.observable(''),
+            'DepartmentName': ko.observable(''),
+            'DepartmentManageCode': ko.observable('')
+        }
+
+        //绑定grid控件
+        Grid_BindCheckBox('grid1', '/SysManage/DepaManage_Query', columns, queryModel);
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+    }
+
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //新增
+    function Add() {
+        View_ShowWindow_CallBack(240, 500, '新增部门', '/SysManage/DepaManage_Add', function () {
+            Query();
+        })
+    }
+
+    //删除
+    function Del(DepartmentCode) {
+        ShowConfirm("确定删除吗?", function () {
+            $.ajax({
+                url: 'DepaManage_Del',
+                type: 'post',
+                //contentType: 'appliation/json',
+                //dataType: 'json',
+                data: { "DepartmentCode": DepartmentCode },
+                success: function (obj) {
+                    if (obj.ErrorCode == "0") {
+                        ShowAlert("删除成功", function () {
+                            Query();
+                        })
+                    }
+                    else {
+                        ShowAlert("删除失败")
+                    }
+                }
+            })
+        }
+        )
+    }
+
+    //编辑
+    function Edit(DepartmentCode) {
+        View_ShowWindow_CallBack(240, 500, '编辑角色', '/SysManage/DepaManage_Edit' + '?DepartmentCode=' + DepartmentCode, function () {
+            Query();
+        })
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>

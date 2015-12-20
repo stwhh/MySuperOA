@@ -1,0 +1,324 @@
+﻿@using Model.Models
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">@*360急速模式*@
+    <meta name="Keywords" content="关键字">
+    <meta name="description" content="网站内容描述">
+    <title>明基OA办公系统--@ViewBag.Title</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    @*   @Styles.Render("~/Content/bootstrap")*@
+    @Styles.Render("~/Content/ace")
+    @Styles.Render("~/Content/kendo")
+    @Styles.Render("~/Content/css")
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @*<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->*@
+    @Scripts.Render("~/Scripts/jquery")
+    @*@Scripts.Render("~/Scripts/bootstrap")*@
+    
+    @*knockout要放在kendo上面*@
+    @Scripts.Render("~/Scripts/ace")
+    @Scripts.Render("~/Scripts/knockout")
+    @Scripts.Render("~/Scripts/kendo")
+    @Scripts.Render("~/Scripts/common")
+
+</head>
+<body>
+
+    <!-------导航栏------->
+    <div class="navbar navbar-default" id="navbar">
+        <script type="text/javascript">
+            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <div class="navbar-header pull-left">
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <img src='@Url.Content("~/Content/images/benqlogo.png")' style="width: 40px; height: 22px" />
+                        明基OA系统
+                    </small>
+                </a>
+            </div>
+
+            <div class="navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <!--信息提示区 todo -->
+
+                    <li id="infoTask" class="grey">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="icon-tasks"></i>
+                            <span class="badge badge-grey" id="taskCount">0</span>
+                        </a>
+
+                    </li>
+
+                    <li id="infoNotice" class="purple">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="icon-bell-alt icon-animated-bell"></i>
+                            <span class="badge badge-important" id="noticeCount">0</span>
+                        </a>
+                    </li>
+
+                    <li id="infoMessage" class="green">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="icon-envelope icon-animated-vertical"></i>
+                            <span class="badge badge-success" id="messageCount">0</span>
+                        </a>
+                    </li>
+
+                    <li class="light-blue">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <img class="nav-user-photo" src="@Url.Content("~/Content/ace/avatars/avatar.png")" alt="Jason's Photo" />
+                            <i class="icon-leaf"></i>
+                            <span class="user-info">
+                                <small>欢迎光临</small>
+                                @{
+                                    var userInfo = Session["userInfo"] as User;
+                                    @userInfo.UserCode;
+                                }
+                            </span>
+
+                            <i class="icon-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a  style="cursor:pointer;" onclick="View_ShowWindow_CallBack(300, 450, '修改密码', '@Url.Action("ChangePassword", "Home", new { area = "" })', null)">
+                                    <i class="icon-lock"></i>
+                                    修改密码
+                                </a>
+                            </li>
+
+                            <li class="divider"></li>
+                            <li>
+                                <a href="@Url.Action("Login", "Home", new { LoginOff = "true" })">
+                                    <i class="icon-off"></i>
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-------主体内容----->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <div class="main-container-inner">
+            <a class="menu-toggler" id="menu-toggler" href="#">
+                <span class="menu-text"></span>
+            </a>
+
+            <div class="sidebar" id="sidebar">
+                <script type="text/javascript">
+                    try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+                </script>
+
+                <!-------导航栏上侧快捷工具栏----->
+                <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                    <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                        <a href="/Home/Index" class="btn btn-success">
+                            <i class="icon-signal"></i>
+                        </a>
+                        <a class="btn btn-info">
+                            <i class="icon-pencil"></i>
+                        </a>
+                        <a class="btn btn-warning">
+                            <i class="icon-group"></i>
+                        </a>
+                        <a class="btn btn-danger">
+                            <i class="icon-cogs"></i>
+                        </a>
+                    </div>
+
+                    <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                        <span class="btn btn-success"></span>
+                        <span class="btn btn-info"></span>
+                        <span class="btn btn-warning"></span>
+                        <span class="btn btn-danger"></span>
+                    </div>
+                </div>
+
+                <!-- 导航栏-列表 -->
+                <ul class="nav nav-list">
+                   
+                    @{ 
+                        var nav = Session["NavInfo"] as List<Permisson>;
+                        foreach (var v in nav)
+                        {
+                            if (v.ParaentCode == "root")
+                            {
+                        <li>
+                            <a href="#" class="dropdown-toggle">
+                                <i class="@v.PermIcon"></i>
+                                <span class="menu-text">@v.PermName</span>
+                                <b class="arrow icon-angle-down"></b>
+                            </a>
+                            <ul class="submenu">
+                                @foreach (var sub in nav)
+                                {
+                                    if (sub.ParaentCode == v.PermCode)
+                                    {
+                                    <li>
+                                        <a href="@sub.PermUrl"><i class="icon-double-angle-right"></i>@sub.PermName </a>
+                                    </li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                            }
+                        }
+                    }
+                </ul>
+
+                <!-- 折叠(收缩)导航菜单 -->
+                <div class="sidebar-collapse" id="sidebar-collapse">
+                    <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+                </div>
+
+                <script type="text/javascript">
+                    try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+                </script>
+            </div>
+
+            <div class="main-content">
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <script type="text/javascript">
+                        try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+                    </script>
+
+                    <!-------面包屑导航----->
+                    <ul class="breadcrumb">
+                        <i class="icon-home home-icon"></i>
+                        <a href="/Home/Index">首页</a>
+                    </ul>
+                </div>
+
+                <div class="page-content">
+
+                    @RenderBody()
+
+                </div>
+
+            </div>
+
+
+            <!-------选择皮肤等功能----->
+            <div class="ace-settings-container" id="ace-settings-container">
+                <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+                    <i class="icon-cog bigger-150"></i>
+                </div>
+
+                <div class="ace-settings-box" id="ace-settings-box">
+                    <div>
+                        <div class="pull-left">
+                            <select id="skin-colorpicker" class="hide">
+                                <option data-skin="default" value="#438EB9">#438EB9</option>
+                                <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                                <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                                <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                            </select>
+                        </div>
+                        <span>&nbsp; 选择皮肤</span>
+                    </div>
+                    @*<script type="text/javascript">
+                        try {
+                            //console.log(ace.settings);
+                            //console.log(ace);
+                            //   ace.settings.set('sidebar', 'collapsed');
+                        } catch (e) { }
+                    </script>*@
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+                        <label class="lbl" for="ace-settings-navbar">固定导航条</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+                        <label class="lbl" for="ace-settings-sidebar">固定滑动条</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                        <label class="lbl" for="ace-settings-breadcrumbs">固定面包屑</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+                        <label class="lbl" for="ace-settings-rtl">切换到左边</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                        <label class="lbl" for="ace-settings-add-container">
+                            切换窄屏
+								<b></b>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-------------->
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="icon-double-angle-up icon-only bigger-110"></i>
+        </a>
+    </div>
+
+    <div id="popwindow"></div>
+    <div id="loadingwindow" class="bg-window-Container"></div>
+    <input type="hidden" id="hidwindowid"  value="@Guid.NewGuid().ToString()"/>
+
+
+    <script type="text/ecmascript">
+
+        function show() {
+            var ulTag = $("#ul1");
+            if (!ulTag.is(':visible')) {
+                ulTag.slideDown("normal");
+            } else {
+                ulTag.slideUp("normal");
+            }
+        };
+
+    </script>
+
+
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='@Url.Content("~/Content/ace/js/jquery.mobile.custom.js")'>" + "<" + "script>");
+
+        //$.ajax({
+        //    type: 'post',
+        //    url: '/Common/GetNav',
+        //    success: function (data) {
+        //        return true;
+        //    }
+        //});
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+﻿@using Model.Models;
+@model Model.Models.Announce
+
+@{
+    ViewBag.Title = "公告信息";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style type="text/css">
+    .anno {
+        margin: 30px 20% 30px;
+    }
+
+    .annocontent {
+        margin: 0px 20px 20px;
+    }
+
+    .annocontent td {
+        /*line-height: 25px;*/
+    }
+    ul li {
+        list-style:none;
+        line-height:0px;
+    }
+    hr {
+        /*height:0px;*/
+        /*border:0px;*/
+        border:solid #EEEEEE 1px;
+    }
+    .anno1 {
+        color:#2480D1;
+        margin-right:10px;
+    }
+</style>
+
+<div class="container">
+    <div class="anno panel panel-default">
+        <div class="panel-heading">详细信息</div>
+        <div class="panel-body panel-block">
+            <div class="annocontent form-group">
+                <ul>
+                    @{
+                        var lists = ViewBag.data as List<Announce>;
+                        foreach (var list in lists)
+                        {
+                        <li>
+                            <hr />
+                            <p>
+                                <span class="anno1">标题：</span>@list.AnnounceTitle
+                            </p>
+                        </li>
+                        <li>
+                            <hr />
+                            <p>
+                                <span class="anno1">发送者：</span>@list.CreateUserCode
+                            </p>
+                        </li>
+                        <li>
+                            <hr />
+                            <p>
+                                <span class="anno1">发送时间：</span>@list.CreateTime
+                            </p>
+                        </li>
+                        <li>
+                            <hr />
+                            <p>
+                                @Html.Raw(@list.AnnounceContent)
+                            </p>
+                        </li>
+    
+                        }
+                    }
+                </ul>
+
+                @*用table形式展示*@
+                @*  @{
+                    var lists = ViewBag.data as List<Announce>;
+                    <table class="tbl_anno">
+                        @foreach (var list in lists)
+                        {
+                            
+                            <tr>
+                                <td><span>标题：</span><a>@list.AnnounceTitle</a></td>
+                            </tr>
+                            
+                            <tr>
+                                <td><span>发送者：</span><a>@list.CreateUserCode</a></td>
+                            </tr>
+                            <tr>
+                                <td><span>发送时间：</span>@list.CreateTime</td>
+                            </tr>
+                            <tr>
+                                <td><span>内容：</span>@Html.Raw(@list.AnnounceContent)</td>
+                            </tr>
+                        }
+                    </table>
+                }*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-3">
+</div>

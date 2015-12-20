@@ -1,0 +1,162 @@
+﻿@{
+    ViewBag.Title = "赋权";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style type="text/css">
+    /*input[type="checkbox"] {  /*不同的浏览器对checkbox解析和margin默认值不一样，导致有的对齐有的不对齐
+        margin: 0 auto;
+      
+    }*/
+</style>
+
+<div class="panel panel-default">
+    <div class="panel-body k-header">
+        <div class="k-header" style="vertical-align: top;">
+            <div id='treeview' style="height: 320px;"></div>
+        </div>
+
+        <div class="fullCenter">
+            <a class="btn btn-primary" onclick="Save()">
+                <i class="icon-save"></i>
+                保存
+            </a>
+            <a class="btn btn-primary" onclick="Back()">
+                <i class="icon-reply"></i>
+                返回
+            </a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var treedatasouece; //treeview数据源
+    var existsperm;//已经存在的权限
+
+    //查询已经存在的权限
+    function ExistsPerm() {
+        $.ajax({
+            url: '/SysManage/RoleManage_AddPerm_ExistPerm' + '?RoleCode=' + '@ViewBag.RoleCode',
+            type: 'post',
+            success: function (obj) {
+                //existsperm = obj;
+
+                var checkboxs = $('#treeview input[type=checkbox]');
+                $.each(checkboxs, function (index, items) {
+                    //var val = $(this).val(); //等价于 var val=items.value; items.name是获取name值
+                    var val = items.value; //获取当前checkbox的value
+                    if (obj.indexOf(val) >= 0) {
+                        $(this).attr('checked', 'checked');
+                    }
+                })
+            }
+        })
+    }
+
+
+    //绑定treeview
+    function Bind_TreeView() {
+        //$('#treeview').replaceWith('<div id="treeview"></div>');
+        var seturl = "/SysManage/RoleManage_AddPerm_All" + "?RoleCode=" + '@ViewBag.RoleCode';
+        $.ajax({
+            async: false,//同步
+            url: seturl,
+            contentType: 'application/json',
+            type: 'post',
+            dataType: 'json',
+            success: function (obj) {
+                if (obj.ErrorCode == "0") {
+                    //ShowAlert(obj.ErrorCode);
+                    treedatasouece = obj.Data;//绑定动作
+                }
+            }
+        });
+      
+        //绑定
+        $('#treeview').kendoTreeView({
+            checkboxes: {
+                template: function (e) {
+                    return "<input type='checkbox' value='" + e.item.PermCode + "' />" //给权限的checkbox赋值
+                    //if (View_IsNullOrEmpty(e.item.PermCode)) { //PermCode是空的话就不选中，否则选中
+                    //    return "<input type='checkbox'/>"
+                    //}
+                    //else {
+                    //    return "<input type='checkbox' checked='checked' />"
+                    //}
+                }
+            },
+            dataSource: treedatasouece,    //数据源
+            check: function (e) {          //被选择的项
+
+                //如果第一个节点被选中，则子节点全部选中 e.node是kendo自带的方法
+                var own = $(e.node).find('input[type="checkbox"]').first().is(':checked');
+                if (own) {
+                    $(e.node).find('input[type="checkbox"]').prop('checked', true);
+                }
+                else {
+                    $(e.node).find('input[type="checkbox"]').prop('checked', false);
+                }
+            },
+            //select: function (e) {  //选项被选择时触发事件
+            //    querymodel.FuncUGCode(funcugcode);
+            //    querymodel.FuncCode($('#treeview').data('kendoTreeView').dataItem(e.node).FuncCode);
+            //    Grid_Query('grid1');
+            //},
+            loadOnDemand: false,//false加载全部
+            dataTextField: "PermName",
+            dataValueFiled: "PermCode",
+        });
+    }
+ 
+
+    //保存
+    function Save() {
+        //获取选中
+        var selectitems = $('#treeview input[type=checkbox]:checked'); //获取选中的checkbox
+        var list = [];
+        $.each(selectitems, function (index, obj) {
+            list.push(obj.value);//把选中的项value值加到lsit数组里面
+        })
+
+        var lists=list.join(','); //数组转成字符串(数组不能直接通过json传到后台)
+
+        $.ajax({
+            url: '/SysManage/RoleManage_AddPerm_Save' + '?RoleCode=' + '@ViewBag.RoleCode',
+            type: 'post',
+            data: { "perms": lists },
+            success: function (obj) {
+                if (obj.ErrorCode == "0") {
+                    ShowAlert("保存成功")
+                }
+
+            }
+        })
+
+       @* var checkedentities = $('#treeview').find('li input[type="checkbox"]:checked').parents('li'); //父元素
+        var list = [];
+        var selectentities = Grid_GetSelectdEntities('grid1');
+        //遍历值
+        $.each(checkedentities, function (index, obj) {
+            list.push({ 'FuncUGCode': funcugcode, 'FuncCode': $('#treeview').data('kendoTreeView').dataItem(obj).FuncCode });
+        });
+        var pushmodel = { arrfuncug2func: list, arrfuncug2controlleraction: selectentities };
+        View_Execution_CallBackMy('@Url.Action("FuncUserGroupAuth_Save")' + '?FuncUGCode=' + funcugcode + '&FuncCode=' + querymodel.FuncCode(), pushmodel, function () {
+            Tree_Bind();
+            querymodel.FuncCode('');
+            querymodel.FuncUGCode('');
+            Grid_Query('grid1');
+        });*@
+    }
+
+    //返回-关闭窗口
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {
+        ExistsPerm();
+        Bind_TreeView();
+
+    })
+
+</script>

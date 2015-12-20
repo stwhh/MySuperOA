@@ -1,0 +1,246 @@
+﻿@{
+    ViewBag.Title = "添加用户";
+    Layout = "~/Views/Shared/_Layout2.cshtml";  /*_Layout2是弹出窗口模板页*/
+}
+
+@Scripts.Render("~/Scripts/jqueryvalidate")
+<link href="~/Content/Validate.css" rel="stylesheet" />
+
+<div class="panel panel-default">
+    @*    <div class="panel-heading">添加用户</div>*@
+    <div class="panel-body fullCenter" style="width: 80%">
+        <div class="row ">
+            <div class="col-xs-12">
+                <form id="form1" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="UserCode">用户编号</label>
+                        <div class="col-xs-4">
+                            <input id="UserCode" name="UserCode" type="text" class="form-control" data-bind="value:UserCode" placeholder="必填" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="RealName">真实姓名</label>
+                        <div class="col-xs-4">
+                            <input id="RealName" name="RealName" type="text" class="form-control" data-bind="value:RealName" placeholder="必填" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="UserPwd">密码</label>
+                        <div class="col-xs-4">
+                            <input id="UserPwd" name="UserPwd" type="password" class="form-control" data-bind="value:UserPwd" placeholder="必填" />
+                        </div>
+
+                        <label class="col-xs-2 labelright" for="repeatUserPwd">确认密码</label>
+                        <div class="col-xs-4">
+                            <input id="repeatUserPwd" name="repeatUserPwd" type="password" class="form-control" placeholder="必填" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="Sex">性别</label>
+                        <div class="col-xs-4">
+                            <input id="Sex" name="Sex" data-bind="value:Sex" style="width: 100%" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="Age">年龄</label>
+                        <div class="col-xs-4">
+                            <input id="Age" name="Age" type="text" class="form-control" data-bind="value:Age" placeholder="必填" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="Phone">手机</label>
+                        <div class="col-xs-4">
+                            <input id="Phone" type="text" name="Phone" class="form-control" data-bind="value:Phone" placeholder="必填" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="QQ">QQ</label>
+                        <div class="col-xs-4">
+                            <input id="QQ" name="QQ" type="text" class="form-control" data-bind="value:QQ" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="Email">邮箱</label>
+                        <div class="col-xs-4">
+                            <input id="Email" name="Email" type="text" class="form-control" data-bind="value:Email" placeholder="必填" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="EntryDate">入职时间</label>
+                        <div class="col-xs-4">
+                            <input id="EntryDate" name="EntryDate" data-bind="value:EntryDate" style="width: 100%;" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="Address">地址</label>
+                        <div class="col-xs-4">
+                            <input id="Address" name="Address" type="text" class="form-control" data-bind="value:Address" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="PositionCode">职位</label>
+                        <div class="col-xs-4">
+                            <input id="PositionCode" name="PositionCode" data-bind="value:PositionCode" style="width: 100%" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="DepartmentCode">所属部门</label>
+                        <div class="col-xs-4">
+                            <input id="DepartmentCode" name="DepartmentCode" data-bind="value:DepartmentCode" style="width: 100%" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group fullCenter">
+    <button type="button" class="btn btn-primary" onclick="Save()"><i class="icon-save"></i>保存</button>
+    <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+</div>
+
+<script type="text/javascript">
+    var viewModel;
+    function Init() {
+        viewModel = {
+            'UserCode': ko.observable(''),
+            'RealName': ko.observable(''),
+            'UserPwd': ko.observable(''),
+            'Sex': ko.observable(''),
+            'Age': ko.observable(''),
+            'Phone': ko.observable(''),
+            'QQ': ko.observable(''),
+            'Email': ko.observable(''),
+            'Address': ko.observable(''),
+            'EntryDate': ko.observable('@DateTime.Now.ToString("yyyy-MM-dd")'), //日期控件赋初始值
+            'PositionCode': ko.observable(''),
+            'DepartmentCode': ko.observable('')
+        }
+
+        ////DropDownList 绑定自定义数据
+        //var data = [
+        //    { text: "男", value: "1" },
+        //    { text: "女", value: "2" }
+        //];
+
+        //$('#ddlSex').kendoDropDownList({
+        //    dataTextField: "text",
+        //    dataValueField: "value",
+        //    dataSource: data,
+        //    index: 0
+        //});
+
+        //绑定下拉列表
+        DropDownList_BindParameter('Sex', '@Url.Action("GetSexInfo", "Common")', '', 'Text', 'Value');
+        DropDownList_BindParameter('PositionCode', '@Url.Action("GetPosiInfo", "Common")', '', 'Text', 'Value');
+        DropDownList_BindParameter('DepartmentCode', '@Url.Action("GetDepInfo", "Common")', '', 'Text', 'Value');
+
+        //绑定日期控件
+        DatePicker_Bind("EntryDate");
+
+        //绑定页面属性(必须放在最后一步)
+        ko.applyBindings(viewModel);
+
+        //把正则表达式加到jquery validate验证里
+        $.validator.addMethod('regexp', function (value, element, param) {
+            var reg = new RegExp(param);
+            return this.optional(element) || reg.test(value);
+        }, "");
+
+        //1.验证数据 
+        $('#form1').validate({
+            rules: {
+                UserCode: {  //对应的name,不是ID
+                    required: true,
+                    minlength: 3, //最少三个字符
+                    maxlength: 10, //最多10个字符
+                    remote: "CheckUserCode" //验证用户名是否被注册，调用control层CheckUserCode方法 为false时验证不通过，true时验证通过
+                },
+                RealName: {
+                    required: true,
+                    minlength: 2,
+                    maxlength: 10
+                },
+                UserPwd: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 12
+                },
+                repeatUserPwd: {
+                    equalTo: "#UserPwd" //与原密码比较
+                },
+                Age: {
+                    required: true,
+                    //min: 0, //年龄最小值
+                    //max:120
+                    range: [0, 120]
+                },
+                Phone: {
+                    required: true,
+                    regexp: /^1\d{10}$/ //手机格式
+                },
+                QQ: {
+                    regexp: /^\d{5,20}$/ //5-20位
+                },
+                Email: {
+                    required: true,
+                    email: true    //  邮箱的正则表达式/^([\da-zA-Z-_])+@@([\da-zA-Z-_])+(.[\da-zA-Z-_])$/
+                },
+                Address: {
+                    rangelength: [5, 100]
+                }
+            },
+            messages: {
+                UserCode:{
+                    remote:"该用户名已存在"
+                },
+                Phone: {
+                    required: "不能为空",
+                    regexp: "请输入正确的手机格式"
+                },
+                QQ: {
+                    regexp: "5-20位"
+                },
+                Address: {
+                    range: "5-100个字符"
+                }
+            }
+        })
+    }
+
+    //2.验证当前form下所有输入值是否合法
+    function IsValidated(group) {
+        var isValid = true;
+        group.find(':input').each(function (i, item) {
+            if (!$(item).valid()) {
+                isValid = false;
+                return isValid;
+            }
+        });
+        return isValid;
+    };
+
+    //3.保存前执行验证 保存
+    function Save() {
+        if (IsValidated($('#form1'))) {
+            $.ajax({
+                type: 'post',
+                url: '/SysManage/UserManage_AddUser_Save',
+                //contentType: 'application/json',
+                //dataType: 'json',
+                //如果以这种形式传值data:{'s':$('#form1').serialize()}，后台接收参数要用request.parms['']一个个接收
+                data: $('#form1').serialize(),// ko.toJSON(viewModel),  //serialize()序列表表格内容为字符串,用于ajax接收。
+                success: function (obj) {
+                    if (obj.ErrorCode == '0') {
+                        ShowAlert("保存成功")
+                    }
+                    else {
+                        ShowAlert("保存失败")
+                    }
+                }
+            })
+        }
+    }
+
+    //返回（关闭）窗口
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {
+        Init();
+
+    })
+</script>

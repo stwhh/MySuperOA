@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">@*360急速模式*@
+    <meta name="Keywords" content="关键字">
+    <meta name="description" content="网站内容描述">
+    <title>明基OA办公系统--@ViewBag.Title</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    @Styles.Render("~/Content/ace")
+    @Styles.Render("~/Content/kendo")
+    @Styles.Render("~/Content/css")
+    <style type="text/css">
+        .form-group {
+            margin-bottom: 5px;
+        }
+        .row {
+            width:95%;
+        }
+    
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @*<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->*@
+    @Scripts.Render("~/Scripts/jquery")
+    @*    @Scripts.Render("~/Scripts/bootstrap")*@
+    @Scripts.Render("~/Scripts/common")
+    @*knockout要放在kendo上面*@
+    @Scripts.Render("~/Scripts/knockout")
+    @Scripts.Render("~/Scripts/kendo")
+    @Scripts.Render("~/Scripts/ace")
+</head>
+<body>
+    @RenderBody()
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

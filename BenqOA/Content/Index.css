@@ -1,0 +1,72 @@
+﻿/*主页面最大高度*/
+.main {
+    height:541px;  /*保证打开左侧导航栏，主页面不出现滚动条的最大高度*/
+    overflow:hidden;
+}
+
+/*公告样式*/
+.anno {
+    height: 380px;
+    overflow: hidden;
+    /*overflow: auto; /*overflow: auto; 设置超过范围时出现滚动条*/
+}
+
+/*.anno ul {
+        padding-left: 20px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .anno ul li {
+        list-style: decimal;
+    }
+
+    .anno ul li a:hover {
+        cursor: pointer;
+        font: bold;
+        text-decoration: none;
+    }*/
+.tbl_anno {
+    margin: 0 25px 30px 25px;
+}
+
+    .tbl_anno td {
+        line-height: 25px;
+    }
+
+#hidtext {
+    display: none; /*隐藏域 ,保存公告ID*/
+}
+
+.tbl_anno tr td {
+    border-bottom: 1px solid #E0E0E0;
+}
+
+/*选项卡内容框高度*/
+.tab-pane {
+    height: 311px;
+    overflow: auto; /*overflow: auto; 设置超过范围时出现滚动条*/
+}
+
+/*轮播图片外层div大小 轮播图片要大于外层div*/
+.item {
+    width: auto;
+    height: auto;
+}
+/*单独设置选项卡中图片框内容overflow，防止图片太高出现滚动条*/
+.tab-pane .carousel {
+    height: 311px;
+    overflow: hidden; /*overflow: auto; 设置超过范围时出现滚动条*/
+}
+
+.bottom {
+    height:150px;
+    text-align:center;
+    overflow:hidden;
+}
+
+/*底部版权样式*/
+.bottom_content {
+    margin-top:130px;
+}
+

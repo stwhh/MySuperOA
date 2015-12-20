@@ -1,0 +1,100 @@
+﻿@model Model.Models.Trip
+@{
+    ViewBag.Title = "查看出差申请单";
+    Layout = "~/Views/Shared/_Layout2.cshtml";  /*_Layout2是弹出窗口模板页*/
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row fullCenter">
+            <div class="col-xs-12">
+                <form id="form1" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-xs-2" for="TripCode">出差编号</label>
+                        <div class="col-xs-4">
+                            <input id="TripCode" name="TripCode" type="text" class="form-control" data-bind="value:TripCode" placeholder="必填" />
+                        </div>
+                        <label class="col-xs-2" for="Destination">目的地</label>
+                        <div class="col-xs-4">
+                            <input id="Destination" name="Destination" type="text" class="form-control" data-bind="value:Destination" placeholder="必填" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2" for="BeginDate">出差日期</label>
+                        <div class="col-xs-4">
+                            <input id="BeginDate" name="BeginDate" data-bind="value:BeginDate" placeholder="必填" style="width: 100%" />
+                        </div>
+                        <label class="col-xs-2" for="EndDate">结束日期</label>
+                        <div class="col-xs-4">
+                            <input id="EndDate" name="EndDate" data-bind="value:EndDate" placeholder="必填" style="width: 100%" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2" for="TripContent">出差内容</label>
+                        <div class="col-xs-10">
+                            <textarea id="TripContent" name="TripContent" class="form-control" data-bind="value:TripContent" placeholder="必填"></textarea>
+                        </div>
+                    </div>
+                    <div class="space"></div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var viewModel;
+    function Init() {
+        $('input').attr('readonly', true)
+        $('textarea').attr('readonly', true)
+        viewModel = {
+            'TripCode': ko.observable('@Model.TripCode'),
+            'TripContent': ko.observable('@Model.TripContent'),
+            'BeginDate': ko.observable('@Model.BeginDate'),
+            'EndDate': ko.observable('@Model.EndDate'),
+            'Destination': ko.observable('@Model.Destination')
+
+        }
+
+        //绑定日期控件
+        DatePicker_Bind("BeginDate");
+        DatePicker_Bind("EndDate");
+
+        //绑定页面属性(必须放在最后一步)
+        ko.applyBindings(viewModel);
+
+
+    }
+
+    function Save() {
+        $.ajax({
+            type: 'post',
+            url: '/SysManage/UserManage_AddUser_Save',
+            //contentType: 'application/json',
+            //dataType: 'json',
+            //如果以这种形式传值data:{'s':$('#form1').serialize()}，后台接收参数要用request.parms['']一个个接收
+            data: $('#form1').serialize(),// ko.toJSON(viewModel),  //serialize()序列表表格内容为字符串,用于ajax接收。
+            success: function (obj) {
+                if (obj.ErrorCode == '0') {
+                    ShowAlert("保存成功")
+                }
+                else {
+                    ShowAlert("保存失败")
+                }
+            }
+        })
+    }
+
+    //返回（关闭）窗口
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {
+        Init();
+
+    })
+</script>
+
+

@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        查询条件
+    </div>
+    <div class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 10%"><span>用户编号</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:UserCode" /></td>
+                <td class="querylabel" style="width: 10%"><span>真实姓名</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:RealName" /></td>
+                <td class="querylabel" style="width: 10%"><span>部门编号</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:DepartmentCode" /></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-plus"></i>新增</button></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //自定义列
+        var columns = [{
+            headerTemplate: '删除',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Del(\'#=UserCode#\')"><i class="icon-remove"></i></div>'
+        },
+        {
+            headerTemplate: '查看',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="ShowDetail(\'#=UserCode#\',\'view\')"><i class="icon-search"></i></div>'
+        },
+        {
+            headerTemplate: '编辑',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="ShowDetail(\'#=UserCode#\',\'edit\')"><i class="icon-edit"></i></div>'
+        },
+        { field: 'UserCode', title: '编号', width: '50px' },  //编号
+        { field: 'RealName', title: '真实姓名', width: '50px' },  //真实姓名
+        { field: 'Sex', title: '性别', width: '30px' },  //性别
+        { field: 'Age', title: '年纪', width: '30px' },  //年纪
+        { field: 'Phone', title: '电话', width: '50px' },  //电话
+        { field: 'QQ', title: 'QQ', width: '50px' },  //QQ
+        { field: 'Email', title: '邮箱', width: '60px' },  //邮箱
+        { field: 'Address', title: '地址', width: '80px' },  //地址
+        {
+            field: 'EntryDate', title: '入职时间', width: '50px', template: function (value) { return kendo.toString(kendo.parseDate(value.EntryDate), "yyyy-MM-dd") }
+        },  //入职时间
+        //{ field: 'PositionCode', title: '职位编号', width: '50px' },  //职位编号
+        //{ field: 'DepartmentCode', title: '部门编号', width: '50px' },  //部门编号
+        //{ field: 'CreateTime', title: '创建时间', width: '50px' },  //创建时间
+        //{ field: 'CreateUserCode', title: '创建用户编号', width: '50px' },  //创建用户编号
+        //{ field: 'ModifyTime', title: '修改时间', width: '50px' },  //修改时间
+        //{ field: 'ModifyUserCode', title: '修改用户编号', width: '50px' },  //修改用户编号
+        ]
+
+        ////入职时间类型转换
+        //$("tbody td:eq(11)").val('$("tbody td:eq(11)").val().ToString("yyyy-MM-dd")')
+
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'UserCode': ko.observable(''),
+            'RealName': ko.observable(''),
+            'DepartmentCode': ko.observable('')
+        }
+
+        //绑定grid控件
+        Grid_BindCheckBox('grid1', '/SysManage/UserManage_QueryUser', columns, queryModel);
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+    }
+
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //增加
+    function Add() {
+        View_ShowWindow_CallBack(480, 720, '添加用户', '/SysManage/UserManage_AddUser', function () {
+            Query();
+        });
+    }
+    
+    //删除
+    function Del(userCode) {
+        ShowConfirm("确定删除吗?",function(){
+            $.ajax({
+                url: 'UserManage_DelUser',
+                type: 'post',
+                //contentType: 'appliation/json',
+                //dataType: 'json',
+                data: { "userCode": userCode },
+                success: function (obj) {
+                    if(obj.ErrorCode=="0"){
+                        ShowAlert("删除成功", function () {
+                            Query();
+                        })
+                    }
+                    else {
+                        ShowAlert("删除失败")              
+                }}
+            })}
+        )}
+    
+
+    //查看详细信息，编辑信息
+    function ShowDetail(userCode, pageAction) {
+        var url = '@Url.Action("UserManage_Detail")' + "?userCode=" + userCode + "&pageAction=" + pageAction;
+        View_ShowWindow_CallBack(480, 720, "用户信息", url, function () {
+            Query();
+        });
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>

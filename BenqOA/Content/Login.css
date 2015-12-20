@@ -1,0 +1,68 @@
+﻿
+/*-----------------登录界面样式-------------*/
+
+body {
+    color:#fff;
+}
+
+/*顶部企业logo*/
+#top {
+    margin: auto;
+    width: 100%;
+    height: 100px;
+    background: url(images/index_top.jpg) no-repeat; 
+}
+
+/*中间背景图logo*/
+#content {
+    margin: 0 auto;
+    width: 100%;
+    height: 488px;
+    background: url(images/index_content.jpg) no-repeat; 
+}
+
+/*登录框样式*/
+#content_login {
+    margin: 0 auto;
+    padding-top:8px !important;
+    width: 418px;
+    height: 290px;
+    background: url(images/index_login.jpg) no-repeat; 
+    background-position:0 10px; /*背景位置，第一个水平，第二个垂直*/ 
+}
+
+/*用户登录 标题*/
+#login_title {
+    margin:0 30% 20px;
+    padding-top:8px;
+}
+
+/*整体输入框*/
+#login-input {
+    margin:0 10%;
+}
+
+/*登录输入框前提示文本*/
+.login-text {
+    width:60px;
+}
+
+/*输入框组*/
+.form-group1 {
+    margin-bottom:15px;
+}
+
+/*登录按钮*/
+#btnlongin {
+    margin:0 19%;
+}
+
+/*底部版权样式*/
+#bottom {
+    width:100%;
+    height:55px;
+    background:#1A446C;
+    text-align:center;
+    font-size:17px;
+    padding-top:20px;
+}

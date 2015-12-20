@@ -1,0 +1,38 @@
+E:\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\BLL.dll
+E:\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\BLL.pdb
+E:\★☆毕业设计\项目\BenqOA\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\★☆毕业设计\项目\BenqOA\BLL\obj\Debug\BLL.dll
+E:\★☆毕业设计\项目\BenqOA\BLL\obj\Debug\BLL.pdb
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\BLL.dll
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\BLL.pdb
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\DAL.dll
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\Model.dll
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\EntityFramework.dll
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\DAL.pdb
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\Model.pdb
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\bin\Debug\EntityFramework.xml
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\obj\Debug\BLL.dll
+E:\专业学习\★☆毕业设计\项目\BenqOA\BLL\obj\Debug\BLL.pdb
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\bin\Debug\BLL.dll
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\bin\Debug\BLL.pdb
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\bin\Debug\DAL.dll
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\bin\Debug\Model.dll
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\bin\Debug\EntityFramework.dll
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\bin\Debug\DAL.pdb
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\bin\Debug\Model.pdb
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\bin\Debug\EntityFramework.xml
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\obj\Debug\BLL.dll
+E:\专业学习\★☆毕业设计\项目\历史版本\BenqOA V6.36\BenqOA\BLL\obj\Debug\BLL.pdb
+E:\MySuperOA\MySuperOA\BLL\bin\Debug\BLL.dll
+E:\MySuperOA\MySuperOA\BLL\bin\Debug\BLL.pdb
+E:\MySuperOA\MySuperOA\BLL\bin\Debug\DAL.dll
+E:\MySuperOA\MySuperOA\BLL\bin\Debug\Model.dll
+E:\MySuperOA\MySuperOA\BLL\bin\Debug\EntityFramework.dll
+E:\MySuperOA\MySuperOA\BLL\bin\Debug\DAL.pdb
+E:\MySuperOA\MySuperOA\BLL\bin\Debug\Model.pdb
+E:\MySuperOA\MySuperOA\BLL\bin\Debug\EntityFramework.xml
+E:\MySuperOA\MySuperOA\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\MySuperOA\MySuperOA\BLL\obj\Debug\BLL.dll
+E:\MySuperOA\MySuperOA\BLL\obj\Debug\BLL.pdb

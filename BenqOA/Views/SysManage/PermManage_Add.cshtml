@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "添加权限";
+    Layout = "~/Views/Shared/_Layout2.cshtml";  /*_Layout2是弹出窗口模板页*/
+}
+
+@Scripts.Render("~/Scripts/jqueryvalidate")
+<link href="~/Content/Validate.css" rel="stylesheet" />
+
+<div class="panel panel-default" style="">
+    @*    <div class="panel-heading">新增权限</div>*@
+    <div class="panel-body">
+        <div class="row fullCenter">
+            <div class="col-xs-12">
+                <form id="form1" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="PermCode">权限编号</label>
+                        <div class="col-xs-4">
+                            <input id="PermCode" name="PermCode" type="text" class="form-control" data-bind="value:PermCode" placeholder="必填" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="PermName">权限名称</label>
+                        <div class="col-xs-4">
+                            <input id="PermName" name="PermName" type="text" class="form-control" data-bind="value:PermName" placeholder="必填" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="PermUrl">权限路径</label>
+                        <div class="col-xs-4">
+                            <input id="PermUrl" name="PermUrl" type="text" class="form-control" data-bind="value:PermUrl" placeholder="必填" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="PermSeq">权限顺序</label>
+                        <div class="col-xs-4">
+                            <input id="PermSeq" name="PermSeq" type="text" class="form-control" data-bind="value:PermSeq" placeholder="必填" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-2 labelright" for="PermType">权限类型</label>
+                        <div class="col-xs-4">
+                            <input id="PermType" type="text" name="PermType" class="form-control" data-bind="value:PermType" />
+                        </div>
+                        <label class="col-xs-2 labelright" for="ParaentCode">父权限代码</label>
+                        <div class="col-xs-4">
+                            <input id="ParaentCode" name="ParaentCode" type="text" class="form-control" data-bind="value:ParaentCode" placeholder="必填" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group fullCenter">
+    <button type="button" class="btn btn-primary" onclick="Save()"><i class="icon-save"></i>保存</button>
+    <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+</div>
+
+<script type="text/javascript">
+    var viewModel;
+    function Init() {
+        viewModel = {
+            'PermCode': ko.observable(''),
+            'PermName': ko.observable(''),
+            'PermUrl': ko.observable(''),
+            'PermSeq': ko.observable(''),
+            'PermType': ko.observable(''),
+            'ParaentCode': ko.observable('')
+        }
+
+        //绑定页面属性(必须放在最后一步)
+        ko.applyBindings(viewModel);
+
+        //把正则表达式加到jquery validate验证里
+        $.validator.addMethod('regexp', function (value, element, param) {
+            var reg = new RegExp(param);
+            return this.optional(element) || reg.test(value);
+        }, "");
+
+        //1.验证数据 
+        $('#form1').validate({
+            rules: {
+                PermCode: {  //对应的name,不是ID
+                    required: true,
+                    remote: "CheckPermCode" //验证权限编号是否被注册，
+                },
+                PermUrl: {
+                    required: true
+                }
+            },
+            messages: {
+                PermCode: {
+                    remote: "权限编号已存在"
+                }
+            }
+        })
+    }
+
+    //2.验证当前form下所有输入值是否合法
+    function IsValidated(group) {
+        var isValid = true;
+        group.find(':input').each(function (i, item) {
+            if (!$(item).valid()) {
+                isValid = false;
+                return isValid;
+            }
+        });
+        return isValid;
+    };
+
+    //保存
+    function Save() {
+        if (IsValidated($('#form1'))) {
+            $.ajax({
+                type: 'post',
+                url: '/SysManage/PermManage_Add_Save',
+                //contentType: 'application/json',
+                //dataType: 'json',
+                //如果以这种形式传值data:{'s':$('#form1').serialize()}，后台接收参数要用request.parms['']一个个接收
+                data: $('#form1').serialize(),// ko.toJSON(viewModel),  //serialize()序列表表格内容为字符串,用于ajax接收。
+                success: function (obj) {
+                    if (obj.ErrorCode == '0') {
+                        ShowAlert("保存成功")
+                    }
+                    else {
+                        ShowAlert("保存失败")
+                    }
+                }
+            })
+        }
+    }
+
+    //返回（关闭）窗口
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {
+        Init();
+
+    })
+</script>
+

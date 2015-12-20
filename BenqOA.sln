@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenqOA", "BenqOA\BenqOA.csproj", "{AB7EC4E8-A8B0-4878-981B-B22DC7050783}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{2AE00ED8-27D4-491C-8DFA-F767CDFC2770}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{E8567A28-F6C1-4D4C-A08D-C385E06861B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{22E0A1D8-22A8-4B61-AF2D-866B481D240F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB7EC4E8-A8B0-4878-981B-B22DC7050783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB7EC4E8-A8B0-4878-981B-B22DC7050783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB7EC4E8-A8B0-4878-981B-B22DC7050783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB7EC4E8-A8B0-4878-981B-B22DC7050783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AE00ED8-27D4-491C-8DFA-F767CDFC2770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AE00ED8-27D4-491C-8DFA-F767CDFC2770}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AE00ED8-27D4-491C-8DFA-F767CDFC2770}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AE00ED8-27D4-491C-8DFA-F767CDFC2770}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8567A28-F6C1-4D4C-A08D-C385E06861B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8567A28-F6C1-4D4C-A08D-C385E06861B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8567A28-F6C1-4D4C-A08D-C385E06861B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8567A28-F6C1-4D4C-A08D-C385E06861B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22E0A1D8-22A8-4B61-AF2D-866B481D240F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22E0A1D8-22A8-4B61-AF2D-866B481D240F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22E0A1D8-22A8-4B61-AF2D-866B481D240F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22E0A1D8-22A8-4B61-AF2D-866B481D240F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

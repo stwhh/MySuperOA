@@ -1,0 +1,174 @@
+﻿@model Model.Models.Reim
+
+@{
+    ViewBag.Title = "查看报销申请单";
+    Layout = "~/Views/Shared/_Layout2.cshtml";  /*_Layout2是弹出窗口模板页*/
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row fullCenter">
+            <div class="col-xs-12">
+                <form id="form1" class="form-horizontal" role="form">
+                    <div id="printcontent">
+                        <div class="form-group">
+                            <label class="col-xs-2" for="ReimCode">报销编号</label>
+                            <div class="col-xs-4">
+                                <input id="ReimCode" name="ReimCode" type="text" class="form-control" data-bind="value:ReimCode" />
+                            </div>
+                            <label class="col-xs-2" for="TripCode">出差编号</label>
+                            <div class="col-xs-4">
+                                <input id="TripCode" name="TripCode" type="text" class="form-control" value="@ViewBag.TripCode" />
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2" for="Destination">出差内容</label>
+                            <div class="col-xs-4">
+                                <input id="TripContent" name="TripContent" type="text" class="form-control" value="@ViewBag.TripContent" />
+                            </div>
+                            <label class="col-xs-2" for="Destination">目的地</label>
+                            <div class="col-xs-4">
+                                <input id="Destination" name="Destination" type="text" class="form-control" value="@ViewBag.Destination" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2" for="BeginDate">出差日期</label>
+                            <div class="col-xs-4">
+                                <input id="BeginDate" name="BeginDate" value="@ViewBag.BeginDate"style="width: 100%" />
+                            </div>
+                            <label class="col-xs-2" for="EndDate">结束日期</label>
+                            <div class="col-xs-4">
+                                <input id="EndDate" name="EndDate" value="@ViewBag.EndDate" style="width: 100%" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2" for="ReimContent">报销说明</label>
+                            <div class="col-xs-4">
+                                <input id="ReimContent" name="ReimContent" type="text" class="form-control" data-bind="value:ReimContent" />
+                            </div>
+                            <label class="col-xs-2" for="AirTicket">机票费</label>
+                            <div class="col-xs-4">
+                                <input id="AirTicket" name="AirTicket" type="text" class="form-control" data-bind="value:AirTicket" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2" for="Train">火车费</label>
+                            <div class="col-xs-4">
+                                <input id="Train" name="Train" type="text" class="form-control" data-bind="value:Train" />
+                            </div>
+                            <label class="col-xs-2" for="Bus">汽车费</label>
+                            <div class="col-xs-4">
+                                <input id="Bus" name="Bus" type="text" class="form-control" data-bind="value:Bus" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2" for="Traffic">市内交通费</label>
+                            <div class="col-xs-4">
+                                <input id="Traffic" name="Traffic" type="text" class="form-control" data-bind="value:Traffic" />
+                            </div>
+                            <label class="col-xs-2" for="Accommodation">伙食费</label>
+                            <div class="col-xs-4">
+                                <input id="Accommodation" name="Accommodation" type="text" class="form-control" data-bind="value:Accommodation" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2" for="Other">其它费用</label>
+                            <div class="col-xs-4">
+                                <input id="Other" name="Other" type="text" class="form-control" data-bind="value:Other" />
+                            </div>
+                            <label class="col-xs-2" for="tripDays">出差天数</label>
+                            <div class="col-xs-4">
+                                <input id="TripDays" name="tripDays" type="text" class="form-control" value="@ViewBag.TripDays" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2" for="Bonus">出差补贴</label>
+                            <div class="col-xs-4">
+                                <input id="Bonus" name="Bonus" type="text" class="form-control" data-bind="value:Bonus" />
+                            </div>
+                            <label class="col-xs-2" for="ReimMoney">报销总金额</label>
+                            <div class="col-xs-4">
+                                <input id="ReimMoney" name="ReimMoney" type="text" class="form-control" data-bind="value:ReimMoney" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="space"></div>
+                    <div class="form-group fullCenter">
+                        <button type="button" class="btn btn-primary" onclick="Print()"><i class="icon-print"></i>直接打印</button>
+                        <button type="button" class="btn btn-primary" onclick="PrintReport()"><i class="icon-print"></i>打印报表</button>
+                        <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var viewModel;
+    function Init() {
+        viewModel = {
+            'ReimCode': ko.observable('@Model.ReimCode'),
+            'TripCode': ko.observable(''),
+            'TripContent': ko.observable(''),
+            'BeginDate': ko.observable(''),
+            'EndDate': ko.observable(''),
+            'Destination': ko.observable(''),
+
+            'ReimContent': ko.observable('@Model.ReimContent'), //报销说明
+            'AirTicket': ko.observable('@Model.AirTicket'),   //机票费
+            'Train': ko.observable('@Model.Train'),  //火车费
+            'Bus': ko.observable('@Model.Bus'), //汽车费
+            'Traffic': ko.observable('@Model.Traffic'), //市内交通费
+            'Accommodation': ko.observable('@Model.Accommodation'), //伙食费
+            'Other': ko.observable('@Model.Other'), //其它费用
+            'Bonus': ko.observable('@Model.Bonus'),   //出差补贴
+            'ReimMoney': ko.observable('@Model.ReimMoney'),
+
+        }
+
+        $('input').attr("readonly", true);
+
+        //绑定日期控件
+        DatePicker_Bind("BeginDate");
+        DatePicker_Bind("EndDate");
+
+        //绑定页面属性(必须放在最后一步)
+        ko.applyBindings(viewModel);
+
+
+    }
+
+    //直接打印
+    function Print() {
+        var allhtml = $('body>:visible'); //获取打印页面的所有可见元素
+        allhtml.hide(); //隐藏所有可见元素
+        var p=$('#printcontent').clone().appendTo('body');//把要打印的printcontent内容块克隆一份追加到body里面
+        window.print(); //开始打印                        //不克隆也行，但是打印后回到页面不打印的部分会错位，所以最好克隆
+        allhtml.show(); //显示设置隐藏的内容
+        p.remove(); //删除克隆的内容
+
+    }
+
+    //打印报表
+    function PrintReport() {
+        var ReimCode = $('#ReimCode').val();
+        //window.location.href = "/Reports/ReimInfo.aspx?ReimCode=" + "R201505193896800"; //只能跳转到当前页
+        window.open("/Reports/ReimInfo.aspx?ReimCode=" + ReimCode,"_blank");
+    }
+
+    //返回（关闭）窗口
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {
+        Init();
+
+    })
+</script>
+

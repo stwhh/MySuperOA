@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "上传文件";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    //Layout = null;
+}
+
+@Styles.Render("~/Content/plupload")
+@Scripts.Render("~/Scripts/plupload")
+
+@*<form id="form1">
+    <div id="uploadfile" class="form-group" style="height: 30px; margin-left: 20px;">
+        <label style="color: #f00; font-weight: bold;margin-bottom:0px;">文件类型:</label>
+        <input id="FileType" name="FileType" />
+    </div>
+</form>*@
+<div id="upload1"></div>
+
+<script type="text/javascript">
+
+    function Init() {
+        //1.实例化一个plupload对象，传入一个配置参数对象进行各方面的配置
+        $('#upload1').pluploadQueue({
+            runtimes: 'html5,flash,silverlight,html4', //支持的引擎
+            url: GetUrl(), //服务器端的上传页面地址
+            unique_names: true,//上传的文件名是否唯一
+            sortable: true,//排序
+            multi_selection: true, //支持多选
+            //max_file_size: '15mb', //最大上传限制,以filters中max_file_size为准
+            //multiple_queues: false,//是否可以多次上传
+            flash_swf_url: '../Scripts/plupload/Moxie.swf', //swf文件，当需要使用swf方式进行上传时需要配置该参数
+            silverlight_xap_url: '../Scripts/plupload/Moxie.xap', //silverlight文件，当需要使用silverlight方式进行上传时需要配置该参数
+            //multipart_params: { "FileType": $('#form1').serialize() },//上传时的附加参数，以键/值对的形式传入
+
+            filters: {  //限制上传文件的类型，大小等
+                mime_types:
+                [{ title: "图片文件", extensions: "jpg,jpeg,png,gif" },
+                 { title: "文档文件", extensions: "txt,doc,xls,ppt,pdf" },
+                 { title: "压缩文件", extensions: "rar,zip,7z" }],
+                max_file_size: '@ViewBag.UploadFilesMaxFileSize', //'5mb' //最大只能上传5mb的文件,以此处为准
+                prevent_duplicates: true //不允许选取重复文件
+            },
+
+            views: {
+                thumbs: true, // 缩略图
+                active: 'thumbs'
+            },
+            resize: { width: 320, height: 240, quality: 90 },//是否生成缩略图（仅对图片文件有效）
+            //multipart: true,//默认false，true大文件分割上传
+            //chunk_size: '1mb',// 上传分块每块的大小，这个值小于服务器最大上传限制的值即可）
+
+            //2.绑定事件
+            init: {
+                //文件添加到上传队列时间
+                FilesAdded: function (up, files) { //up是当前plupload对象，files是添加添加到上传队列的文件数组
+                    $(up.files).each(function (index) {
+                        if (this.size == 0 || this.size == null) {
+                            ShowAlert(this.name + "文档没有内容，请确认，不允许上传空文档", function () {
+                                up.removeFile(this); //删除该文档
+                            });//文档没有内容，请确认，不允许上传空文档
+                        }
+                    });
+                },
+
+                //上传完成事件
+                FileUploaded: function (up, file, obj) {  //obj是服务器返回的对象
+                    //var obj = JSON.parse(obj.response); //如果上传多个对象，这些回调不能用，因为文件是一个个上传的
+                    //if (obj.ErrorCode == "1") {         //如果有回调的话，上传好第一个就会产生回调，后面的就上传不了了
+                    //    ShowAlert('上传失败' + obj.Message)//上传错误：
+                    //}
+                    //else {
+                    //    ShowAlert('上传成功')//上传成功：
+                    //    View_CloseWindow();
+                    //}
+                },
+            }
+        })
+
+        ////2.调用plupload实例对象的init()方法进行初始化
+        //uploader.Init();
+
+        ////3.绑定事件，与plupload进行交互
+        //uploader.bind('UploadProgress', function (up, file) {
+        //    //上传的进度  
+        //});
+
+        //uploader.bind('QueueChanged', function () {
+        //    //上传的队列改变 也就是选择文件的完成  
+        //});
+
+        //uploader.bind('FileUploaded', function (up, file, response) {
+        //    // 上传完成  
+        //});
+
+        //uploader.bind("Error", function (up, err) {
+        //    // 上传失败  
+        //});
+
+        //文件类型下拉框
+        DropDownList_BindParameter("FileType", "/Common/GetFileType", "", "Text", "Value");
+    }
+
+
+    //获取路径
+    function GetUrl() {
+        var getUrl = encodeURI('@Url.Action("UploadFiles_Save")' + '?UserCode=' + '@ViewBag.UserCode');
+        return getUrl;
+    }
+
+    $(function () {
+        Init();
+
+    })
+</script>

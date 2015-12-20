@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "角色添加";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@Scripts.Render("~/Scripts/jqueryvalidate")
+<link href="~/Content/Validate.css" rel="stylesheet" />
+
+<div class="panel panel-default">
+    <form id="form1" class="panel-body fullCenter" style="width: 90%">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 20%"><span>角色编号</span></td>
+                <td style="width: 25%">
+                    <input name="RoleCode" type="text" class="form-control" data-bind="value:RoleCode" placeholder="必填" /></td>
+                <td class="querylabel" style="width: 20%"><span>角色名称</span></td>
+                <td style="width: 25%">
+                    <input name="RoleName" type="text" class="form-control" data-bind="value:RoleName" placeholder="必填" /></td>
+            </tr>
+            <tr>
+                <td class="querylabel" style="width: 20%"><span>角色描述</span></td>
+                <td style="width: 100%;" colspan="3">
+                    <textarea name="RoleContent" class="form-control" data-bind="value:RoleContent"></textarea>
+
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div class="space"></div>
+<div class="fullCenter">
+    <button type="button" class="btn btn-primary" onclick="Save()"><i class="icon-save"></i>保存</button>
+    <button type="button" class="btn btn-primary" onclick="Back()"><i class="icon-reply"></i>返回</button>
+</div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'RoleCode': ko.observable(''),
+            'RoleName': ko.observable(''),
+            'RoleContent': ko.observable('')
+        }
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+        //把正则表达式加到jquery validate验证里
+        $.validator.addMethod('regexp', function (value, element, param) {
+            var reg = new RegExp(param);
+            return this.optional(element) || reg.test(value);
+        }, "");
+
+        //1.验证数据 
+        $('#form1').validate({
+            rules: {
+                RoleCode: {  //对应的name,不是ID
+                    required: true,
+                    remote: "CheckRoleCode" //验证角色名是否被注册，
+                }
+            },
+            messages: {
+                RoleCode: {
+                    remote: "角色编号已存在" //
+                }
+            }
+        })
+    }
+
+    //2.验证当前form下所有输入值是否合法
+    function IsValidated(group) {
+        var isValid = true;
+        group.find(':input').each(function (i, item) {
+            if (!$(item).valid()) {
+                isValid = false;
+                return isValid;
+            }
+        });
+        return isValid;
+    };
+
+    //3.保存前执行验证 保存
+    function Save() {
+        if (IsValidated($('#form1'))) {
+            $.ajax({
+                type: 'post',
+                url: '/SysManage/RoleManage_AddRole_Save',
+                data: $('#form1').serialize(),//ko.toJSON(queryModel), jso格式数据要解析或使用模板引擎 jquery.tmpl.js
+                success: function (result) {
+                    if (result.ErrorCode == '0') {
+                        ShowAlert('保存成功', null);
+                    }
+                }
+            })
+        }
+    }
+
+    //返回
+    function Back() {
+        View_CloseWindow();
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>
+
+
+

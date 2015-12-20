@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "报销管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        我的报销
+    </div>
+    <div class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 10%"><span>报销单编号</span></td>
+                <td style="width: 15%">
+                    <input type="text" class="form-control" data-bind="value:ReimCode" /></td>
+                <td class="querylabel" style="width: 10%"><span>主题内容</span></td>
+                <td style="width: 15%">
+                    <input type="text" class="form-control" data-bind="value:ReimContent" /></td>
+                <td class="querylabel" style="width: 10%"><span>申请日期</span></td>
+                <td style="width: 12%">
+                    <input id="BeginApplyDate" data-bind="value:BeginApplyDate" style="width: 100%" /></td>
+                <td>至</td>
+                <td style="width: 12%">
+                    <input id="EndApplyDate" data-bind="value:EndApplyDate" style="width: 100%" /></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button>
+                    <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-plus"></i>新增</button></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //自定义列
+        var columns = [
+        //{
+        //    headerTemplate: '<input type="checkbox" class="selectAll"/>',
+        //    width: '50px',
+        //    template: '<input type="checkbox" class="select" value="#=uid#" />'
+        //},
+        {
+            headerTemplate: '查看',
+            width: '50px',
+            template: '<div class="iconcolor" onclick="ShowDetail(\'#=ReimCode#\')"><i class="icon-search"></i></div>'
+        },
+        //{
+        //    headerTemplate: '编辑',
+        //    width: '30px',
+        //    template: '<div class="iconcolor" onclick="ShowDetail(\'#=UserCode#\',\'edit\')"><i class="icon-edit"></i></div>'
+        //},
+        { field: 'ReimCode', title: '报销单编号', width: '100px' },  //报销单编号
+        { field: 'ReimContent', title: '报销单内容', width: '100px' }, //报销单内容 三元运算符 template: "#=ReimContent?'2':'3'#"
+        {
+            field: 'ApplyDate', title: '申请时间', width: '100px', template: function (value) {  //申请时间
+                return kendo.toString(kendo.parseDate(value.ApplyDate), "yyyy-MM-dd")
+            }
+        },
+      
+        { field: 'AirTicket', title: '机票费', width: '80px' },  //机票费
+        { field: 'Train', title: '火车费', width: '80px' },   //火车费
+        { field: 'Bus', title: '客车费', width: '80px' },  //客车费
+        { field: 'Traffic', title: '市内交通费', width: '80px' },  //市内交通费
+        { field: 'Accommodation', title: '伙食费', width: '80px' },  //伙食费
+        { field: 'Bonus', title: '出差补贴', width: '80px' },  //出差补贴
+        { field: 'Other', title: '其它费用', width: '80px' },  //其它费用
+        { field: 'ReimMoney', title: '总金额', width: '80px' },  //总金额
+        { field: 'UserCode', title: '申请人', width: '80px' },  //申请人姓名
+        { field: 'ReimMoney', title: '总金额', width: '80px' },  //总金额
+        { field: 'Status', title: '状态', width: '80px' },  //状态
+        ]
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'ReimCode': ko.observable(''), //报销单编号
+            'ReimContent': ko.observable(''), //报销单主题内容
+            'BeginApplyDate': ko.observable('@DateTime.Now.AddDays(-367).ToString("yyyy-MM-dd")'), //申请开始日期
+            'EndApplyDate': ko.observable('@DateTime.Now.ToString("yyyy-MM-dd")') //申请结束日期
+        }
+
+        //绑定grid控件
+        Grid_BindCheckBox('grid1', '/ExecManage/ReimManage_Query' + '?UserCode=' + '@ViewBag.UserCode', columns, queryModel);
+
+        //绑定日期控件
+        DatePicker_Bind('BeginApplyDate');
+        DatePicker_Bind('EndApplyDate');
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+    }
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //增加
+    function Add() {
+        View_ShowWindow_CallBack(500, 700, '新增报销单', '/ExecManage/ReimManage_Add', function () {
+            Query();
+        });
+    }
+
+
+    //查看详细信息
+    function ShowDetail(ReimCode) {
+        var url = '@Url.Action("ReimManage_Detail")' + "?ReimCode=" + ReimCode;
+        View_ShowWindow_CallBack(500, 700, "报销信息单", url, function () {
+            Query();
+        });
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>
+
+

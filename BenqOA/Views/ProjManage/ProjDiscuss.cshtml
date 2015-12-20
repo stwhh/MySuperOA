@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "项目管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        查询条件
+    </div>
+    <div class="panel-body panel-block">
+        <table class="searcharea">
+            <tr>
+                <td class="querylabel" style="width: 10%"><span>项目编号</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:ProjCode" /></td>
+                <td class="querylabel" style="width: 10%"><span>项目名称</span></td>
+                <td style="width: 20%">
+                    <input type="text" class="form-control" data-bind="value:ProjName" /></td>
+                
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="Query()"><i class="icon-search"></i>查询</button>
+                    <button type="button" class="btn btn-primary" onclick="Add()"><i class="icon-plus"></i>新增</button>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div id="grid1" class="grid"></div>
+<div class="space"></div>
+
+<script type="text/javascript">
+    var queryModel;
+    function Init() {
+        //自定义列
+        var columns = [{
+            headerTemplate: '删除',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Del(\'#=ProjCode#\')"><i class="icon-remove"></i></div>'
+        },
+        {
+            headerTemplate: '编辑',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Edit(\'#=ProjCode#\',\'#=ProjName#\')"><i class="icon-edit"></i></div>'
+        },
+        { field: 'ProjCode', title: '项目编号', width: '50px' },  //项目编号
+        { field: 'ProjName', title: '项目名称', width: '50px' },  //项目名称
+        {
+            field: 'CreateTime', title: '创建时间', width: '50px', template: function (value) {
+                return kendo.toString(kendo.parseDate(value.CreateTime), "yyyy-MM-dd HH:mm:ss");
+            }
+        },  //创建时间
+        { field: 'CreateUserCode', title: '创建人', width: '50px' },  //创建人
+        {
+            headerTemplate: '参与讨论',
+            width: '30px',
+            template: '<div class="iconcolor" onclick="Comment(\'#=ProjCode#\')"><i class="icon-comment blue"></i></div>'
+        } 
+        ]
+
+
+        //绑定上面对应的data-bind
+        queryModel = {
+            'ProjCode': ko.observable(''),
+            'ProjName': ko.observable('')
+        }
+
+        //绑定grid控件
+        Grid_BindCheckBox('grid1', '/ProjManage/ProjDiscuss_Query', columns, queryModel);
+
+        //应用绑定
+        ko.applyBindings(queryModel);
+
+    }
+
+
+    //查询
+    function Query() {
+        Grid_Query('grid1');
+    }
+
+    //新增项目
+    function Add(pageaction) {
+        View_ShowWindow_CallBack(250, 500, '新增项目', '/ProjManage/ProjDiscuss_Add?UserCode='+'@ViewBag.userCode', function () {
+            Query();
+        });
+    }
+    
+    //删除项目
+    function Del(ProjCode) {
+        ShowConfirm("确定删除吗?",function(){
+            $.ajax({
+                url: 'ProjDiscuss_Del',
+                type: 'post',
+                //contentType: 'appliation/json',
+                //dataType: 'json',
+                data: { "ProjCode": ProjCode },
+                success: function (obj) {
+                    if(obj.ErrorCode=="0"){
+                        ShowAlert("删除成功", function () {
+                            Query();
+                        })
+                    }
+                    else {
+                        ShowAlert("删除失败")              
+                }}
+            })}
+        )}
+    
+
+    //编辑项目信息
+    function Edit(ProjCode, ProjName) {
+        var url = '@Url.Action("ProjDiscuss_Edit")' + "?ProjCode=" + ProjCode + '&ProjName=' + ProjName;
+        View_ShowWindow_CallBack(280, 580, "编辑项目信息", url, function () {
+            Query();
+        });
+    }
+
+    //参与讨论
+    function Comment(ProjCode) {
+        var url = '@Url.Action("ProjDiscuss_Comment")' + "?ProjCode=" + ProjCode + '&UserCode=' + '@ViewBag.userCode';
+        View_ShowWindow_CallBack(500, 700, "项目讨论", url, function () {
+            Query();
+        });
+    }
+
+    $(document).ready(function () {  //和 $(function(){ })一样
+        Init();
+    })
+
+</script>
+
+
