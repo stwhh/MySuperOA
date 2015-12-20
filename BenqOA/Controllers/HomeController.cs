@@ -160,7 +160,10 @@ namespace BenqOA.Controllers
         }
 
 
-        //修改密码
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <returns>页面</returns>
         public ActionResult ChangePassword()
         {
             User user = Session["userInfo"] as User;
