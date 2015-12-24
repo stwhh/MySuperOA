@@ -7,10 +7,12 @@ using BLL;
 using Model;
 using Model.Models;
 using BenqOA.Helper;
+using Public;
 
 namespace BenqOA.Controllers
 {
-    public class FileManageController : BaseController
+    [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+    public class FileManageController : Controller
     {
         //
         // GET: /File/

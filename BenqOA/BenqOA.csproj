@@ -628,6 +628,10 @@
       <Project>{22e0a1d8-22a8-4b61-af2d-866b481d240f}</Project>
       <Name>Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Public\Public.csproj">
+      <Project>{8e01dcbf-bdbd-45cc-8134-7cba43794f97}</Project>
+      <Name>Public</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

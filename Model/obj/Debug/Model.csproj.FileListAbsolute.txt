@@ -19,6 +19,5 @@ E:\MySuperOA\MySuperOA\Model\bin\Debug\Model.dll
 E:\MySuperOA\MySuperOA\Model\bin\Debug\Model.pdb
 E:\MySuperOA\MySuperOA\Model\bin\Debug\EntityFramework.dll
 E:\MySuperOA\MySuperOA\Model\bin\Debug\EntityFramework.xml
-E:\MySuperOA\MySuperOA\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
 E:\MySuperOA\MySuperOA\Model\obj\Debug\Model.dll
 E:\MySuperOA\MySuperOA\Model\obj\Debug\Model.pdb

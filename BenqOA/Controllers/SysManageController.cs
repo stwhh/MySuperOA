@@ -9,10 +9,12 @@ using BenqOA.Helper;
 using BLL;
 using Model;
 using Model.Models;
+using Public;
 
 namespace BenqOA.Controllers
 {
-    public class SysManageController : BaseController
+    [MyAuthorFilter(Roles = "2,3")]  //2是登陆用户，3是超级管理员
+    public class SysManageController : Controller
     {
         //
         // GET: /SysManage/

@@ -6,10 +6,12 @@ using System.Web.Mvc;
 using BLL;
 using Model;
 using Model.Models;
+using Public;
 
 namespace BenqOA.Controllers
 {
-    public class CommonController : BaseController
+    [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+    public class CommonController:Controller
     {
         //公有方法
         // GET: /Common/

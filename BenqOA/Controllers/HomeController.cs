@@ -7,15 +7,14 @@ using BenqOA.Helper;
 using BLL;
 using Model;
 using Model.Models;
-using System.Data; //sqlhelper
+using System.Data;
+using Public; //sqlhelper
 
 namespace BenqOA.Controllers
 {
     public class HomeController : Controller
     {
-        //
-        // GET: /Home/
-
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult Index()
         {
             //主页显示公告列表
@@ -27,6 +26,7 @@ namespace BenqOA.Controllers
         }
 
         //查看公告信息页面
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult GetAnnoInfo(string Annocode)
         {
             BenqOAContext bqc = new BenqOAContext();
@@ -94,6 +94,7 @@ namespace BenqOA.Controllers
         #endregion
 
         //登录
+        [MyAuthorFilter(Roles = MyAuthorFilter.PublicRole)]
         public ActionResult btnLogin(string UserCode, string userPwd, string CheckCode)
         {
             ResultModel<object> resultModel = new ResultModel<object>();
@@ -107,7 +108,6 @@ namespace BenqOA.Controllers
             }
             else
             {
-               
                 BenqOAContext bqc = new BenqOAContext();  //实例化上下文类
                 SysManageBLL bll = new SysManageBLL();
                 ViewBag.UserCode = UserCode;
@@ -164,6 +164,7 @@ namespace BenqOA.Controllers
         /// 修改密码
         /// </summary>
         /// <returns>页面</returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult ChangePassword()
         {
             User user = Session["userInfo"] as User;

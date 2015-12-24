@@ -7,10 +7,12 @@ using BLL;
 using Model;
 using Model.Models;
 using BenqOA.Helper;
+using Public;
 
 namespace BenqOA.Controllers
 {
-    public class ExecManageController : BaseController
+    [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+    public class ExecManageController : Controller
     {
         // 行政管理
         // GET: /ExecManage/
