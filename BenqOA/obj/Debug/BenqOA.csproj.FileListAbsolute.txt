@@ -224,3 +224,5 @@ E:\MySuperOA\MySuperOA\BenqOA\obj\Debug\RdlCompile.cache
 E:\MySuperOA\MySuperOA\BenqOA\obj\Debug\RdlCompile.compiled
 E:\MySuperOA\MySuperOA\BenqOA\obj\Debug\BenqOA.dll
 E:\MySuperOA\MySuperOA\BenqOA\obj\Debug\BenqOA.pdb
+E:\MySuperOA\MySuperOA\BenqOA\bin\Public.dll
+E:\MySuperOA\MySuperOA\BenqOA\bin\Public.pdb

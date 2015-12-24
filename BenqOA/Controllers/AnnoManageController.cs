@@ -7,12 +7,13 @@ using BLL;
 using Model;
 using Model.Models;
 using BenqOA.Helper;
+using Public;
 
 namespace BenqOA.Controllers
 {
-    public class AnnoManageController : BaseController
+    [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+    public class AnnoManageController : Controller
     {
-        
         // GET: /AnnoManage/
         #region 公告管理
 

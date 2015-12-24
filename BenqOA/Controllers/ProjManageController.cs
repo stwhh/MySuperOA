@@ -5,10 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using BLL;
 using Model.Models;
+using Public;
 
 namespace BenqOA.Controllers
 {
-    public class ProjManageController : BaseController
+    [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+    public class ProjManageController : Controller
     {
         // 项目管理
         // GET: /ProjManage/

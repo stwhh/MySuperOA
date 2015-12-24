@@ -1,0 +1,9 @@
+E:\MySuperOA\MySuperOA\Public\bin\Debug\Public.dll
+E:\MySuperOA\MySuperOA\Public\bin\Debug\Public.pdb
+E:\MySuperOA\MySuperOA\Public\obj\Debug\Public.csprojResolveAssemblyReference.cache
+E:\MySuperOA\MySuperOA\Public\obj\Debug\Public.dll
+E:\MySuperOA\MySuperOA\Public\obj\Debug\Public.pdb
+E:\MySuperOA\MySuperOA\Public\bin\Debug\EntityFramework.dll
+E:\MySuperOA\MySuperOA\Public\bin\Debug\Model.dll
+E:\MySuperOA\MySuperOA\Public\bin\Debug\Model.pdb
+E:\MySuperOA\MySuperOA\Public\bin\Debug\EntityFramework.xml
