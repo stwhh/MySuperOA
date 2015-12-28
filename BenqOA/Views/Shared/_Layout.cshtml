@@ -87,10 +87,10 @@
                             <i class="icon-leaf"></i>
                             <span class="user-info">
                                 <small>欢迎光临</small>
-                                @*@{
+                                @{
                                     var userInfo = Session["userInfo"] as User;
                                     @userInfo.UserCode;
-                                }*@
+                                }
                             </span>
 
                             <i class="icon-caret-down"></i>
@@ -168,24 +168,24 @@
                         {
                             if (v.ParaentCode == "root")
                             {
-                        <li>
-                            <a href="#" class="dropdown-toggle">
-                                <i class="@v.PermIcon"></i>
-                                <span class="menu-text">@v.PermName</span>
-                                <b class="arrow icon-angle-down"></b>
-                            </a>
-                            <ul class="submenu">
-                                @foreach (var sub in nav)
-                                {
-                                    if (sub.ParaentCode == v.PermCode)
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="@v.PermIcon"></i>
+                                    <span class="menu-text">@v.PermName</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    @foreach (var sub in nav)
                                     {
-                                    <li>
-                                        <a href="@sub.PermUrl"><i class="icon-double-angle-right"></i>@sub.PermName </a>
-                                    </li>
+                                        if (sub.ParaentCode == v.PermCode)
+                                        {
+                                        <li>
+                                            <a href="@sub.PermUrl"><i class="icon-double-angle-right"></i>@sub.PermName </a>
+                                        </li>
+                                        }
                                     }
-                                }
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
                             }
                         }
                     }
@@ -311,13 +311,58 @@
     <script type="text/javascript">
         if ("ontouchend" in document) document.write("<script src='@Url.Content("~/Content/ace/js/jquery.mobile.custom.js")'>" + "<" + "script>");
 
-        //$.ajax({
-        //    type: 'post',
-        //    url: '/Common/GetNav',
-        //    success: function (data) {
-        //        return true;
+   
+        ////导航栏在页面刷新后保持原来的样式
+        //$(".submenu li a").click(function () {
+        //    var hrefUrl = $(this).attr("href");
+        //    var actionName = hrefUrl.substr(hrefUrl.lastIndexOf("/") + 1)
+        //    if (actionName != "#" && actionName != "") {
+        //        setCookie("currentUrl", actionName, 1); //设置cookie
         //    }
-        //});
+        //})
+
+       
+        ////设置cookie
+        ////name是cookie中的名，value是对应的值，validTime是多久过期（单位为天）
+        //function setCookie(name, value, validDate) {
+        //    var cookieValidDate = new Date();
+        //    cookieValidDate.setDate(cookieValidDate.getDate() + validDate); //设置cookie过期时间
+        //    document.cookie = name + '=' + value + ';expires=' + validDate.toGMTString();
+        //}
+
+        ////删除cookie
+        //function removeCookie(name) {
+        //    setCookie(name, 1, -1);//调用setCookie方法，把时间设置为-1
+        //}
+
+        ////获取cookie
+        //function getCookie(name) {
+        //    //cookie中的数据都是以分号加空格区分开
+        //    var arr = document.cookie.split(";");
+        //    for (var i = 0; i < arr.length; i++) {
+        //        if (arr[i].split("=")[0] == name) {
+        //            return arr[i].split("=")[1];
+        //        }
+        //    }
+        //    //未找到对应的cookie则返回空字符串
+        //    return '';
+        //}
+        
+        $(function () {
+            //var currentUrl = getCookie("currentUrl");
+            //if (currentUrl != "") {
+            //    $("[href*="+currentUrl+"]").parent().addClass("active")
+            //    .parent().parent().addClass("active open");
+            //}
+            
+            //保持页面刷新后导航栏状态不变
+            var hrefUrl = window.location.href;
+            var actionName = hrefUrl.substr(hrefUrl.lastIndexOf("/") + 1)
+            if (actionName != "#" && actionName != "") {
+                $("[href*=" + actionName + "]").parent().addClass("active")
+                    .parent().parent().addClass("active open");
+            }
+        })
     </script>
 
 </body>
