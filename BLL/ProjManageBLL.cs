@@ -13,48 +13,50 @@ namespace BLL
     {
         #region 项目讨论
         /// <summary>
-        /// 查询项目
+        /// 项目查询
         /// </summary>
-        /// <param name="ProjCode"></param>
-        /// <param name="ProjName"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="projCode">项目编号</param>
+        /// <param name="projName">项目名称</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> ProjDiscuss_Query(string ProjCode, string ProjName, int pageindex, int pagesize)
+        public ResultModel<object> ProjDiscuss_Query(string projCode, string projName, int pageindex, int pagesize)
         {
             ProjManageDAL dal = new ProjManageDAL();
-            return dal.ProjDiscuss_Query(ProjCode, ProjName, pageindex, pagesize);
+            return dal.ProjDiscuss_Query(projCode, projName, pageindex, pagesize);
         }
 
 
         /// <summary>
         /// 新增项目-保存
         /// </summary>
-        /// <param name="UserCode"></param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="project">项目实体</param>
         /// <returns></returns>
-        public ResultModel<object> ProjDiscuss_Add_Save(string UserCode, Project Project)
+        public ResultModel<object> ProjDiscuss_Add_Save(string userCode, Project project)
         {
             ProjManageDAL dal = new ProjManageDAL();
-            return dal.ProjDiscuss_Add_Save(UserCode, Project);
+            return dal.ProjDiscuss_Add_Save(userCode, project);
         }
 
 
         /// <summary>
         /// 删除项目
         /// </summary>
-        /// <param name="ProjCode"></param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="projCode">项目编号</param>
         /// <returns></returns>
-        public ResultModel<object> ProjDiscuss_Del(string UserCode, string ProjCode)
+        public ResultModel<object> ProjDiscuss_Del(string userCode, string projCode)
         {
             ProjManageDAL dal = new ProjManageDAL();
-            return dal.ProjDiscuss_Del(UserCode, ProjCode);
+            return dal.ProjDiscuss_Del(userCode, projCode);
         }
 
 
         /// <summary>
         /// 编辑项目-保存
         /// </summary>
-        /// <param name="ProjCode"></param>
+        /// <param name="project">项目实体</param>
         /// <returns></returns>
         public ResultModel<object> ProjDiscuss_Edit_Save(Project project)
         {
@@ -66,24 +68,26 @@ namespace BLL
         /// <summary>
         /// 项目讨论页面
         /// </summary>
-        /// <param name="ProjCode"></param>
+        /// <param name="projCode">项目编号</param>
         /// <returns></returns>
-        public List<Project_Discuss> ProjDiscuss_Comment(string ProjCode)
+        public List<Project_Discuss> ProjDiscuss_Comment(string projCode)
         {
             ProjManageDAL dal = new ProjManageDAL();
-            return dal.ProjDiscuss_Comment(ProjCode);
+            return dal.ProjDiscuss_Comment(projCode);
         }
 
 
         /// <summary>
         /// 发送讨论信息
         /// </summary>
-        /// <param name="comment"></param>
+        /// <param name="projCode">项目编号</param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="comment">评论</param>
         /// <returns></returns>
-        public ResultModel<object> ProjDiscuss_sendComment(string ProjCode, string UserCode, string Comment)
+        public ResultModel<object> ProjDiscuss_sendComment(string projCode, string userCode, string comment)
         {
             ProjManageDAL dal = new ProjManageDAL();
-            return dal.ProjDiscuss_sendComment(ProjCode, UserCode, Comment);
+            return dal.ProjDiscuss_sendComment(projCode, userCode, comment);
         }
 
         /// <summary>

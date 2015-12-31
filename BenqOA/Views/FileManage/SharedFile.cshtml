@@ -121,7 +121,7 @@
             $.ajax({
                 url: '/FileManage/FileManage_Del' + '?FileCode=' + FileCode,
                 type: 'post',
-                //data: { 'selectitems': selectitems },
+                //data: { 'selectItems': selectItems },
                 success: function (obj) {
                     if (obj.ErrorCode == "0") {
                         ShowAlert("删除成功", function () {

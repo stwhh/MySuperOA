@@ -48,7 +48,7 @@
         }
 
         //绑定部门经理下拉框
-        DropDownList_BindParameter('DepartmentManageCode', '@Url.Action("GetPMUserCode", "Common")', '', 'Text', 'Value');
+        DropDownList_BindParameter('DepartmentManageCode', '@Url.Action("GetPmUserCode", "Common")', '', 'Text', 'Value');
         //根据value获取text
         $('#DepartmentManageCode').data('kendoDropDownList').value('@Model.DepartmentManageCode')
 

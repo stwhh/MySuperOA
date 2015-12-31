@@ -15,13 +15,13 @@ namespace DAL
         /// <summary>
         /// 查询用户
         /// </summary>
-        /// <param name="UserCode"></param>
-        /// <param name="RealName"></param>
-        /// <param name="DepartmentCode"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="realName">真实姓名</param>
+        /// <param name="departmentCode">部门编号</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> UserManage_QueryUser(string UserCode, string RealName, string DepartmentCode, int pageindex, int pagesize)
+        public ResultModel<object> UserManage_QueryUser(string userCode, string realName, string departmentCode, int pageindex, int pagesize)
         {
             ResultModel<object> resultModel = new ResultModel<object>();
 
@@ -32,9 +32,9 @@ namespace DAL
                 var result = (from a in bqc.Users
                               from b in bqc.Sexes
                               where a.Sex == b.SexId
-                              && a.UserCode.Contains(UserCode)
-                              && a.RealName.Contains(RealName)
-                              && a.DepartmentCode.Contains(DepartmentCode)
+                              && a.UserCode.Contains(userCode)
+                              && a.RealName.Contains(realName)
+                              && a.DepartmentCode.Contains(departmentCode)
                               orderby a.ID
                               select new
                               {
@@ -56,9 +56,9 @@ namespace DAL
                 var count = (from a in bqc.Users
                              from b in bqc.Sexes
                              where a.Sex == b.SexId
-                             && a.UserCode.Contains(UserCode)
-                             && a.RealName.Contains(RealName)
-                             && a.DepartmentCode.Contains(DepartmentCode)
+                             && a.UserCode.Contains(userCode)
+                             && a.RealName.Contains(realName)
+                             && a.DepartmentCode.Contains(departmentCode)
                              select a).Count();
 
                 resultModel.Data = result;
@@ -74,13 +74,13 @@ namespace DAL
         /// <summary>
         /// 验证用户名是否存在
         /// </summary>
-        /// <param name="UserCode"></param>
+        /// <param name="userCode">用户编号</param>
         /// <returns></returns>
-        public bool CheckUserCode(string UserCode)
+        public bool CheckUserCode(string userCode)
         {
             bool flag = true;
             BenqOAContext bqc = new BenqOAContext();
-            if (bqc.Users.Where(p => p.UserCode == UserCode).FirstOrDefault() != null)
+            if (bqc.Users.Where(p => p.UserCode == userCode).FirstOrDefault() != null)
             {
                 flag = false;
             }
@@ -91,7 +91,7 @@ namespace DAL
         /// <summary>
         /// 删除用户
         /// </summary>
-        /// <param name="userCode"></param>
+        /// <param name="userCode">用户编号</param>
         /// <returns></returns>
         public ResultModel<object> UserManage_DelUser(string userCode)
         {
@@ -132,13 +132,13 @@ namespace DAL
         /// <summary>
         /// 登录时根据用户编号查询角色编号
         /// </summary>
-        /// <param name="UserCode"></param>
+        /// <param name="userCode">用户编号</param>
         /// <returns></returns>
-        public List<object> GetUserRoleByUserCode(string UserCode)
+        public List<object> GetUserRoleByUserCode(string userCode)
         {
             BenqOAContext bqc = new BenqOAContext();
             List<object> list = new List<object>();
-            var ur = bqc.User_Role.Where(p => p.UserCode == UserCode).ToList();
+            var ur = bqc.User_Role.Where(p => p.UserCode == userCode).ToList();
             foreach (var u in ur)
             {
                 list.Add(u.RoleCode);  //把一个用户对应的一个或多个角色返回
@@ -150,13 +150,12 @@ namespace DAL
         /// <summary>
         /// 登录时根据角色编号查询权限编号
         /// </summary>
-        /// <param name="objs"></param>
+        /// <param name="objs">角色编号集合</param>
         /// <returns></returns>
         public List<object> GetPermCodeByRoleCode(List<object> objs)
         {
             BenqOAContext bqc = new BenqOAContext();
             List<object> list = new List<object>();
-
             foreach (var obj in objs)
             {
                 var rp = bqc.Role_Permisson.Where(p => p.RoleCode == obj).ToList();
@@ -176,7 +175,7 @@ namespace DAL
         /// <summary>
         /// 登录时根据权限编号查询对应的权限
         /// </summary>
-        /// <param name="objs"></param>
+        /// <param name="objs">权限编号集合</param>
         /// <returns></returns>
         public List<Permisson> GetPermInfoByRoleCode(List<object> objs)
         {
@@ -193,20 +192,20 @@ namespace DAL
 
 
         /// <summary>
-        /// 查询角色
+        /// 查询角色查询
         /// </summary>
-        /// <param name="RoleCode"></param>
-        /// <param name="RoleName"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="roleCode">角色编号</param>
+        /// <param name="roleName">角色名称</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> RoleManage_Query(string RoleCode, string RoleName, int pageindex, int pagesize)
+        public ResultModel<object> RoleManage_Query(string roleCode, string roleName, int pageindex, int pagesize)
         {
             BenqOAContext bqc = new BenqOAContext();
-            var result = bqc.Roles.Where(p => p.RoleCode.Contains(RoleCode) && p.RoleName.Contains(RoleName))
+            var result = bqc.Roles.Where(p => p.RoleCode.Contains(roleCode) && p.RoleName.Contains(roleName))
                 .OrderBy(p => p.RoleCode).Skip(pageindex * pagesize).Take(pagesize).ToList();
             ResultModel<object> resultModel = new ResultModel<object>();
-            var count = bqc.Roles.Where(p => p.RoleCode.Contains(RoleCode) && p.RoleName.Contains(RoleName)).Count();
+            var count = bqc.Roles.Where(p => p.RoleCode.Contains(roleCode) && p.RoleName.Contains(roleName)).Count();
             try
             {
                 resultModel.Data = result;
@@ -227,23 +226,23 @@ namespace DAL
         /// <summary>
         /// 角色组用户页面--查询
         /// </summary>
-        /// <param name="RoleCode">角色编号</param>
-        /// <param name="UserCode">用户编号</param>
-        /// <param name="RealName">真实姓名</param>
+        /// <param name="roleCode">角色编号</param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="realName">真实姓名</param>
         /// <returns></returns>
-        public ResultModel<List<User>> Role_User_Query(string RoleCode, string UserCode, string RealName)
+        public ResultModel<List<User>> Role_User_Query(string roleCode, string userCode, string realName)
         {
             //List<User> Users = new List<User>(); //查到的用户信息
             BenqOAContext bqc = new BenqOAContext();
             //根据角色编号查询属于这个角色的用户编号
-            var roles = bqc.User_Role.Where(p => p.RoleCode == RoleCode).ToList();
+            var roles = bqc.User_Role.Where(p => p.RoleCode == roleCode).ToList();
             //根据用户编号查询用户姓名
-            var User = bqc.Users.SqlQuery(@"select * from [User] where UserCode in( select UserCode 
-                from User_Role where RoleCode='" + RoleCode + "') and UserCode like'%" + UserCode + "%' and RealName like'%" + RealName + "%'").ToList();
+            var user = bqc.Users.SqlQuery(@"select * from [User] where UserCode in( select UserCode 
+                from User_Role where RoleCode='" + roleCode + "') and UserCode like'%" + userCode + "%' and RealName like'%" + realName + "%'").ToList();
 
             ResultModel<List<User>> resultModel = new ResultModel<List<User>>();
             resultModel.ErrorCode = "0";
-            resultModel.Data = User;
+            resultModel.Data = user;
             return resultModel;
         }
 
@@ -251,18 +250,18 @@ namespace DAL
         /// <summary>
         /// 查询不在当前角色组的所有用户--无分页
         /// </summary>
-        /// <param name="RoleCode">角色编号</param>
-        /// <param name="UserCode">用户编号</param>
-        /// <param name="RealName">真实姓名</param>
+        /// <param name="roleCode">角色编号</param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="realName">真实姓名</param>
         /// <returns></returns>
-        public ResultModel<List<User>> Role_QueryAllUser(string RoleCode, string UserCode, string RealName)
+        public ResultModel<List<User>> Role_QueryAllUser(string roleCode, string userCode, string realName)
         {
             ResultModel<List<User>> resultModel = new ResultModel<List<User>>();
             BenqOAContext bqc = new BenqOAContext();
             try
             {
                 var result = bqc.Users.SqlQuery(@"select * from [User] where UserCode not in
-                (select UserCode from User_Role where RoleCode='" + RoleCode + "') and UserCode like'%" + UserCode + "%' and RealName like '%" + RealName + "%'").ToList();
+                (select UserCode from User_Role where RoleCode='" + roleCode + "') and UserCode like'%" + userCode + "%' and RealName like '%" + realName + "%'").ToList();
                 resultModel.Data = result;
                 resultModel.ErrorCode = "0";
             }
@@ -279,12 +278,12 @@ namespace DAL
         /// <summary>
         /// 删除角色
         /// </summary>
-        /// <param name="RoleCode"></param>
+        /// <param name="roleCode">角色编号</param>
         /// <returns></returns>
-        public ResultModel<object> RoleManage_DelRole(string RoleCode)
+        public ResultModel<object> RoleManage_DelRole(string roleCode)
         {
             BenqOAContext bqc = new BenqOAContext();
-            Role role = bqc.Roles.Where(p => p.RoleCode == RoleCode).First() as Role;
+            Role role = bqc.Roles.Where(p => p.RoleCode == roleCode).First() as Role;
             ResultModel<object> resultModel = new ResultModel<object>();
             try
             {
@@ -305,7 +304,7 @@ namespace DAL
         /// <summary>
         /// 编辑角色—保存
         /// </summary>
-        /// <param name="role"></param>
+        /// <param name="role">角色实体</param>
         /// <returns></returns>
         public ResultModel<object> RoleManage_EditRole_Save(Role role)
         {
@@ -331,13 +330,13 @@ namespace DAL
         /// <summary>
         /// 验证角色编号是否存在
         /// </summary>
-        /// <param name="RoleCode"></param>
+        /// <param name="roleCode">角色编号</param>
         /// <returns></returns>
-        public bool CheckRoleCode(string RoleCode)
+        public bool CheckRoleCode(string roleCode)
         {
             bool flag = true;
             BenqOAContext bqc = new BenqOAContext();
-            if (bqc.Roles.Where(p => p.RoleCode == RoleCode).FirstOrDefault() != null)
+            if (bqc.Roles.Where(p => p.RoleCode == roleCode).FirstOrDefault() != null)
             {
                 flag = false;
             }
@@ -348,7 +347,7 @@ namespace DAL
         /// <summary>
         /// 新增角色—保存
         /// </summary>
-        /// <param name="role"></param>
+        /// <param name="role">角色实体</param>
         /// <returns></returns>
         public ResultModel<object> RoleManage_AddRole_Save(Role role)
         {
@@ -377,19 +376,20 @@ namespace DAL
         /// <summary>
         /// 添加角色组用户
         /// </summary>
-        /// <param name="RoleCode"></param>
+        /// <param name="roleCode">角色编号</param>
+        /// <param name="selects">选中项</param>
         /// <returns></returns>
-        public ResultModel<object> Role_AddUser_Save(string RoleCode, string selects)
+        public ResultModel<object> Role_AddUser_Save(string roleCode, string selects)
         {
             ResultModel<object> resultModel = new ResultModel<object>();
             BenqOAContext bqc = new BenqOAContext();
-            string[] Selects = selects.Split(',');
+            string[] selectArray = selects.Split(',');
             try
             {
                 User_Role ur = new User_Role();
-                foreach (var select in Selects)
+                foreach (var select in selectArray)
                 {
-                    ur.RoleCode = RoleCode;
+                    ur.RoleCode = roleCode;
                     ur.UserCode = select;
                     bqc.User_Role.Add(ur);
                     bqc.SaveChanges();
@@ -410,18 +410,19 @@ namespace DAL
         /// <summary>
         /// 删除角色组用户
         /// </summary>
-        /// <param name="role"></param>
+        /// <param name="roleCode">角色编号</param>
+        /// <param name="selects">选中的项</param>
         /// <returns></returns>
-        public ResultModel<object> DelRole_User(string RoleCode, string selects)
+        public ResultModel<object> DelRole_User(string roleCode, string selects)
         {
             ResultModel<object> resultModel = new ResultModel<object>();
             BenqOAContext bqc = new BenqOAContext();
-            string[] Selects = selects.Split(',');
+            string[] selectArray = selects.Split(',');
             try
             {
-                foreach (var select in Selects)
+                foreach (var select in selectArray)
                 {
-                    User_Role user = bqc.User_Role.Where(p => p.UserCode == select && p.RoleCode == RoleCode).First() as User_Role;
+                    User_Role user = bqc.User_Role.Where(p => p.UserCode == select && p.RoleCode == roleCode).First() as User_Role;
                     bqc.User_Role.Remove(user);
                     bqc.SaveChanges();
                 }
@@ -441,13 +442,13 @@ namespace DAL
         /// <summary>
         /// 角色赋权--加载所有权限信息
         /// </summary>
-        /// <param name="RoleCode">此参数没用</param>
+        /// <param name="roleCode">角色编号</param>
         /// <returns></returns>
-        public ResultModel<List<object>> RoleManage_AddPerm_All(string RoleCode)
+        public ResultModel<List<object>> RoleManage_AddPerm_All(string roleCode)
         {
             BenqOAContext bqc = new BenqOAContext(); //上下文类
             ResultModel<List<object>> resultModel = new ResultModel<List<object>>(); //返回值resultModel.Data是list<object>类型
-            List<object> listperm = new List<object>(); //集合，存放权限信息
+            List<object> listPerm = new List<object>(); //集合，存放权限信息
             Permisson[] lists = bqc.Permissons.ToArray() as Permisson[]; //权限列表
 
             resultModel.ErrorCode = "1"; //给个默认值为1,表示查不到数据
@@ -463,16 +464,21 @@ namespace DAL
                     //    }
                     //}
                     var items = GetTree(item, lists);
-                    listperm.Add(new { PermCode = item.PermCode, PermName = item.PermName, items = items });
+                    listPerm.Add(new { PermCode = item.PermCode, PermName = item.PermName, items = items });
                 }
                 resultModel.ErrorCode = "0";
             }
 
-            resultModel.Data = listperm;
+            resultModel.Data = listPerm;
             return resultModel;
         }
 
-        //递归-查询根节点下的子节点
+        /// <summary>
+        /// 递归-查询根节点下的子节点
+        /// </summary>
+        /// <param name="perm">权限实体</param>
+        /// <param name="perms">权限实体集合</param>
+        /// <returns></returns>
         public List<object> GetTree(Permisson perm, Permisson[] perms)
         {
             List<object> liststre = new List<object>();
@@ -491,40 +497,40 @@ namespace DAL
         /// <summary>
         /// 查询当前角色已存在的权限信息
         /// </summary>
-        /// <param name="RoleCode"></param>
+        /// <param name="roleCode">角色编号</param>
         /// <returns></returns>
-        public string RoleManage_AddPerm_ExistPerm(string RoleCode)
+        public string RoleManage_AddPerm_ExistPerm(string roleCode)
         {
             BenqOAContext bqc = new BenqOAContext();
-            string existsperm = string.Empty;
+            string existsPerm = string.Empty;
             var perms = bqc.Role_Permisson.SqlQuery(@"select *
                         from Role_Permisson a
                         inner join Permisson b
                         on a.PermCode=b.PermCode
-                        and a.RoleCode='" + RoleCode + "'").ToArray();
+                        and a.RoleCode='" + roleCode + "'").ToArray();
 
             foreach (var perm in perms)
             {
-                existsperm += perm.PermCode + ',';
+                existsPerm += perm.PermCode + ',';
             }
 
-            return existsperm;
+            return existsPerm;
         }
 
 
         /// <summary>
         /// 保存当前角色选择的权限
         /// </summary>
-        /// <param name="RoleCode"></param>
-        /// <param name="list"></param>
+        /// <param name="roleCode">角色编号</param>
+        /// <param name="perms">权限</param>
         /// <returns></returns>
-        public ResultModel<object> RoleManage_AddPerm_Save(string RoleCode, string perms)
+        public ResultModel<object> RoleManage_AddPerm_Save(string roleCode, string perms)
         {
             BenqOAContext bqc = new BenqOAContext();
             ResultModel<object> resultModel = new ResultModel<object>();
             string[] lists = perms.Split(',');  //要添加的所有权限编号 +
 
-            var dellist = RoleManage_AddPerm_ExistPerm(RoleCode); //当前角色数据库中存在的权限 
+            var dellist = RoleManage_AddPerm_ExistPerm(roleCode); //当前角色数据库中存在的权限 
             string[] dellists = dellist.Split(',');
 
             try
@@ -533,7 +539,7 @@ namespace DAL
                 foreach (var list in lists)
                 {
                     //1.先查询当前选中的权限数据中是否存在，若存在，则无需保存；
-                    var addlist = bqc.Role_Permisson.Where(p => p.RoleCode == RoleCode && p.PermCode == list).FirstOrDefault();
+                    var addlist = bqc.Role_Permisson.Where(p => p.RoleCode == roleCode && p.PermCode == list).FirstOrDefault();
 
                     if (addlist != null) //权限已存在
                     {
@@ -542,7 +548,7 @@ namespace DAL
                     else
                     {
                         //1.增加权限
-                        rp.RoleCode = RoleCode;
+                        rp.RoleCode = roleCode;
                         rp.PermCode = list;
                         bqc.Role_Permisson.Add(rp); //权限不存在，添加
                         bqc.SaveChanges();
@@ -556,7 +562,7 @@ namespace DAL
                     var excepts = dellists.Except(lists).ToList(); //前台没选择，后台数据中之前存在的数据--删除
                     foreach (var except in excepts)
                     {
-                        var r = bqc.Role_Permisson.Where(p => p.RoleCode == RoleCode && p.PermCode == except).FirstOrDefault();
+                        var r = bqc.Role_Permisson.Where(p => p.RoleCode == roleCode && p.PermCode == except).FirstOrDefault();
                         if (r != null)
                         {
                             bqc.Role_Permisson.Remove(r); //权限被删除
@@ -583,20 +589,20 @@ namespace DAL
         /// <summary>
         /// 权限管理-查询
         /// </summary>
-        /// <param name="PermCode"></param>
-        /// <param name="PermName"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="permCode">权限编号</param>
+        /// <param name="permName">权限名称</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> PermManage_Query(string PermCode, string PermName, int pageindex, int pagesize)
+        public ResultModel<object> PermManage_Query(string permCode, string permName, int pageindex, int pagesize)
         {
             BenqOAContext bqc = new BenqOAContext();
             ResultModel<object> resultModel = new ResultModel<object>();
             try
             {
-                var perm = bqc.Permissons.Where(p => p.PermCode.Contains(PermCode) && p.PermName.Contains(PermName))
+                var perm = bqc.Permissons.Where(p => p.PermCode.Contains(permCode) && p.PermName.Contains(permName))
                     .OrderBy(p => p.PermSeq).Skip(pageindex * pagesize).Take(pagesize).ToList();
-                var count = bqc.Permissons.Where(p => p.PermCode.Contains(PermCode) && p.PermName.Contains(PermName)).Count();
+                var count = bqc.Permissons.Where(p => p.PermCode.Contains(permCode) && p.PermName.Contains(permName)).Count();
 
                 resultModel.Data = perm;
                 resultModel.TotalCount = count;
@@ -613,13 +619,13 @@ namespace DAL
         /// <summary>
         /// 验证权限编号是否存在
         /// </summary>
-        /// <param name="PermCode"></param>
+        /// <param name="permCode">权限编号</param>
         /// <returns></returns>
-        public bool CheckPermCode(string PermCode)
+        public bool CheckPermCode(string permCode)
         {
             bool flag = true;
             BenqOAContext bqc = new BenqOAContext();
-            if (bqc.Permissons.Where(p => p.PermCode == PermCode).FirstOrDefault() != null)
+            if (bqc.Permissons.Where(p => p.PermCode == permCode).FirstOrDefault() != null)
             {
                 flag = false;
             }
@@ -630,7 +636,7 @@ namespace DAL
         /// <summary>
         /// 权限管理-新增 保存
         /// </summary>
-        /// <param name="PermCode"></param>
+        /// <param name="permisson">权限实体</param>
         /// <returns></returns>
         public ResultModel<object> PermManage_Add_Save(Permisson permisson)
         {
@@ -655,15 +661,15 @@ namespace DAL
         /// <summary>
         /// 权限管理-删除
         /// </summary>
-        /// <param name="PermCode"></param>
+        /// <param name="permCode">权限编号</param>
         /// <returns></returns>
-        public ResultModel<object> PermManage_Query(string PermCode)
+        public ResultModel<object> PermManage_Query(string permCode)
         {
             BenqOAContext bqc = new BenqOAContext();
             ResultModel<object> resultModel = new ResultModel<object>();
             try
             {
-                var perm = bqc.Permissons.Where(p => p.PermCode == PermCode).First();
+                var perm = bqc.Permissons.Where(p => p.PermCode == permCode).First();
                 bqc.Permissons.Remove(perm);
                 bqc.SaveChanges();
                 resultModel.ErrorCode = "0";
@@ -680,13 +686,13 @@ namespace DAL
         /// <summary>
         /// 权限管理-编辑
         /// </summary>
-        /// <param name="PermCode"></param>
+        /// <param name="permCode">权限编号</param>
         /// <returns></returns>
-        public Permisson PermManage_Edit(string PermCode)
+        public Permisson PermManage_Edit(string permCode)
         {
             BenqOAContext bqc = new BenqOAContext();
             ResultModel<object> resultModel = new ResultModel<object>();
-            Permisson list = bqc.Permissons.Where(p => p.PermCode == PermCode).First() as Permisson;
+            Permisson list = bqc.Permissons.Where(p => p.PermCode == permCode).First() as Permisson;
 
             return list;
         }
@@ -695,15 +701,16 @@ namespace DAL
         /// <summary>
         /// 权限管理-编辑-保存
         /// </summary>
-        /// <param name="PermCode"></param>
+        /// <param name="permCode">权限编号</param>
+        /// <param name="perm">权限实体</param>
         /// <returns></returns>
-        public ResultModel<object> PermManage_Edit_Save(string PermCode, Permisson perm)
+        public ResultModel<object> PermManage_Edit_Save(string permCode, Permisson perm)
         {
             ResultModel<object> resultModel = new ResultModel<object>();
             BenqOAContext bqc = new BenqOAContext();
             try
             {
-                Permisson list = bqc.Permissons.Where(p => p.PermCode == PermCode).First() as Permisson;
+                Permisson list = bqc.Permissons.Where(p => p.PermCode == permCode).First() as Permisson;
                 list.PermName = perm.PermName;
                 list.PermUrl = perm.PermUrl;
                 list.PermSeq = perm.PermSeq;
@@ -728,17 +735,22 @@ namespace DAL
         /// <summary>
         /// 部门管理-查询
         /// </summary>
+        /// <param name="departmentCode">部门编号</param>
+        /// <param name="departmentName">部门名称</param>
+        /// <param name="departmentManageCode">部门经理编号</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> DepaManage_Query(string DepartmentCode, string DepartmentName,string DepartmentManageCode, int pageindex, int pagesize)
+        public ResultModel<object> DepaManage_Query(string departmentCode, string departmentName,string departmentManageCode, int pageindex, int pagesize)
         {
             BenqOAContext bqc = new BenqOAContext();
             ResultModel<object> resultModel = new ResultModel<object>();
             try
             {
-                var list = bqc.Departments.Where(p => p.DepartmentCode.Contains(DepartmentCode) && p.DepartmentName.Contains(DepartmentName)
-                    &&p.DepartmentManageCode.Contains(DepartmentManageCode)).OrderBy(p => p.DepartmentCode).Skip(pageindex * pagesize).Take(pagesize).ToList();
-                var count = bqc.Departments.Where(p => p.DepartmentCode.Contains(DepartmentCode) && p.DepartmentName.Contains(DepartmentName)
-                    && p.DepartmentManageCode.Contains(DepartmentManageCode)).Count();
+                var list = bqc.Departments.Where(p => p.DepartmentCode.Contains(departmentCode) && p.DepartmentName.Contains(departmentName)
+                    &&p.DepartmentManageCode.Contains(departmentManageCode)).OrderBy(p => p.DepartmentCode).Skip(pageindex * pagesize).Take(pagesize).ToList();
+                var count = bqc.Departments.Where(p => p.DepartmentCode.Contains(departmentCode) && p.DepartmentName.Contains(departmentName)
+                    && p.DepartmentManageCode.Contains(departmentManageCode)).Count();
                 resultModel.Data = list;
                 resultModel.TotalCount = count;
                 resultModel.ErrorCode = "0";
@@ -755,13 +767,13 @@ namespace DAL
         /// <summary>
         /// 验证部门编号是否存在
         /// </summary>
-        /// <param name="DepaCode"></param>
+        /// <param name="departmentCode">部门编号</param>
         /// <returns></returns>
-        public bool CheckDepaCode(string DepartmentCode)
+        public bool CheckDepaCode(string departmentCode)
         {
             bool flag = true;
             BenqOAContext bqc = new BenqOAContext();
-            if (bqc.Departments.Where(p => p.DepartmentCode == DepartmentCode).FirstOrDefault() != null)
+            if (bqc.Departments.Where(p => p.DepartmentCode == departmentCode).FirstOrDefault() != null)
             {
                 flag = false;
             }
@@ -772,6 +784,7 @@ namespace DAL
         /// <summary>
         /// 部门管理-新增
         /// </summary>
+        /// <param name="department">部门实体</param>
         /// <returns></returns>
         public ResultModel<object> DepaManage_Add_Save(Department department)
         {
@@ -796,15 +809,15 @@ namespace DAL
         /// <summary>
         /// 部门管理-删除
         /// </summary>
-        /// <param name="DepartmentCode"></param>
+        /// <param name="departmentCode">部门编号</param>
         /// <returns></returns>
-        public ResultModel<object> DepaManage_Del(string DepartmentCode)
+        public ResultModel<object> DepaManage_Del(string departmentCode)
         {
             BenqOAContext bqc = new BenqOAContext();
             ResultModel<object> resultModel = new ResultModel<object>();
             try
             {
-                var perm = bqc.Departments.Where(p => p.DepartmentCode == DepartmentCode).First();
+                var perm = bqc.Departments.Where(p => p.DepartmentCode == departmentCode).First();
                 bqc.Departments.Remove(perm);
                 bqc.SaveChanges();
                 resultModel.ErrorCode = "0";
@@ -821,13 +834,13 @@ namespace DAL
         /// <summary>
         /// 部门管理-编辑
         /// </summary>
-        /// <param name="DepartmentCode"></param>
+        /// <param name="departmentCode">部门编号</param>
         /// <returns></returns>
-        public Department DepaManage_Edit(string DepartmentCode)
+        public Department DepaManage_Edit(string departmentCode)
         {
             Department department = null;
             BenqOAContext bqc = new BenqOAContext();
-            department = bqc.Departments.Where(p => p.DepartmentCode == DepartmentCode).FirstOrDefault();
+            department = bqc.Departments.Where(p => p.DepartmentCode == departmentCode).FirstOrDefault();
 
             return department;
         }
@@ -836,19 +849,19 @@ namespace DAL
         /// <summary>
         /// 部门管理-编辑-保存
         /// </summary>
-        /// <param name="DepartmentCode"></param>
-        /// <param name="DepartmentName"></param>
-        /// <param name="DepartmentManageCode"></param>
+        /// <param name="departmentCode">部门编号</param>
+        /// <param name="departmentName">部门名称</param>
+        /// <param name="departmentManageCode">部门经理编号</param>
         /// <returns></returns>
-        public ResultModel<object> DepaManage_Edit_Save(string DepartmentCode, string DepartmentName, string DepartmentManageCode)
+        public ResultModel<object> DepaManage_Edit_Save(string departmentCode, string departmentName, string departmentManageCode)
         {
             ResultModel<object> resultModel = new ResultModel<object>();
             BenqOAContext bqc = new BenqOAContext();
             try
             {
-                Department department = bqc.Departments.Where(p => p.DepartmentCode == DepartmentCode).First();
-                department.DepartmentName = DepartmentName;
-                department.DepartmentManageCode = DepartmentManageCode;
+                Department department = bqc.Departments.Where(p => p.DepartmentCode == departmentCode).First();
+                department.DepartmentName = departmentName;
+                department.DepartmentManageCode = departmentManageCode;
                 bqc.SaveChanges();
                 resultModel.ErrorCode = "0";
             }
@@ -864,23 +877,23 @@ namespace DAL
 
 
         #region 职位管理
-        /// <summary>
+        ///<summary>
         /// 职位管理-查询
         /// </summary>
-        /// <param name="PositionCode"></param>
-        /// <param name="PositionName"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="positionCode">职位编号</param>
+        /// <param name="positionName">职位名称</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> PosiManage_Query(string PositionCode, string PositionName, int pageindex, int pagesize)
+        public ResultModel<object> PosiManage_Query(string positionCode, string positionName, int pageindex, int pagesize)
         {
             BenqOAContext bqc = new BenqOAContext();
             ResultModel<object> resultModel = new ResultModel<object>();
             try
             {
-                var list = bqc.Positions.Where(p => p.PositionCode.Contains(PositionCode) && p.PositionName.Contains(PositionName))
+                var list = bqc.Positions.Where(p => p.PositionCode.Contains(positionCode) && p.PositionName.Contains(positionName))
                     .OrderBy(p => p.PositionCode).Skip(pageindex * pagesize).Take(pagesize).ToList();
-                var count = bqc.Positions.Where(p => p.PositionCode.Contains(PositionCode) && p.PositionName.Contains(PositionName)).Count();
+                var count = bqc.Positions.Where(p => p.PositionCode.Contains(positionCode) && p.PositionName.Contains(positionName)).Count();
                 resultModel.Data = list;
                 resultModel.TotalCount = count;
                 resultModel.ErrorCode = "0";
@@ -897,13 +910,13 @@ namespace DAL
         /// <summary>
         /// 验证职位编号是否存在
         /// </summary>
-        /// <param name="PositionCode"></param>
+        /// <param name="positionCode">职位编号</param>
         /// <returns></returns>
-        public bool CheckPosiCode(string PositionCode)
+        public bool CheckPosiCode(string positionCode)
         {
             bool flag = true;
             BenqOAContext bqc = new BenqOAContext();
-            if (bqc.Positions.Where(p => p.PositionCode == PositionCode).FirstOrDefault() != null)
+            if (bqc.Positions.Where(p => p.PositionCode == positionCode).FirstOrDefault() != null)
             {
                 flag = false;
             }
@@ -914,8 +927,7 @@ namespace DAL
         /// <summary>
         /// 职位管理-新增-保存
         /// </summary>
-        /// <param name="PositionCode"></param>
-        /// <param name="PositionName"></param>
+        /// <param name="position">职位实体</param>
         /// <returns></returns>
         public ResultModel<object> PosiManage_Add_Save(Position position)
         {
@@ -940,16 +952,16 @@ namespace DAL
         /// <summary>
         /// 职位管理-删除
         /// </summary>
-        /// <param name="PositionCode"></param>
+        /// <param name="positionCode">职位编号</param>
         /// <returns></returns>
-        public ResultModel<object> PosiManage_Del(string PositionCode)
+        public ResultModel<object> PosiManage_Del(string positionCode)
         {
             ResultModel<object> resultModel = new ResultModel<object>();
             BenqOAContext bqc = new BenqOAContext();
 
             try
             {
-                var list = bqc.Positions.Where(p => p.PositionCode == PositionCode).FirstOrDefault();
+                var list = bqc.Positions.Where(p => p.PositionCode == positionCode).FirstOrDefault();
                 bqc.Positions.Remove(list);
                 bqc.SaveChanges();
                 resultModel.ErrorCode = "0";
@@ -967,12 +979,12 @@ namespace DAL
         /// <summary>
         /// 职位管理-编辑(根据职位编号查询职位信息)
         /// </summary>
-        /// <param name="PositionCode"></param>
+        /// <param name="positionCode">职位编号</param>
         /// <returns></returns>
-        public Position PosiManage_Edit(string PositionCode)
+        public Position PosiManage_Edit(string positionCode)
         {
             BenqOAContext bqc = new BenqOAContext();
-            Position model = bqc.Positions.Where(p => p.PositionCode == PositionCode).First() as Position;
+            Position model = bqc.Positions.Where(p => p.PositionCode == positionCode).First() as Position;
 
             return model;
         }
@@ -981,7 +993,7 @@ namespace DAL
         /// <summary>
         /// 职位管理-编辑-保存
         /// </summary>
-        /// <param name="PositionCode"></param>
+        /// <param name="position">职位实体</param>
         /// <returns></returns>
         public ResultModel<object> PosiManage_Edit_Save(Position position)
         {
