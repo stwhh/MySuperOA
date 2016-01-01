@@ -46,7 +46,7 @@ namespace BenqOA.Controllers
             string tripUserCode = user.UserCode; //用户编号
 
             ExecManageBLL bll = new ExecManageBLL();
-            return Json(bll.TripManage_Query(userCode, tripCode, tripContent, beginApplyDate, endApplyDate, pageindex, pagesize));
+            return Json(bll.TripManage_Query(tripUserCode, tripCode, tripContent, beginApplyDate, endApplyDate, pageindex, pagesize));
         }
 
         /// <summary>
