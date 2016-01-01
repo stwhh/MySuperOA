@@ -13,8 +13,10 @@ namespace BenqOA.Controllers
     public class ProjManageController : Controller
     {
         // 项目管理
-        // GET: /ProjManage/
-
+        /// <summary>
+        /// 项目讨论页面
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ProjDiscuss()
         {
             User user = Session["userInfo"] as User;
@@ -23,65 +25,106 @@ namespace BenqOA.Controllers
             return View();
         }
 
-        //项目查询
-        public JsonResult ProjDiscuss_Query(string ProjCode, string ProjName, int pageindex, int pagesize)
+        /// <summary>
+        /// 项目查询
+        /// </summary>
+        /// <param name="projCode">项目编号</param>
+        /// <param name="projName">项目名称</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
+        /// <returns></returns>
+        public JsonResult ProjDiscuss_Query(string projCode, string projName, int pageindex, int pagesize)
         {
             ProjManageBLL bll = new ProjManageBLL();
-            return Json(bll.ProjDiscuss_Query(ProjCode, ProjName, pageindex, pagesize));
+            return Json(bll.ProjDiscuss_Query(projCode, projName, pageindex, pagesize));
         }
 
-        //新增项目
-        public ActionResult ProjDiscuss_Add(string UserCode)
+        /// <summary>
+        /// 新增项目页面
+        /// </summary>
+        /// <param name="userCode">用户编号</param>
+        /// <returns></returns>
+        public ActionResult ProjDiscuss_Add(string userCode)
         {
-            ViewBag.userCode = UserCode; //用户编号
+            ViewBag.userCode = userCode; //用户编号
             return View();
         }
 
-        //新增项目-保存
-        public JsonResult ProjDiscuss_Add_Save(string UserCode, Project Project)
+        /// <summary>
+        /// 新增项目-保存
+        /// </summary>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="project">项目实体</param>
+        /// <returns></returns>
+        public JsonResult ProjDiscuss_Add_Save(string userCode, Project project)
         {
             ProjManageBLL bll = new ProjManageBLL();
-            return Json(bll.ProjDiscuss_Add_Save(UserCode, Project));
+            return Json(bll.ProjDiscuss_Add_Save(userCode, project));
         }
 
-        //删除项目
-        public JsonResult ProjDiscuss_Del(string UserCode, string ProjCode)
+        /// <summary>
+        /// 删除项目
+        /// </summary>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="projCode">项目编号</param>
+        /// <returns></returns>
+        public JsonResult ProjDiscuss_Del(string userCode, string projCode)
         {
             ProjManageBLL bll = new ProjManageBLL();
-            return Json(bll.ProjDiscuss_Del(UserCode, ProjCode));
+            return Json(bll.ProjDiscuss_Del(userCode, projCode));
         }
 
-        //编辑项目-页面
-        public ActionResult ProjDiscuss_Edit(string ProjCode, string ProjName)
+        /// <summary>
+        /// 编辑项目-页面
+        /// </summary>
+        /// <param name="projCode">项目编号</param>
+        /// <param name="projName">项目名称</param>
+        /// <returns></returns>
+        public ActionResult ProjDiscuss_Edit(string projCode, string projName)
         {
-            ViewBag.ProjCode = ProjCode;
-            ViewBag.ProjName = ProjName;
+            ViewBag.ProjCode = projCode;
+            ViewBag.ProjName = projName;
             return View();
         }
 
-        //编辑项目-保存
+        /// <summary>
+        /// 编辑项目-保存
+        /// </summary>
+        /// <param name="project">项目实体</param>
+        /// <returns></returns>
         public JsonResult ProjDiscuss_Edit_Save(Project project)
         {
             ProjManageBLL bll = new ProjManageBLL();
             return Json(bll.ProjDiscuss_Edit_Save(project));
         }
 
-        //项目讨论页面
-        public ActionResult ProjDiscuss_Comment(string ProjCode, string UserCode)
+        /// <summary>
+        /// 项目讨论页面
+        /// </summary>
+        /// <param name="projCode">项目编号</param>
+        /// <param name="userCode">用户编号</param>
+        /// <returns></returns>
+        public ActionResult ProjDiscuss_Comment(string projCode, string userCode)
         {
-            ViewBag.projCode = ProjCode; //参与评论的项目编号
-            ViewBag.userCode = UserCode; //用户编号
+            ViewBag.projCode = projCode; //参与评论的项目编号
+            ViewBag.userCode = userCode; //用户编号
 
             ProjManageBLL bll = new ProjManageBLL();
-            ViewBag.model = bll.ProjDiscuss_Comment(ProjCode);
+            ViewBag.model = bll.ProjDiscuss_Comment(projCode);
             return View();
         }
 
-        //发送讨论信息 
-        public JsonResult ProjDiscuss_sendComment(string ProjCode, string UserCode, string Comment)
+        /// <summary>
+        /// 发送讨论信息 
+        /// </summary>
+        /// <param name="projCode">项目编号</param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="comment">评论信息</param>
+        /// <returns></returns>
+        public JsonResult ProjDiscuss_sendComment(string projCode, string userCode, string comment)
         {
             ProjManageBLL bll = new ProjManageBLL();
-            return Json(bll.ProjDiscuss_sendComment(ProjCode, UserCode, Comment));
+            return Json(bll.ProjDiscuss_sendComment(projCode, userCode, comment));
         }
 
         //判断是否刷新 

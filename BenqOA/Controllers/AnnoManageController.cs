@@ -14,84 +14,125 @@ namespace BenqOA.Controllers
     [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
     public class AnnoManageController : Controller
     {
-        // GET: /AnnoManage/
         #region 公告管理
 
-        //发布公告页面
+        /// <summary>
+        /// 发布公告页面
+        /// </summary>
+        /// <returns></returns>
         public ActionResult PublishAnno()
         {
             User user = Session["userInfo"] as User;
-            ViewBag.UserCode = user.UserCode;
+            if (user != null) ViewBag.UserCode = user.UserCode;
 
             return View();
         }
 
-        //查询
-        public ActionResult PublishAnno_Query(string AnnounceTypeId,string AnnounceTitle,string BeginApplyDate,string EndApplyDate,int pageindex, int pagesize)
+        /// <summary>
+        /// 查询公告
+        /// </summary>
+        /// <param name="announceTypeId">公告类型id</param>
+        /// <param name="announceTitle">公告标题</param>
+        /// <param name="beginApplyDate">发布开始时间</param>
+        /// <param name="endApplyDate">发布结束时间</param>
+        /// <param name="pageindex">页索引</param>
+        /// <param name="pagesize">页大小</param>
+        /// <returns></returns>
+        public ActionResult PublishAnno_Query(string announceTypeId,string announceTitle,string beginApplyDate,string endApplyDate,int pageindex, int pagesize)
         {
             AnnoManageBLL bll = new AnnoManageBLL();
-            return Json(bll.PublishAnno_Query(AnnounceTypeId, AnnounceTitle, BeginApplyDate, EndApplyDate, pageindex, pagesize));
+            return Json(bll.PublishAnno_Query(announceTypeId, announceTitle, beginApplyDate, endApplyDate, pageindex, pagesize));
         }
 
-        //新增页面
-        public ActionResult PublishAnno_Add(string UserCode)
+        /// <summary>
+        /// 新增页面
+        /// </summary>
+        /// <param name="userCode">用户编号</param>
+        /// <returns></returns>
+        public ActionResult PublishAnno_Add(string userCode)
         {
-            ViewBag.UserCode = UserCode;
+            if (!string.IsNullOrWhiteSpace(userCode))
+            {
+                ViewBag.UserCode = userCode;
+            }
 
             return View();
         }
 
-        //新增-保存
+        /// <summary>
+        /// 新增公告-保存
+        /// </summary>
+        /// <param name="anno">公告实体</param>
+        /// <param name="userCode">用户编号</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateInput(false)] //设置传数据时不验证格式
-        public JsonResult PublishAnno_Add_Save(Announce Anno, string UserCode)
+        public JsonResult PublishAnno_Add_Save(Announce anno, string userCode)
         {
             //自动生成发布编号
-            Anno.AnnounceCode = GeneRandomNum.GetRanNum("A");
-            Anno.CreateUserCode = UserCode;
+            anno.AnnounceCode = GeneRandomNum.GetRanNum("A");
+            anno.CreateUserCode = userCode;
             AnnoManageBLL bll = new AnnoManageBLL();
 
-            return Json(bll.PublishAnno_Add_Save(Anno));
+            return Json(bll.PublishAnno_Add_Save(anno));
         }
 
-        //删除
-        public JsonResult PublishAnno_Del(string selectitems)
+        /// <summary>
+        /// 删除公告
+        /// </summary>
+        /// <param name="selectItems">选择的项</param>
+        /// <returns></returns>
+        public JsonResult PublishAnno_Del(string selectItems)
         {
             AnnoManageBLL bll = new AnnoManageBLL();
-            return Json(bll.PublishAnno_Del(selectitems));
+            return Json(bll.PublishAnno_Del(selectItems));
         }
 
-        //详细信息/编辑-页面
-        public ActionResult PublishAnno_Detail(string AnnounceCode, string pageaction)
+        /// <summary>
+        /// 详细信息/编辑-页面
+        /// </summary>
+        /// <param name="announceCode">公告编号</param>
+        /// <param name="pageAction">类型（查看，编辑）</param>
+        /// <returns></returns>
+        public ActionResult PublishAnno_Detail(string announceCode, string pageAction)
         {
             AnnoManageBLL bll = new AnnoManageBLL();
-            ViewBag.pageaction = pageaction;
-            ViewBag.AnnounceCode = AnnounceCode;
+            ViewBag.pageAction = pageAction;
+            ViewBag.announceCode = announceCode;
 
-            var model = bll.PublishAnno_Detail(AnnounceCode);
+            var model = bll.PublishAnno_Detail(announceCode);
             ViewBag.AnnounceContent = model.AnnounceContent;
 
             return View(model);
         }
 
 
-        //编辑-保存
+        /// <summary>
+        /// 编辑-保存
+        /// </summary>
+        /// <param name="announceCode">公告编号</param>
+        /// <param name="anno">公告实体</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateInput(false)] //设置传数据时不验证格式
-        public JsonResult PublishAnno_Edit_Save(string AnnounceCode, Announce Anno)
+        public JsonResult PublishAnno_Edit_Save(string announceCode, Announce anno)
         {
             //Anno.ModifyUserCode = UserCode; //修改者
-            Anno.AnnounceCode = AnnounceCode;
+            anno.AnnounceCode = announceCode;
 
             AnnoManageBLL bll = new AnnoManageBLL();
-            return Json(bll.PublishAnno_Edit_Save(Anno));
+            return Json(bll.PublishAnno_Edit_Save(anno));
         }
 
-        //发布
-        public JsonResult PublishAnno_Ok(string selectitems)
+        /// <summary>
+        /// 发布
+        /// </summary>
+        /// <param name="selectItems">选择的项</param>
+        /// <returns></returns>
+        public JsonResult PublishAnno_Ok(string selectItems)
         {
             AnnoManageBLL bll = new AnnoManageBLL();
-            return Json(bll.PublishAnno_Ok(selectitems));
+            return Json(bll.PublishAnno_Ok(selectItems));
         }
 
        

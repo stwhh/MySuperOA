@@ -14,6 +14,10 @@ namespace BenqOA.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// 首页
+        /// </summary>
+        /// <returns></returns>
         [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult Index()
         {
@@ -25,29 +29,40 @@ namespace BenqOA.Controllers
             return View(model);
         }
 
-        //查看公告信息页面
+        /// <summary>
+        /// 查看公告信息页面
+        /// </summary>
+        /// <param name="annocode">公告编号</param>
+        /// <returns></returns>
         [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
-        public ActionResult GetAnnoInfo(string Annocode)
+        public ActionResult GetAnnoInfo(string annocode)
         {
             BenqOAContext bqc = new BenqOAContext();
-            var model = bqc.Announces.Where(p => p.AnnounceCode == Annocode).ToList();
+            var model = bqc.Announces.Where(p => p.AnnounceCode == annocode).ToList();
             ViewBag.data = model;
 
             return View();
         }
 
-        //登录页面
-        public ActionResult Login(string LoginOff)
+        /// <summary>
+        /// 登录页面
+        /// </summary>
+        /// <param name="loginOff">是否注销</param>
+        /// <returns></returns>
+        public ActionResult Login(string loginOff)
         {
             //判断是否是注销
-            if (!string.IsNullOrEmpty(LoginOff))
+            if (!string.IsNullOrEmpty(loginOff))
             {
                 Session.Abandon();//清除缓存
             }
             return View();
         }
 
-        //获取验证码
+        /// <summary>
+        /// 获取验证码
+        /// </summary>
+        /// <returns></returns>
         public FileResult ValidationCode()
         {
             ValidateCodeHelper helper = new ValidateCodeHelper();
@@ -93,27 +108,34 @@ namespace BenqOA.Controllers
         //}
         #endregion
 
-        //登录
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="userCode">用户名</param>
+        /// <param name="userPwd">用户密码</param>
+        /// <param name="checkCode">验证码</param>
+        /// <returns></returns>
         [MyAuthorFilter(Roles = MyAuthorFilter.PublicRole)]
-        public ActionResult btnLogin(string UserCode, string userPwd, string CheckCode)
+        public ActionResult BtnLogin(string userCode, string userPwd, string checkCode)
         {
+            if (userPwd == null) throw new ArgumentNullException("userPwd");
             ResultModel<object> resultModel = new ResultModel<object>();
-            if (string.IsNullOrEmpty(CheckCode))
+            if (string.IsNullOrEmpty(checkCode))
             {
                 resultModel.ErrorCode = "00"; //00表示验证码为空
             }
-            else if (Session["ValidationCode"].ToString() != CheckCode)
+            else if (Session["ValidationCode"].ToString() != checkCode)
             {
                 resultModel.ErrorCode = "11"; //11表示验证码错误
             }
             else
             {
                 BenqOAContext bqc = new BenqOAContext();  //实例化上下文类
-                SysManageBLL bll = new SysManageBLL();
-                ViewBag.UserCode = UserCode;
+                SysManageBll bll = new SysManageBll();
+                ViewBag.UserCode = userCode;
 
                 //查询该用户解密后的密码与填写密码比较
-                if (bqc.Users.FirstOrDefault(p => p.UserCode == UserCode) == null)
+                if (bqc.Users.FirstOrDefault(p => p.UserCode == userCode) == null)
                 {
                     resultModel.ErrorCode = "1"; //0表示没错
                 }
@@ -121,27 +143,27 @@ namespace BenqOA.Controllers
                 {
                     try
                     {
-                        var pwd = EncryptAndDecrypt.DecryptDES(bqc.Users.First(p => p.UserCode == UserCode).UserPwd, "stwhh123");
-                        if (userPwd == pwd.ToString())
+                        var pwd = EncryptAndDecrypt.DecryptDES(bqc.Users.First(p => p.UserCode == userCode).UserPwd, "stwhh123");
+                        if (userPwd == pwd)
                         {
                             resultModel.ErrorCode = "0"; //0表示没错
                             resultModel.Message = "";
-                            var userInfo = bqc.Users.FirstOrDefault(p => p.UserCode == UserCode);
+                            var userInfo = bqc.Users.FirstOrDefault(p => p.UserCode == userCode);
                             Session["userInfo"] = userInfo;  //登录后保存session
                             //User u = Session["userInfo"] as User;
                             //string userName= u.UserName;
 
                             //根据用户编号查询角色编号
-                            List<object> RoleCodes = bll.GetUserRoleByUserCode(UserCode);
+                            List<object> roleCodes = bll.GetUserRoleByUserCode(userCode);
 
                             //根绝角色编号查权限编号
-                            List<object> PermCodes = bll.GetPermCodeByRoleCode(RoleCodes);
+                            List<object> permCodes = bll.GetPermCodeByRoleCode(roleCodes);
 
                             //根据权限编号查权限信息
-                            List<Permisson> PermInfo = bll.GetPermInfoByRoleCode(PermCodes);
+                            List<Permisson> permInfo = bll.GetPermInfoByRoleCode(permCodes);
 
                             //保存菜单权限信息  //Session["NavInfo"] = bqc.Permissons.OrderBy(m => m.PermSeq).ToList();//保存菜单权限信息
-                            Session["NavInfo"] = PermInfo;
+                            Session["NavInfo"] = permInfo;
                         }
                         else
                         {
@@ -173,18 +195,24 @@ namespace BenqOA.Controllers
             return View();
         }
 
-        //修改密码-保存
-        public ActionResult ChangePassword_Save(string UserCode, string OldPassword, string NewPassword)
+        /// <summary>
+        /// 修改密码-保存
+        /// </summary>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="oldPassword">旧密码</param>
+        /// <param name="newPassword">新密码</param>
+        /// <returns></returns>
+        public ActionResult ChangePassword_Save(string userCode, string oldPassword, string newPassword)
         {
             ResultModel<object> resultModel = new ResultModel<object>();
             BenqOAContext bqc = new BenqOAContext();
-            User user = bqc.Users.Where(p => p.UserCode == UserCode).FirstOrDefault();
+            User user = bqc.Users.Where(p => p.UserCode == userCode).FirstOrDefault();
             //把用户输入的旧密码加密后和原密码比较
-            var inputUserOldPwd = EncryptAndDecrypt.EncryptDES(OldPassword, "stwhh123");
+            var inputUserOldPwd = EncryptAndDecrypt.EncryptDES(oldPassword, "stwhh123");
             if (user.UserPwd == inputUserOldPwd)
             {
                 //修改原密码
-                user.UserPwd = EncryptAndDecrypt.EncryptDES(NewPassword, "stwhh123");
+                user.UserPwd = EncryptAndDecrypt.EncryptDES(newPassword, "stwhh123");
                 bqc.SaveChanges();
                 resultModel.ErrorCode = "0";
             }

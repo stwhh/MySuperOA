@@ -17,7 +17,10 @@ namespace DAL
         //引用上下文类
         BenqOAContext bqc = new BenqOAContext();
 
-        //性别下拉框 ResultModel中Data 参数类型是SelectListItem[]类型
+        /// <summary>
+        /// 性别下拉框 ResultModel中Data 参数类型是SelectListItem[]类型
+        /// </summary>
+        /// <returns></returns>
         public ResultModel<SelectListItem[]> GetSexInfo()
         {
             //必须引用EF程序集
@@ -47,7 +50,10 @@ namespace DAL
             return resultModel;
         }
 
-        //职位下拉框
+        /// <summary>
+        /// 职位下拉框
+        /// </summary>
+        /// <returns></returns>
         public ResultModel<SelectListItem[]> GetPosiInfo()
         {
             var list = bqc.Positions.ToList();
@@ -78,7 +84,10 @@ namespace DAL
             return resultModel;
         }
 
-        //部门下拉框
+        /// <summary>
+        /// 部门下拉框
+        /// </summary>
+        /// <returns></returns>
         public ResultModel<SelectListItem[]> GetDepInfo()
         {
             var list = bqc.Departments.ToList();
@@ -109,7 +118,10 @@ namespace DAL
             return resultModel;
         }
 
-        //角色下拉框
+        /// <summary>
+        /// 角色下拉框
+        /// </summary>
+        /// <returns></returns>
         public ResultModel<SelectListItem[]> GetRoleInfo()
         {
             var list = bqc.Roles.ToList();
@@ -140,7 +152,10 @@ namespace DAL
             return resultModel;
         }
 
-        //获取角色为部门经理的所有用户
+        /// <summary>
+        /// 获取角色为部门经理的所有用户
+        /// </summary>
+        /// <returns></returns>
         public ResultModel<SelectListItem[]> GetPMUserCode()
         {
 
@@ -172,7 +187,10 @@ namespace DAL
             return resultModel;
         }
 
-        //请假类型
+        /// <summary>
+        /// 请假类型
+        /// </summary>
+        /// <returns></returns>
         public ResultModel<SelectListItem[]> GetLeaveType()
         {
             var list = bqc.AskForLeaveTypes.ToList();
@@ -203,7 +221,10 @@ namespace DAL
             return resultModel;
         }
 
-        //公告类型
+        /// <summary>
+        /// 公告类型
+        /// </summary>
+        /// <returns></returns>
         public ResultModel<SelectListItem[]> GetAnnoType()
         {
             var lists = bqc.AnnounceTypes.ToList();
@@ -235,7 +256,10 @@ namespace DAL
             return resultModel;
         }
 
-        //文件类型
+        /// <summary>
+        /// 文件类型
+        /// </summary>
+        /// <returns></returns>
         public ResultModel<SelectListItem[]> GetFileType()
         {
             var lists = bqc.FileTypes.ToList();
@@ -267,27 +291,38 @@ namespace DAL
             return resultModel;
         }
 
-        //根据请假类型ID获取请假类型名
-        public string GetLeaveNameById(int Id)
+        /// <summary>
+        /// 根据请假类型ID获取请假类型名
+        /// </summary>
+        /// <param name="id">请假类型ID</param>
+        /// <returns></returns>
+        public string GetLeaveNameById(int id)
         {
-            var list = bqc.AskForLeaveTypes.Where(p => p.TypeId == Id).FirstOrDefault();
+            var list = bqc.AskForLeaveTypes.Where(p => p.TypeId == id).FirstOrDefault();
             return list.TypeName;
         }
 
-        //获取当前登录的用户
+        /// <summary>
+        /// 获取当前登录的用户
+        /// </summary>
+        /// <returns></returns>
         public string GetLoginUser()
         {
             User loginUser = HttpContext.Current.Session["userInfo"] as User;
             return loginUser.UserCode;
         }
 
-        //把kendo日期控件20150213的格式转换成2015-02-13格式
-        public string ExchangeDate(string StringDate)
+        /// <summary>
+        /// 把kendo日期控件20150213的格式转换成2015-02-13格式
+        /// </summary>
+        /// <param name="stringDate">日期</param>
+        /// <returns></returns>
+        public string ExchangeDate(string stringDate)
         {
             string exchangeDate = null;
-            if (!string.IsNullOrEmpty(StringDate))
+            if (!string.IsNullOrEmpty(stringDate))
             {
-                exchangeDate=StringDate.Substring(0, 4) + '-' + StringDate.Substring(4, 2) + '-' + StringDate.Substring(6, 2);
+                exchangeDate=stringDate.Substring(0, 4) + '-' + stringDate.Substring(4, 2) + '-' + stringDate.Substring(6, 2);
             }
 
             return exchangeDate;

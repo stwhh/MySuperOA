@@ -111,7 +111,7 @@
         if (IsValidated($('#form1'))) {
             $.ajax({
                 type: 'post',
-                url: '@Url.Action("btnLogin", "Home")',
+                url: '@Url.Action("BtnLogin", "Home")',
                 contentType: 'application/json',
                 dataType: 'json',
                 data: ko.toJSON(viewmodel),

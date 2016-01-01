@@ -13,32 +13,32 @@ namespace BLL
     {
         #region 文件管理
         /// <summary>
-        /// 查询
+        /// 查询共享文件
         /// </summary>
-        /// <param name="FileType"></param>
-        /// <param name="FileName"></param>
-        /// <param name="CreateUserCode"></param>
-        /// <param name="BeginApplyDate"></param>
-        /// <param name="EndApplyDate"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="fileType">文件类型</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="createUserCode">创建人编号</param>
+        /// <param name="beginApplyDate">开始申请日期</param>
+        /// <param name="endApplyDate">结束申请日期</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> FileManage_Query(string FileType, string FileName, string CreateUserCode, string BeginApplyDate, string EndApplyDate, int pageindex, int pagesize)
+        public ResultModel<object> FileManage_Query(string fileType, string fileName, string createUserCode, string beginApplyDate, string endApplyDate, int pageindex, int pagesize)
         {
             FileManageDAL dal = new FileManageDAL();
-            return dal.FileManage_Query(FileType, FileName, CreateUserCode, BeginApplyDate, EndApplyDate, pageindex, pagesize);
+            return dal.FileManage_Query(fileType, fileName, createUserCode, beginApplyDate, endApplyDate, pageindex, pagesize);
         }
 
 
         /// <summary>
         /// 删除文件
         /// </summary>
-        /// <param name="FileCode"></param>
+        /// <param name="fileCode">文件编号</param>
         /// <returns></returns>
-        public ResultModel<object> FileManage_Del(string FileCode)
+        public ResultModel<object> FileManage_Del(string fileCode)
         {
             FileManageDAL dal = new FileManageDAL();
-            return dal.FileManage_Del(FileCode);
+            return dal.FileManage_Del(fileCode);
 
         }
         #endregion

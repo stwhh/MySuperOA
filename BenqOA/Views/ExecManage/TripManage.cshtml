@@ -40,42 +40,50 @@
     function Init() {
         //自定义列
         var columns = [
-        //{
-        //    headerTemplate: '删除',
-        //    width: '30px',
-        //    template: '<div class="iconcolor" onclick="Del(\'#=UserCode#\')"><i class="icon-remove"></i></div>'
-        //},
-        {
-            headerTemplate: '查看',
-            width: '30px',
-            template: '<div class="iconcolor" onclick="ShowDetail(\'#=TripCode#\')"><i class="icon-search"></i></div>'
-        },
-        //{
-        //    headerTemplate: '编辑',
-        //    width: '30px',
-        //    template: '<div class="iconcolor" onclick="ShowDetail(\'#=UserCode#\',\'edit\')"><i class="icon-edit"></i></div>'
-        //},
-        { field: 'TripCode', title: '出差单编号', width: '50px' },  //出差单编号
-        { field: 'TripContent', title: '主题内容', width: '50px' }, //出差单内容
-        {
-            field: 'ApplyDate', title: '申请时间', width: '50px', template: function (value) {  //申请时间
-                return kendo.toString(kendo.parseDate(value.ApplyDate), "yyyy-MM-dd")
-            }
-        },
-        {
-            field: 'BeginDate', title: '出差开始日期', width: '50px', template: function (value) {  //出差开始日期
-                return kendo.toString(kendo.parseDate(value.BeginDate), "yyyy-MM-dd")
-            }
-        },
-        {
-            field: 'EndDate', title: '出差结束日期', width: '50px', template: function (value) { //出差结束日期
-                return kendo.toString(kendo.parseDate(value.EndDate), "yyyy-MM-dd")
-            }
-        },  
-        { field: 'Destination', title: '目的地', width: '50px' },  //目的地
-
-        { field: 'Status', title: '状态', width: '50px' },  //状态
-        ]
+            //{
+            //    headerTemplate: '删除',
+            //    width: '30px',
+            //    template: '<div class="iconcolor" onclick="Del(\'#=UserCode#\')"><i class="icon-remove"></i></div>'
+            //},
+            {
+                headerTemplate: '查看',
+                width: '30px',
+                template: '<div class="iconcolor" onclick="ShowDetail(\'#=TripCode#\')"><i class="icon-search"></i></div>'
+            },
+            //{
+            //    headerTemplate: '编辑',
+            //    width: '30px',
+            //    template: '<div class="iconcolor" onclick="ShowDetail(\'#=UserCode#\',\'edit\')"><i class="icon-edit"></i></div>'
+            //},
+            { field: 'TripCode', title: '出差单编号', width: '50px' }, //出差单编号
+            { field: 'TripContent', title: '主题内容', width: '50px' }, //出差单内容
+            {
+                field: 'ApplyDate',
+                title: '申请时间',
+                width: '50px',
+                template: function(value) { //申请时间
+                    return kendo.toString(kendo.parseDate(value.ApplyDate), "yyyy-MM-dd")
+                }
+            },
+            {
+                field: 'BeginDate',
+                title: '出差开始日期',
+                width: '50px',
+                template: function(value) { //出差开始日期
+                    return kendo.toString(kendo.parseDate(value.BeginDate), "yyyy-MM-dd")
+                }
+            },
+            {
+                field: 'EndDate',
+                title: '出差结束日期',
+                width: '50px',
+                template: function(value) { //出差结束日期
+                    return kendo.toString(kendo.parseDate(value.EndDate), "yyyy-MM-dd")
+                }
+            },
+            { field: 'Destination', title: '目的地', width: '50px' }, //目的地
+            { field: 'Status', title: '状态', width: '50px' } //状态
+        ];
 
         //绑定上面对应的data-bind
         queryModel = {

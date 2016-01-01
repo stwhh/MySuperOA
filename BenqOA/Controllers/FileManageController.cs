@@ -14,42 +14,57 @@ namespace BenqOA.Controllers
     [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
     public class FileManageController : Controller
     {
-        //
-        // GET: /File/
 
-        //public ActionResult FileManage()
-        //{
-        //    return View();
-        //}
-
-        //共享文件
+        /// <summary>
+        /// 共享文件页面
+        /// </summary>
+        /// <returns></returns>
         public ActionResult SharedFile()
         {
             User user = Session["userInfo"] as User;
-            ViewBag.UserCode = user.UserCode;
+            if (user != null) ViewBag.UserCode = user.UserCode;
 
             return View();
         }
 
-        //查询
-        public ActionResult FileManage_Query(string FileType, string FileName, string CreateUserCode, string BeginApplyDate, string EndApplyDate, int pageindex, int pagesize)
+        /// <summary>
+        /// 查询共享文件
+        /// </summary>
+        /// <param name="fileType">文件类型</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="createUserCode">创建人编号</param>
+        /// <param name="beginApplyDate">开始申请日期</param>
+        /// <param name="endApplyDate">结束申请日期</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
+        /// <returns></returns>
+        public ActionResult FileManage_Query(string fileType, string fileName, string createUserCode, string beginApplyDate, string endApplyDate, int pageindex, int pagesize)
         {
             FileManageBLL bll = new FileManageBLL();
-            return Json(bll.FileManage_Query(FileType, FileName, CreateUserCode, BeginApplyDate, EndApplyDate, pageindex, pagesize));
+            return Json(bll.FileManage_Query(fileType, fileName, createUserCode, beginApplyDate, endApplyDate, pageindex, pagesize));
 
         }
 
-        //上传文件界面
-        public ActionResult UploadFiles(string UserCode)
+        /// <summary>
+        /// 上传文件界面
+        /// </summary>
+        /// <param name="userCode">用户编号</param>
+        /// <returns></returns>
+        public ActionResult UploadFiles(string userCode)
         {
-            ViewBag.UserCode = UserCode;
+            ViewBag.UserCode = userCode;
             //获取上传文件最大值
             ViewBag.UploadFilesMaxFileSize = System.Configuration.ConfigurationManager.AppSettings["UploadFilesMaxFileSize"];
             return View();
         }
 
-        //保存上传文件
-        public JsonResult UploadFiles_Save(string UserCode, string FileType)
+        /// <summary>
+        /// 保存上次文件
+        /// </summary>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="fileType">文件类型</param>
+        /// <returns></returns>
+        public JsonResult UploadFiles_Save(string userCode, string fileType)
         {
             var resultModel = new ResultModel<object>();
             BenqOAContext bqc = new BenqOAContext();
@@ -80,7 +95,7 @@ namespace BenqOA.Controllers
                     file.FileType = "FT001";
                     //file.FilePath = System.IO.Path.Combine(filePath, uploadFile.FileName); //保存文件的绝对路径
                     file.FilePath = filePath;
-                    file.CreateUserCode = UserCode;
+                    file.CreateUserCode = userCode;
                     file.CreateTime = DateTime.Now;
 
                     bqc.Files.Add(file);
@@ -100,24 +115,33 @@ namespace BenqOA.Controllers
             return Json(resultModel);
         }
 
-        //删除文件
-        public JsonResult FileManage_Del(string FileCode)
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="fileCode">文件编号</param>
+        /// <returns></returns>
+        public JsonResult FileManage_Del(string fileCode)
         {
             FileManageBLL bll = new FileManageBLL();
-            return Json(bll.FileManage_Del(FileCode));
+            return Json(bll.FileManage_Del(fileCode));
         }
 
-        //下载文件
-        public FileStreamResult DownloadFile(string FileCode,string FileName)
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="fileCode">文件编号</param>
+        /// <param name="fileName">文件名</param>
+        /// <returns></returns>
+        public FileStreamResult DownloadFile(string fileCode,string fileName)
         {
             //根据文件编号获取文件路径
             BenqOAContext bqc = new BenqOAContext();
-            var FilePath = bqc.Files.Where(p => p.FileCode == FileCode).Select(p => p.FilePath).First();
+            var filePath = bqc.Files.Where(p => p.FileCode == fileCode).Select(p => p.FilePath).First();
 
             //1.根据文件路径和名称获取文件绝对路径的方法
-            string absolutePathName = System.IO.Path.Combine(FilePath, FileName);
+            string absolutePathName = System.IO.Path.Combine(filePath, fileName);
             //2.保存 application/octet-stream .*（ 二进制流，不知道下载文件类型）
-            return File(new System.IO.FileStream(absolutePathName, System.IO.FileMode.Open), "application/octet-stream", FileName); //Server.UrlEncode(FileName)
+            return File(new System.IO.FileStream(absolutePathName, System.IO.FileMode.Open), "application/octet-stream", fileName); //Server.UrlEncode(FileName)
         }
 
     }

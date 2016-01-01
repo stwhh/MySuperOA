@@ -14,53 +14,77 @@ namespace BenqOA.Controllers
     public class CommonController:Controller
     {
         //公有方法
-        // GET: /Common/
 
         CommonDataBLL bll = new CommonDataBLL();
-        //获取性别
+
+        /// <summary>
+        /// 获取性别
+        /// </summary>
+        /// <returns></returns>
         public JsonResult GetSexInfo()
         {
             return Json(bll.GetSexInfo());
         }
 
-        //获取职位
+        /// <summary>
+        /// 获取职位
+        /// </summary>
+        /// <returns></returns>
         public JsonResult GetPosiInfo()
         {
             return Json(bll.GetPosiInfo());
         }
 
-        //获取部门
+        /// <summary>
+        /// 获取部门
+        /// </summary>
+        /// <returns></returns>
         public JsonResult GetDepInfo()
         {
             return Json(bll.GetDepInfo());
         }
 
-        //获取角色
+        /// <summary>
+        /// 获取角色
+        /// </summary>
+        /// <returns></returns>
         public JsonResult GetRoleInfo()
         {
             return Json(bll.GetRoleInfo());
         }
 
-        //获取角色为部门经理的所有用户
-        public JsonResult GetPMUserCode()
+        /// <summary>
+        /// 获取角色为部门经理的所有用户
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetPmUserCode()
         {
             CommonDataBLL bll = new CommonDataBLL();
             return Json(bll.GetPMUserCode());
         }
 
-        //获取请假类型
+        /// <summary>
+        /// 获取请假类型
+        /// </summary>
+        /// <returns></returns>
         public JsonResult GetLeaveType()
         {
             return Json(bll.GetLeaveType());
         }
 
-        //获取公告类型
+        /// <summary>
+        /// 获取公告类型
+        /// </summary>
+        /// <returns></returns>
         public JsonResult GetAnnoType()
         {
             return Json(bll.GetAnnoType());
         }
 
-        //文件类型
+        /// <summary>
+        /// 文件类型
+        /// </summary>
+        /// <returns></returns>
         public JsonResult GetFileType()
         {
             CommonDataBLL bll = new CommonDataBLL();

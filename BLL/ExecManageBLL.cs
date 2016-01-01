@@ -13,27 +13,30 @@ namespace BLL
     public class ExecManageBLL
     {
         #region 出差管理
+
         /// <summary>
         /// 出差申请单查询
         /// </summary>
-        /// <param name="UserCode"></param>
-        /// <param name="TripCode"></param>
-        /// <param name="TripContent"></param>
-        /// <param name="ApplyDate"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="tripCode">出差编号</param>
+        /// <param name="tripContent">出差内容</param>
+        /// <param name="beginApplyDate">出差开始日期</param>
+        /// <param name="endApplyDate">出差结束日期</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> TripManage_Query(string UserCode, string TripCode, string TripContent, string BeginApplyDate, string EndApplyDate, int pageindex, int pagesize)
+        public ResultModel<object> TripManage_Query(string userCode, string tripCode, string tripContent, string beginApplyDate, string endApplyDate, int pageindex, int pagesize)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.TripManage_Query(UserCode, TripCode, TripContent, BeginApplyDate, EndApplyDate, pageindex, pagesize);
+            return dal.TripManage_Query(userCode, tripCode, tripContent, beginApplyDate, endApplyDate, pageindex, pagesize);
         }
 
 
         /// <summary>
         /// 新增出差申请单-保存
         /// </summary>
-        /// <param name="trip"></param>
+        /// <param name="trip">出差实体</param>
+        /// <param name="userCode">用户编号</param>
         /// <returns></returns>
         public ResultModel<object> TripManage_Add_Save(Trip trip, string userCode)
         {
@@ -45,113 +48,117 @@ namespace BLL
         /// <summary>
         /// 查看出差单详情页面
         /// </summary>
-        /// <param name="TripCode"></param>
+        /// <param name="tripCode">出差编号</param>
         /// <returns></returns>
-        public Trip TripManage_Detail(string TripCode)
+        public Trip TripManage_Detail(string tripCode)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.TripManage_Detail(TripCode);
+            return dal.TripManage_Detail(tripCode);
         }
         #endregion
 
 
         #region 报销管理
+
         /// <summary>
         /// 报销管理-查询
         /// </summary>
-        /// <param name="ReimCode"></param>
-        /// <param name="RealName"></param>
-        /// <param name="BeginApplyDate"></param>
-        /// <param name="EndApplyDate"></param>
-        /// <param name="userCode"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="reimCode">报销编号</param>
+        /// <param name="reimContent">报销说明</param>
+        /// <param name="beginApplyDate">开始日期</param>
+        /// <param name="endApplyDate">结束日期</param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> ReimManage_Query(string ReimCode, string ReimContent, string BeginApplyDate, string EndApplyDate, string UserCode, int pageindex, int pagesize)
+        public ResultModel<object> ReimManage_Query(string reimCode, string reimContent, string beginApplyDate, string endApplyDate, string userCode, int pageindex, int pagesize)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.ReimManage_Query(ReimCode, ReimContent, BeginApplyDate, EndApplyDate, UserCode, pageindex, pagesize);
+            return dal.ReimManage_Query(reimCode, reimContent, beginApplyDate, endApplyDate, userCode, pageindex, pagesize);
         }
 
 
         /// <summary>
         /// 报销管理-新增-查询已审批的出差单(只有审批通过的出差单才能报销)
         /// </summary>
-        /// <param name="UserCode"></param>
-        /// <param name="TripContent"></param>
-        /// <param name="BeginApplyDate"></param>
-        /// <param name="EndApplyDate"></param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="tripContent">出差内容</param>
+        /// <param name="beginApplyDate">开始日期</param>
+        /// <param name="endApplyDate">结束日期</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> ReimManage_QueryTrip(string UserCode, string TripContent, string BeginApplyDate, string EndApplyDate, int pageindex, int pagesize)
+        public ResultModel<object> ReimManage_QueryTrip(string userCode, string tripContent, string beginApplyDate, string endApplyDate, int pageindex, int pagesize)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.ReimManage_QueryTrip(UserCode, TripContent, BeginApplyDate, EndApplyDate, pageindex, pagesize);
+            return dal.ReimManage_QueryTrip(userCode, tripContent, beginApplyDate, endApplyDate, pageindex, pagesize);
         }
 
 
         /// <summary>
         /// 报销管理-根据出差单号新增报销单||根据出差单编号查询出差信息
         /// </summary>
-        /// <param name="TripCode"></param>
+        /// <param name="tripCode">出差编号</param>
         /// <returns></returns>
-        public Trip ReimManage_AddByTripCode(string TripCode)
+        public Trip ReimManage_AddByTripCode(string tripCode)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.ReimManage_AddByTripCode(TripCode);
+            return dal.ReimManage_AddByTripCode(tripCode);
         }
 
 
         /// <summary>
         /// 确认申请报销
         /// </summary>
-        /// <param name="userCode"></param>
-        /// <param name="trip"></param>
-        /// <param name="reim"></param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="trip">出差实体</param>
+        /// <param name="reim">报销实体</param>
         /// <returns></returns>
-        public ResultModel<object> ReimManage_Add_Save(string UserCode, Trip trip, Reim reim)
+        public ResultModel<object> ReimManage_Add_Save(string userCode, Trip trip, Reim reim)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.ReimManage_Add_Save(UserCode, trip, reim);
+            return dal.ReimManage_Add_Save(userCode, trip, reim);
         }
 
 
         /// <summary>
         /// 报销管理-查看详情
         /// </summary>
-        /// <param name="ReimCode"></param>
+        /// <param name="reimCode">报销编号</param>
         /// <returns></returns>
-        public Reim ReimManage_Detail(string ReimCode)
+        public Reim ReimManage_Detail(string reimCode)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.ReimManage_Detail(ReimCode);
+            return dal.ReimManage_Detail(reimCode);
         }
         #endregion
 
 
         #region 请假管理
+
         /// <summary>
         /// 请假管理-查询
         /// </summary>
-        /// <param name="AskForLeaveCode"></param>
-        /// <param name="Reson"></param>
-        /// <param name="BeginApplyDate"></param>
-        /// <param name="EndApplyDate"></param>
-        /// <param name="UserCode"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="askForLeaveCode">请假编号</param>
+        /// <param name="reason">请假原因</param>
+        /// <param name="beginApplyDate">开始申请时间</param>
+        /// <param name="endApplyDate">结束申请时间</param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> LeaveManage_Query(string AskForLeaveCode, string Reason, string BeginApplyDate, string EndApplyDate, string UserCode, int pageindex, int pagesize)
+        public ResultModel<object> LeaveManage_Query(string askForLeaveCode, string reason, string beginApplyDate, string endApplyDate, string userCode, int pageindex, int pagesize)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.LeaveManage_Query(AskForLeaveCode, Reason, BeginApplyDate, EndApplyDate, UserCode, pageindex, pagesize);
+            return dal.LeaveManage_Query(askForLeaveCode, reason, beginApplyDate, endApplyDate, userCode, pageindex, pagesize);
         }
 
 
         /// <summary>
         /// 请假管理-新增-保存
         /// </summary>
-        /// <param name="leave"></param>
-        /// <param name="userCode"></param>
+        /// <param name="leave">请假实体</param>
+        /// <param name="userCode">用户编号</param>
         /// <returns></returns>
         public ResultModel<object> LeaveManage_Add_Save(AskForLeave leave, string userCode)
         {
@@ -163,56 +170,57 @@ namespace BLL
         /// <summary>
         /// 请假管理-查看详细信息
         /// </summary>
-        /// <param name="AskForLeaveCode"></param>
+        /// <param name="askForLeaveCode">请假实体</param>
         /// <returns></returns>
-        public AskForLeave LeaveManage_Detail(string AskForLeaveCode)
+        public AskForLeave LeaveManage_Detail(string askForLeaveCode)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.LeaveManage_Detail(AskForLeaveCode);
+            return dal.LeaveManage_Detail(askForLeaveCode);
         }
 
         #endregion
 
          
         #region 待我审批
+
         /// <summary>
         /// 待我审批-查询
         /// </summary>
-        /// <param name="ApplyCode"></param>
-        /// <param name="RealName"></param>
-        /// <param name="BeginApplyDate"></param>
-        /// <param name="EndApplyDate"></param>
-        /// <param name="pageindex"></param>
-        /// <param name="pagesize"></param>
+        /// <param name="applyCode">申请编号</param>
+        /// <param name="userCode">用户编号</param>
+        /// <param name="beginApplyDate">开始审批时间</param>
+        /// <param name="endApplyDate">结束申请时间</param>
+        /// <param name="pageindex">页面索引</param>
+        /// <param name="pagesize">每页记录数</param>
         /// <returns></returns>
-        public ResultModel<object> WaitingApprove_Query(string ApplyCode, string UserCode, string BeginApplyDate, string EndApplyDate, int pageindex, int pagesize)
+        public ResultModel<object> WaitingApprove_Query(string applyCode, string userCode, string beginApplyDate, string endApplyDate, int pageindex, int pagesize)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.WaitingApprove_Query(ApplyCode, UserCode, BeginApplyDate, EndApplyDate, pageindex, pagesize);
+            return dal.WaitingApprove_Query(applyCode, userCode, beginApplyDate, endApplyDate, pageindex, pagesize);
         }
 
 
         /// <summary>
         /// 待我审批-审批通过
         /// </summary>
-        /// <param name="ApplyCode"></param>
+        /// <param name="applyCodes">审批选中项集合</param>
         /// <returns></returns>
-        public ResultModel<object> WaitingApprove_Pass(string[] ApplyCodes)
+        public ResultModel<object> WaitingApprove_Pass(string[] applyCodes)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.WaitingApprove_Pass(ApplyCodes);
+            return dal.WaitingApprove_Pass(applyCodes);
         }
 
 
         /// <summary>
         /// 待我审批-审批拒绝
         /// </summary>
-        /// <param name="ApplyCode"></param>
+        /// <param name="applyCodes">选中项</param>
         /// <returns></returns>
-        public ResultModel<object> WaitingApprove_Reject(string[] ApplyCodes)
+        public ResultModel<object> WaitingApprove_Reject(string[] applyCodes)
         {
             ExecManageDAL dal = new ExecManageDAL();
-            return dal.WaitingApprove_Reject(ApplyCodes);
+            return dal.WaitingApprove_Reject(applyCodes);
         }
         #endregion
     }

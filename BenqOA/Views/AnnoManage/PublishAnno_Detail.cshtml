@@ -36,7 +36,7 @@
 <script type="text/javascript">
     var viewModel;
     function Init() {
-        if ('@ViewBag.pageaction' == 'view') {
+        if ('@ViewBag.pageAction' == 'view') {
             $('input').attr("readonly", true);
             $('textarea').attr("readonly", true);
             $('button').hide();
@@ -64,7 +64,7 @@
     //保存-修改
     function Edit() {
         $.ajax({
-            url: '/AnnoManage/PublishAnno_Edit_Save' + '?AnnounceCode=' + '@ViewBag.AnnounceCode',
+            url: '/AnnoManage/PublishAnno_Edit_Save' + '?AnnounceCode=' + '@ViewBag.announceCode',
             type: 'post',
             //dataType: 'json',
             //contentType: 'application/json',
