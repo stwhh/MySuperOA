@@ -18,8 +18,13 @@
     @Scripts.Render("~/Scripts/knockout")
     @Scripts.Render("~/Scripts/kendo")
     @Scripts.Render("~/Scripts/jqueryvalidate")
+
     <link href="~/Content/Login.css" rel="stylesheet" />
-    <link href="~/Content/Validate.css" rel="stylesheet" />
+    <link href="~/Content/Validate.css" rel="stylesheet"/>
+
+    <script src="~/Content/sweetalert/sweetalert.min.js"></script>
+    <link href="~/Content/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="~/Content/images/biaoqian.ico" type="image/x-icon" />
     @*@Styles.Render("~/Content/kendo")*@
 </head>
 <body>
@@ -36,11 +41,11 @@
                         </div>
                         <div class="form-group1">
                             <label  class="login-text">密码</label>
-                            <input type="password" name="userPwd" class="form-control" data-bind="value:userPwd" placeholder="密码" />
+                            <input type="password" id="UserPwd" name="UserPwd" class="form-control" data-bind="value:UserPwd" placeholder="密码" />
                         </div>
                         <div class="form-group1">
                             <label  class="login-text">验证码</label>
-                            <input type="text" name="CheckCode" class="form-control" data-bind="value:CheckCode" style="width:30%" placeholder="验证码" />
+                            <input type="text" id="CheckCode" name="CheckCode" class="form-control" data-bind="value:CheckCode" style="width:30%" placeholder="验证码" />
                              <img src="@Url.Action("ValidationCode")" id="ImgValiCode" onclick="RefreshCode();" style="cursor:pointer; height:30px;">
                             <a style="color: #fff; line-height:34px; " href="javascript:()" onclick="RefreshCode();">换一个</a>
                         </div>
@@ -62,10 +67,18 @@
 <script type="text/javascript">
     var viewmodel;
     $(function () {
+        $("input").keydown(function (event) {  //$(window) 在整个页面按回车都会触发事件
+            switch (event.keyCode) {
+            case 13:     //回车键登录
+                btnLogin();
+            default:
+            }
+        });
+
         viewmodel = {
             "UserCode": ko.observable(''),
-            "userPwd": ko.observable(''),
-            "CheckCode":ko.observable(),
+            "UserPwd": ko.observable(''),
+            "CheckCode":ko.observable()
         }
 
         ko.applyBindings(viewmodel);
@@ -76,22 +89,29 @@
                 UserCode: {  //对应的name,不是ID
                     required: true
                 },
-                userPwd: {  //对应的name,不是ID
-                    required: true,
+                UserPwd: {  //对应的name,不是ID
+                    required: true
                     //remote: "/Home/CheckUserPwd?UserCode=" + $('#UserCode').value //验证用户密码是否正确 //该验证放在UserPwd上，所以后台会自动获取UserPwd的值
                 }
+                //CheckCode: {
+                //    required: true,
+                //    remote: "/Home/BtnLogin" //验证验证码是否正确
+                //}
 
             },
             messages: {
                 UserCode: {
                     required: "用户名不能为空"
                 },
-                userPwd: {
-                    required: "密码不能为空",
-                    //remote: "用户名或密码不正确"
+                UserPwd: {
+                    required: "密码不能为空"
                 }
+                //CheckCode: {
+                //    required: "验证码不能为空",
+                //    remote: "验证码错误"
+                //}
             }
-        })
+        });
     });
 
     //2.验证当前form下所有输入值是否合法
@@ -109,33 +129,46 @@
     //3.登录
     function btnLogin() {
         if (IsValidated($('#form1'))) {
+            $("input").blur(); //清除当前焦点，否则在输入框直接回车时获取不到input最新的值
             $.ajax({
                 type: 'post',
                 url: '@Url.Action("BtnLogin", "Home")',
                 contentType: 'application/json',
                 dataType: 'json',
                 data: ko.toJSON(viewmodel),
-                success: function (obj) {
-                    if (obj.ErrorCode == "00")
-                    {
-                        alert("验证码不能为空");
-                    }
-                    else if (obj.ErrorCode == "11")
-                    {
-                        alert("验证码错误");
+                success: function(obj) {
+                    if (obj.ErrorCode == "00") {
+                        SweetAlert("验证码不能为空");
+                        //$("#CheckCode").val("");
+                    } else if (obj.ErrorCode == "11") {
+                        SweetAlert("验证码错误");
+                        //$("#CheckCode").val("");
                         RefreshCode();
-                    }
-                    else if (obj.ErrorCode == "0") {
+                    } else if (obj.ErrorCode == "0") {
                         //alert('登录成功')
-                        window.location.href = '@Url.Action("Index", "Home")'
-                    }
-                    else {
-                        alert('用户名或密码错误')
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    } else {
+                        SweetAlert("用户名或密码错误");
+                        $("#UserPwd").val("");
                     }
                 }
-            })
+            });
         }
     }
+
+    function SweetAlert(msg, flag) {
+        //swal(msg, "点击确定重新输入!", "error");
+        swal({
+            title: msg,
+            text: "点击确定重新输入!",
+            type: "error",
+            showCancelButton: false,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定",
+            closeOnConfirm: true
+        });
+    }
+
 
     //刷新验证码
     function RefreshCode() {

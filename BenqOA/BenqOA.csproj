@@ -210,6 +210,7 @@
     <Content Include="Content\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\benqlogo.png" />
+    <Content Include="Content\images\biaoqian.ico" />
     <Content Include="Content\images\index_login.jpg" />
     <Content Include="Content\images\index_content.jpg" />
     <Content Include="Content\images\index_top.jpg" />
@@ -480,6 +481,8 @@
     <Content Include="Content\plupload\img\throbber.gif" />
     <Content Include="Content\plupload\img\transp50.png" />
     <Content Include="Content\Style.css" />
+    <Content Include="Content\sweetalert\sweetalert.css" />
+    <Content Include="Content\sweetalert\sweetalert.min.js" />
     <Content Include="Content\Validate.css" />
     <Content Include="Content\Index.css" />
     <Content Include="Global.asax" />

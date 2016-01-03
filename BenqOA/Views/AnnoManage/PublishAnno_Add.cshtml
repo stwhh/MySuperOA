@@ -59,10 +59,10 @@
             data: $('#form1').serialize(),//ko.toJSON(viewModel),
             success: function (obj) {
                 if (obj.ErrorCode == "0") {
-                    ShowAlert("保存成功")
+                    ShowAlert("保存成功");
                 }
                 else {
-                    ShowAlert("保存失败")
+                    ShowAlert("保存失败");
                 }
             }
         })

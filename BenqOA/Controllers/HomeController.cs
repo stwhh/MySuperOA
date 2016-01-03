@@ -74,25 +74,25 @@ namespace BenqOA.Controllers
 
         #region
         ////根绝用户名验证密码 登录
-        //public JsonResult CheckUserPwd(string UserCode, string userPwd)
+        //public JsonResult CheckUserPwd(string userCode, string userPwd)
         //{
         //    SysManageBLL bll = new SysManageBLL();
         //    BenqOAContext bqc = new BenqOAContext();  //实例化上下文类
         //    var flag = false;
 
         //    //查询该用户解密后的密码与填写密码比较
-        //    var pwd = EncryptAndDecrypt.DecryptDES(bqc.Users.First(p => p.UserCode == UserCode).UserPwd, "stwhh123");
+        //    var pwd = EncryptAndDecrypt.DecryptDES(bqc.Users.First(p => p.UserCode == userCode).UserPwd, "stwhh123");
         //    if (userPwd == pwd.ToString())
         //    {
         //        flag = true;
 
-        //        var userInfo = bqc.Users.FirstOrDefault(p => p.UserCode == UserCode);
+        //        var userInfo = bqc.Users.FirstOrDefault(p => p.UserCode == userCode);
         //        Session["userInfo"] = userInfo;  //登录后保存session
         //        //User u = Session["userInfo"] as User;
         //        //string userName= u.UserName;
 
         //        //根据用户编号查询角色编号
-        //        List<object> RoleCodes = bll.GetUserRoleByUserCode(UserCode);
+        //        List<object> RoleCodes = bll.GetUserRoleByUserCode(userCode);
 
         //        //根绝角色编号查权限编号
         //        List<object> PermCodes = bll.GetPermCodeByRoleCode(RoleCodes);
@@ -104,7 +104,7 @@ namespace BenqOA.Controllers
         //        Session["NavInfo"] = PermInfo;
         //    }
 
-        //    return Json(flag,JsonRequestBehavior.AllowGet);
+        //    return Json(flag, JsonRequestBehavior.AllowGet);
         //}
         #endregion
 
