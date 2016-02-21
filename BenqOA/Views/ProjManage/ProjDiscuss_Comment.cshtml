@@ -23,53 +23,51 @@
                         List<Project_Discuss> lists = ViewBag.model;
                         foreach (var list in lists)
                         {
-                        <div class="itemdiv dialogdiv">
-                            <div class="user">
-                                <img alt="Alexa's Avatar" src="@list.CreateUserImage" />
-                            </div>
-
-                            <div class="body">
-                                <div class="time">
-                                    <i class="icon-time"></i>
-                                    <span class="green">@list.CreateTime.ToString("yyyy-MM-dd hh:mm:ss")</span>
+                            <div class="itemdiv dialogdiv">
+                                <div class="user">
+                                    <img alt="Alexa's Avatar" src="@list.CreateUserImage"/>
                                 </div>
 
-                                <div class="name">
-                                    <a href="#">@list.CreateUserCode</a>
-                                </div>
-                                <div class="text">@list.ProjComConent</div>
+                                <div class="body">
+                                    <div class="time">
+                                        <i class="icon-time"></i>
+                                        <span class="green">@list.CreateTime.ToString("yyyy-MM-dd hh:mm:ss")</span>
+                                    </div>
 
-                                @* <div class="tools">
+                                    <div class="name">
+                                        <a href="#">@list.CreateUserCode</a>
+                                    </div>
+                                    <div class="text">@list.ProjComConent</div>
+
+                                    @* <div class="tools">
                                     <a href="#" class="btn btn-minier btn-info">
                                         <i class="icon-only icon-share-alt"></i>
                                     </a>
                                 </div>*@
+                                </div>
                             </div>
-                        </div>
                         }
                     }
                 </div>
 
-                @*  comet*@
-                @*                <div id="contents"></div>*@
-                <form id="form1">
+            </div>
+             <form id="form1">
                     <div class="form-actions">
                         <div class="input-group">
-                            <input id="comment" name="comment" placeholder="输入您的信息 ..." type="text" class="form-control" />
+                            <input id="comment" name="comment" placeholder="输入您的信息 ..." type="text" class="form-control"/>
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="button" onclick="sendComment()">
                                     <i class="icon-share-alt"></i>
                                     发送
                                 </button>
-                                <button class="btn btn-primary" type="button" onclick="refresh()">
+                               @* <button class="btn btn-primary" type="button" onclick="refresh()">
                                     <i class="icon-refresh"></i>
                                     刷新
-                                </button>
+                                </button>*@
                             </span>
                         </div>
                     </div>
                 </form>
-            </div>
             <!-- /widget-main -->
         </div>
         <!-- /widget-body -->
@@ -81,31 +79,36 @@
     //发送评论
     function sendComment() {
         if ($('#comment').val() == "") {
-            ShowAlert("发送内容不能为空")
+            ShowAlert("发送内容不能为空");
         }
         else {
             $.ajax({
-                url: '/ProjManage/ProjDiscuss_sendComment?ProjCode=' + '@ViewBag.projCode' + '&UserCode=' + '@ViewBag.userCode',
-                type: 'post',
-                data: $('#form1').serialize(),
-                success: function (result) {
-                    if (result.ErrorCode == '0') {
-                        location.reload();
-                    }
-                    else {
-                        ShowAlert('发送失败', null);
+                    url: '/ProjManage/ProjDiscuss_sendComment?ProjCode=' + '@ViewBag.projCode' + '&UserCode=' + '@ViewBag.userCode',
+                    type: 'post',
+                    data: $('#form1').serialize(),
+                    success: function(result) {
+                        if (result.ErrorCode == '0') {
+                            //location.reload();
+                            $(".widget-main").load("/ProjManage/ProjDiscuss_Comment?ProjCode=@ViewBag.projCode&UserCode=@ViewBag.userCode .dialogs");
+
+                        } else {
+                            ShowAlert('发送失败', null);
+                        }
                     }
                 }
-            }
-           )
+            );
         }
     }
 
+    //定时刷新
+    setInterval(refresh, 3000);
+
     //刷新
     function refresh() {
-        var contents = $('#comment').val();
-        location.reload();
-        $('#comment').val(contents);
+        $(".widget-main").load("/ProjManage/ProjDiscuss_Comment?ProjCode=@ViewBag.projCode&UserCode=@ViewBag.userCode .dialogs");
+        //var contents = $('#comment').val();
+        //location.reload();
+        //$('#comment').val(contents);
     }
 
     //定时访问数据库消息总数变化

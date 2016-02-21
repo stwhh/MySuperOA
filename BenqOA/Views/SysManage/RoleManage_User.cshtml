@@ -42,15 +42,15 @@
     var queryModel;
     function Init() {
         //自定义列
-        var columns = [{
-            headerTemplate: '<input type="checkbox" id="all" name="all" class="selectAll"/>',
-            width: '30px',
-            template: '<input type="checkbox" class="select" value="#=uid#" />'
-        },
-
-        { field: 'UserCode', title: '用户编号', width: '100px' },  //用户编号
-        { field: 'RealName', title: '真实姓名', width: '100px' }   //用户名称
-        ]
+        var columns = [
+            {
+                headerTemplate: '<input type="checkbox" id="all" name="all" class="selectAll"/>',
+                width: '30px',
+                template: '<input type="checkbox" class="select" value="#=uid#" />'
+            },
+            { field: 'UserCode', title: '用户编号', width: '100px' }, //用户编号
+            { field: 'RealName', title: '真实姓名', width: '100px' } //用户名称
+        ];
 
         //绑定上面对应的data-bind
         queryModel = {

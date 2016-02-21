@@ -11,7 +11,7 @@ using Public;
 
 namespace BenqOA.Controllers
 {
-    [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+    //[MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
     public class ExecManageController : Controller
     {
         // 行政管理
@@ -21,6 +21,7 @@ namespace BenqOA.Controllers
         /// 出差管理
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult TripManage()
         {
             User user = Session["userInfo"] as User;
@@ -94,6 +95,7 @@ namespace BenqOA.Controllers
         /// 报销管理页面
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult ReimManage()
         {
             User user = Session["userInfo"] as User;
@@ -211,6 +213,7 @@ namespace BenqOA.Controllers
         /// 请假管理
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult LeaveManage()
         {
             User user = Session["userInfo"] as User;
@@ -283,6 +286,7 @@ namespace BenqOA.Controllers
         /// 待我审批
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult WaitingApprove()
         {
             return View();
