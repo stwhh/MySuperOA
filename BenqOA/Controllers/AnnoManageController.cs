@@ -11,7 +11,8 @@ using Public;
 
 namespace BenqOA.Controllers
 {
-    [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+    //因为一些修改保存页面没有做权限控制，所以不能对整个类用过滤器
+    //[MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
     public class AnnoManageController : Controller
     {
         #region 公告管理
@@ -20,6 +21,7 @@ namespace BenqOA.Controllers
         /// 发布公告页面
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult PublishAnno()
         {
             User user = Session["userInfo"] as User;

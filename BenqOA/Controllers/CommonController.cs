@@ -10,7 +10,7 @@ using Public;
 
 namespace BenqOA.Controllers
 {
-    [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+    //[MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
     public class CommonController:Controller
     {
         //公有方法

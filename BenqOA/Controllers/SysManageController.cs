@@ -13,7 +13,7 @@ using Public;
 
 namespace BenqOA.Controllers
 {
-    [MyAuthorFilter(Roles = "2,3")]  //2是登陆用户，3是超级管理员
+    //[MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]  
     public class SysManageController : Controller
     {
 
@@ -22,6 +22,7 @@ namespace BenqOA.Controllers
         /// 用户管理
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult UserManage()
         {
             return View();
@@ -188,6 +189,7 @@ namespace BenqOA.Controllers
         /// 角色管理页面
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult RoleManage()
         {
             return View();
@@ -401,6 +403,7 @@ namespace BenqOA.Controllers
         /// 权限管理页面
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult PermManage()
         {
             return View();
@@ -495,6 +498,7 @@ namespace BenqOA.Controllers
         /// 部门管理页面
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult DepaManage()
         {
             return View();
@@ -590,6 +594,7 @@ namespace BenqOA.Controllers
         /// 职位管理
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult PosiManage()
         {
             return View();

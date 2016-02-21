@@ -186,7 +186,7 @@ namespace BenqOA.Controllers
         /// 修改密码
         /// </summary>
         /// <returns>页面</returns>
-        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+        //[MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult ChangePassword()
         {
             User user = Session["userInfo"] as User;

@@ -11,7 +11,7 @@ using Public;
 
 namespace BenqOA.Controllers
 {
-    [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
+    //[MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
     public class FileManageController : Controller
     {
 
@@ -19,6 +19,7 @@ namespace BenqOA.Controllers
         /// 共享文件页面
         /// </summary>
         /// <returns></returns>
+        [MyAuthorFilter(Roles = MyAuthorFilter.LoginRole)]
         public ActionResult SharedFile()
         {
             User user = Session["userInfo"] as User;

@@ -15,8 +15,8 @@ namespace Public
         public const string PublicRole = "1";
         /// <summary>要登录才可以访问</summary>
         public const string LoginRole = "2";
-        /// <summary>管理员才能查看的页面</summary>
-        public const string AdminRole = "3";
+        ///// <summary>管理员才能查看的页面</summary>
+        //public const string AdminRole = "3";
 
         List<string> roles = new List<string>(); 
 
@@ -30,6 +30,8 @@ namespace Public
             //获得url请求里的controller和action：
             string controllerName = filterContext.RouteData.Values["controller"].ToString().ToLower();
             string actionName = filterContext.RouteData.Values["action"].ToString().ToLower();
+           
+            #region 暂时不用的
             //string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
             //string actionName = filterContext.ActionDescriptor.ActionName;
 
@@ -41,6 +43,7 @@ namespace Public
             //{
             //    this.Roles = roleWithControllerAction.RoleIds;     //有权限操作当前控制器和Action的角色id
             //}
+            #endregion
 
             roles = Roles.Split(',').ToList();
             if (roles.Contains(PublicRole)) //公共用户，不用登陆就无需验证
@@ -49,7 +52,7 @@ namespace Public
             }
             if (roles.Contains(LoginRole))  //登陆用户，需要验证
             {
-                base.OnAuthorization(filterContext);
+                base.OnAuthorization(filterContext);  //进入AuthorizeCore
             }
 
             //base.OnAuthorization(filterContext);   //进入AuthorizeCore
@@ -72,24 +75,29 @@ namespace Public
                 User user = httpContext.Session["userInfo"] as User;
                 string userName = user.UserCode;
                 BenqOAContext bqc = new BenqOAContext();
-                if (roles.Contains(AdminRole)) //验证是否有超级管理员权限
+                if (roles.Count==0)
                 {
-                    var userRoleCode = bqc.User_Role.Where(m => m.UserCode == userName).Select(x => x.RoleCode)//用户角色编号
-                        .DefaultIfEmpty("").First().ToString() ?? string.Empty;
-                    var roleGroup = bqc.Roles.Where(m => m.RoleCode == userRoleCode).Select(x => x.RoleName)//用户角色编号
-                        .DefaultIfEmpty("").First().ToString() ?? string.Empty;
-
-                    if (roleGroup == "超级管理员")
+                    return false;
+                }
+                if (httpContext.Request.Url.AbsoluteUri.Contains("/Home/Index"))
+                {
+                    return true; //首页不要权限控制
+                }
+                //根据用户编号查询用户所有的权限
+                var userPermissonList = bqc.User_Role.Where(x => x.UserCode == userName)
+                    .Join(bqc.Roles, p => p.RoleCode, q => q.RoleCode, (a, b) => new { uRoleCode = a.RoleCode, b.RoleCode })
+                    .Join(bqc.Role_Permisson, p => p.RoleCode, q => q.RoleCode, (a, b) => new { b.PermCode })
+                    .Join(bqc.Permissons, p => p.PermCode, q => q.PermCode, (a, b) => new { b.PermCode, b.PermUrl })
+                    .Select(x => x.PermUrl).ToList();
+                foreach (var item in userPermissonList)
+                {
+                    if (httpContext.Request.Url.AbsoluteUri.Contains(item))
                     {
                         return true;
                     }
-                    else
-                    {
-                        RedirectOrShow(httpContext, redirectUrl, "您没有权限");
-                    }
                 }
-
-                return true; ;  
+                RedirectOrShow(httpContext, redirectUrl, "您没有权限");
+                //return false;
             }
 
             return false;
