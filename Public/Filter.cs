@@ -88,7 +88,7 @@ namespace Public
                     .Join(bqc.Roles, p => p.RoleCode, q => q.RoleCode, (a, b) => new { uRoleCode = a.RoleCode, b.RoleCode })
                     .Join(bqc.Role_Permisson, p => p.RoleCode, q => q.RoleCode, (a, b) => new { b.PermCode })
                     .Join(bqc.Permissons, p => p.PermCode, q => q.PermCode, (a, b) => new { b.PermCode, b.PermUrl })
-                    .Select(x => x.PermUrl).ToList();
+                    .Select(x => x.PermUrl).Distinct().ToList();
                 foreach (var item in userPermissonList)
                 {
                     if (httpContext.Request.Url.AbsoluteUri.Contains(item))
